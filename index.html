@@ -37,10 +37,42 @@
 
     <main class="max-w-4xl mx-auto px-4 w-full mt-6">
         
-        <!-- Thông tin -->
-        <div class="bg-blue-50/80 rounded-xl p-4 mb-6 text-sm text-blue-800 flex items-start gap-3 border border-blue-100">
-            <i data-lucide="info" class="shrink-0 mt-0.5 w-5 h-5"></i>
-            <p>Logo sẽ được thu phóng bằng <b>40%</b> chiều rộng ảnh gốc và đặt tại <b>góc trái, dưới cùng</b>.</p>
+        <!-- Cài đặt Logo -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200 mb-6 relative z-0">
+            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i data-lucide="settings-2" class="w-5 h-5 text-blue-600"></i> Cài đặt Logo
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Kích thước -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2 flex justify-between">
+                        Kích thước <span id="size-label" class="text-blue-600 font-bold">40%</span>
+                    </label>
+                    <input type="range" id="logo-size" min="5" max="100" value="40" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                    <p class="text-xs text-gray-500 mt-1">So với tỷ lệ gốc của ảnh</p>
+                </div>
+                <!-- Vị trí -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Vị trí gắn</label>
+                    <select id="logo-position" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50 border p-2 text-sm outline-none cursor-pointer">
+                        <option value="bottom-left" selected>Góc trái, dưới</option>
+                        <option value="bottom-right">Góc phải, dưới</option>
+                        <option value="bottom-center">Giữa, dưới</option>
+                        <option value="top-left">Góc trái, trên</option>
+                        <option value="top-right">Góc phải, trên</option>
+                        <option value="top-center">Giữa, trên</option>
+                        <option value="center">Chính giữa ảnh</option>
+                    </select>
+                </div>
+                <!-- Cách lề -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2 flex justify-between">
+                        Cách lề (Margin) <span id="margin-label" class="text-blue-600 font-bold">0%</span>
+                    </label>
+                    <input type="range" id="logo-margin" min="0" max="20" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                    <p class="text-xs text-gray-500 mt-1">Khoảng cách tới mép ảnh</p>
+                </div>
+            </div>
         </div>
 
         <!-- Khung lỗi chỉ hiện khi link chết hoặc mạng lỗi -->
@@ -117,6 +149,16 @@
         const finalCount = document.getElementById('final-count');
         const logoStatusBadge = document.getElementById('logo-status-badge');
         const uploadOverlay = document.getElementById('upload-overlay');
+
+        // BẮT SỰ KIỆN CÀI ĐẶT
+        const sizeSlider = document.getElementById('logo-size');
+        const sizeLabel = document.getElementById('size-label');
+        const positionSelect = document.getElementById('logo-position');
+        const marginSlider = document.getElementById('logo-margin');
+        const marginLabel = document.getElementById('margin-label');
+
+        sizeSlider.addEventListener('input', (e) => sizeLabel.textContent = e.target.value + '%');
+        marginSlider.addEventListener('input', (e) => marginLabel.textContent = e.target.value + '%');
 
         // BƯỚC 1: LOAD LOGO AN TOÀN TỪ PROXY CLOUDFLARE
         const ORIGINAL_LOGO_URL = "https://techbytruong.wordpress.com/wp-content/uploads/2026/03/chmn.png";
@@ -258,11 +300,39 @@
                         canvas.height = mainImg.height;
                         ctx.drawImage(mainImg, 0, 0);
 
-                        // TĂNG KÍCH THƯỚC LOGO LÊN 40% (0.40)
-                        const logoWidth = canvas.width * 0.40; 
+                        // LẤY THÔNG SỐ CÀI ĐẶT TỪ GIAO DIỆN
+                        const sizePct = parseInt(sizeSlider.value) / 100;
+                        const marginPct = parseInt(marginSlider.value) / 100;
+                        const position = positionSelect.value;
+
+                        // TÍNH TOÁN KÍCH THƯỚC LOGO TỐI ƯU (Tránh bị quá to trên ảnh ngang)
+                        const baseDimension = Math.min(canvas.width, canvas.height);
+                        const logoWidth = baseDimension * sizePct; 
                         const logoHeight = (logoImg.height / logoImg.width) * logoWidth;
-                        const x = 0; 
-                        const y = canvas.height - logoHeight;
+                        
+                        // TÍNH TOÁN KHOẢNG CÁCH LỀ
+                        const padding = baseDimension * marginPct;
+
+                        // TÍNH TOÁN VỊ TRÍ X, Y
+                        let x = 0; 
+                        let y = 0;
+
+                        switch (position) {
+                            case 'top-left':
+                                x = padding; y = padding; break;
+                            case 'top-right':
+                                x = canvas.width - logoWidth - padding; y = padding; break;
+                            case 'top-center':
+                                x = (canvas.width - logoWidth) / 2; y = padding; break;
+                            case 'bottom-left':
+                                x = padding; y = canvas.height - logoHeight - padding; break;
+                            case 'bottom-right':
+                                x = canvas.width - logoWidth - padding; y = canvas.height - logoHeight - padding; break;
+                            case 'bottom-center':
+                                x = (canvas.width - logoWidth) / 2; y = canvas.height - logoHeight - padding; break;
+                            case 'center':
+                                x = (canvas.width - logoWidth) / 2; y = (canvas.height - logoHeight) / 2; break;
+                        }
 
                         ctx.drawImage(logoImg, x, y, logoWidth, logoHeight);
 
@@ -335,6 +405,3 @@
     </script>
 </body>
 </html>
-
-
-
