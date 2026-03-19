@@ -2,448 +2,1156 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Công Cụ Gắn Logo Tự Động</title>
-    <!-- Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNITE GROUP - Poster & Design Builder</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- JSZip -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <!-- FileSaver -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .font-serif-luxury { font-family: 'Playfair Display', serif; }
+        
+        #canvas-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #e2e8f0;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tùy chỉnh thanh cuộn chung */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Ẩn thanh cuộn cho danh sách ảnh dư */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .no-select { user-select: none; -webkit-user-select: none; }
+
+        /* Container queries để text thu phóng tỷ lệ thuận với khung DOM */
+        .zone-container { container-type: inline-size; }
+
+        /* Giao diện lưới thu nhỏ */
+        .mini-grid { display: grid; gap: 2px; width: 42px; height: 42px; background: #cbd5e1; padding: 2px; border-radius: 6px; flex-shrink: 0; overflow: hidden;}
+        .mg-box { background: #94a3b8; width: 100%; height: 100%; }
+        
+        .grid-m1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+        .grid-m2 { grid-template-columns: repeat(6, 1fr); grid-template-rows: 1fr 1fr; }
+        .grid-m2 .b1 { grid-column: span 3; } .grid-m2 .b2 { grid-column: span 3; }
+        .grid-m2 .b3 { grid-column: span 2; } .grid-m2 .b4 { grid-column: span 2; } .grid-m2 .b5 { grid-column: span 2; }
+        .grid-m3 { grid-template-columns: repeat(6, 1fr); grid-template-rows: 1fr 1fr; }
+        .grid-m3 .b1 { grid-column: span 6; }
+        .grid-m3 .b2 { grid-column: span 2; } .grid-m3 .b3 { grid-column: span 2; } .grid-m3 .b4 { grid-column: span 2; }
+        .grid-m4 { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); }
+        .grid-m4 .b1 { grid-row: span 3; }
+        .grid-m5 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+
+        /* Hiệu ứng focus ô */
+        .zone-active::after {
+            content: ''; position: absolute; inset: 0; border: 3px solid #3b82f6; pointer-events: none; z-index: 50; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5);
+        }
+
+        /* Gradient Vàng Đồng Sang Trọng */
+        .text-gold {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col pb-20">
+<body class="min-h-screen p-4 md:p-6 lg:p-8">
 
-    <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-10">
-        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-            <h1 class="text-xl font-bold text-blue-600 flex items-center gap-2">
-                <i data-lucide="image-plus" class="text-blue-600"></i> AutoLogo Pro
-            </h1>
-            <span id="logo-status-badge" class="text-xs bg-yellow-100 text-yellow-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 font-medium transition-all">
-                <i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> Đang nạp Logo...
-            </span>
-        </div>
-    </header>
-
-    <main class="max-w-4xl mx-auto px-4 w-full mt-6">
+    <div class="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
         
-        <!-- Cài đặt Logo -->
-        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200 mb-6 relative z-0">
-            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <i data-lucide="settings-2" class="w-5 h-5 text-blue-600"></i> Cài đặt Logo
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Kích thước -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2 flex justify-between">
-                        Kích thước <span id="size-label" class="text-blue-600 font-bold">60%</span>
+        <!-- --- CỘT ĐIỀU KHIỂN (TRÁI) --- -->
+        <div class="lg:col-span-5 flex flex-col gap-4 max-h-[95vh] overflow-y-auto pr-2">
+            
+            <!-- TABS ĐIỀU HƯỚNG -->
+            <div class="flex gap-2 bg-white p-2 rounded-2xl shadow-sm border border-gray-100 sticky top-0 z-50">
+                <button id="btn-tab-grid" onclick="switchMainTab('grid')" class="flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm">CẮT GHÉP KHUNG FB</button>
+                <button id="btn-tab-logo" onclick="switchMainTab('logo')" class="flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm">GẮN LOGO HÀNG LOẠT</button>
+            </div>
+
+            <!-- CẤU HÌNH LOGO (Dùng chung cho cả 2 tab) -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Cấu Hình Logo (Watermark)</label>
+                <div class="flex items-center gap-3">
+                    <label class="cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 px-4 rounded-lg transition text-xs font-semibold border border-gray-300 shadow-sm whitespace-nowrap">
+                        Tải Logo PNG
+                        <input type="file" accept="image/png, image/jpeg" class="hidden" onchange="handleLogoUpload(event)">
                     </label>
-                    <input type="range" id="logo-size" min="5" max="100" value="60" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                    <p class="text-xs text-gray-500 mt-1">So với tỷ lệ gốc của ảnh</p>
+                    <img id="logo-preview-small" src="" alt="Logo" class="h-8 object-contain hidden border border-gray-200 p-1 bg-white rounded shadow-sm">
                 </div>
-                <!-- Vị trí -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Vị trí gắn</label>
-                    <select id="logo-position" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50 border p-2 text-sm outline-none cursor-pointer">
-                        <option value="bottom-left" selected>Góc trái, dưới</option>
-                        <option value="bottom-right">Góc phải, dưới</option>
-                        <option value="bottom-center">Giữa, dưới</option>
-                        <option value="top-left">Góc trái, trên</option>
-                        <option value="top-right">Góc phải, trên</option>
-                        <option value="top-center">Giữa, trên</option>
-                        <option value="center">Chính giữa ảnh</option>
-                    </select>
+                <!-- Slider Kích thước Logo -->
+                <div class="mt-3 flex items-center gap-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
+                    <span class="text-xs text-gray-600 font-semibold whitespace-nowrap">Kích cỡ Logo:</span>
+                    <input type="range" id="logo-scale-slider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-blue-600 cursor-pointer" oninput="updateLogoScale(this.value)">
+                    <span id="logo-scale-val" class="text-xs text-blue-700 font-bold w-12 text-right">100%</span>
                 </div>
-                <!-- Cách lề -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2 flex justify-between">
-                        Cách lề (Margin) <span id="margin-label" class="text-blue-600 font-bold">5%</span>
+            </div>
+
+            <!-- TAB 1: GRID SETTINGS -->
+            <div id="tab-grid-settings" class="flex flex-col gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                    <label class="block text-sm font-bold text-gray-700 mb-3">1. Chọn kiểu thiết kế lưới</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-2" onclick="selectMode('mode-2')">
+                            <input type="radio" name="mode" value="mode-2" class="hidden">
+                            <div class="mini-grid grid-m2"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div><div class="mg-box b5"></div></div>
+                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">5 Ảnh (2 Trên)</span></div>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-5" onclick="selectMode('mode-5')">
+                            <input type="radio" name="mode" value="mode-5" class="hidden">
+                            <div class="mini-grid grid-m5"><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div></div>
+                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">4 Ảnh (Vuông 2x2)</span></div>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-3" onclick="selectMode('mode-3')">
+                            <input type="radio" name="mode" value="mode-3" class="hidden">
+                            <div class="mini-grid grid-m3"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div></div>
+                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">4 Ảnh (1 To Ngang)</span></div>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-4" onclick="selectMode('mode-4')">
+                            <input type="radio" name="mode" value="mode-4" class="hidden">
+                            <div class="mini-grid grid-m4"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div></div>
+                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">4 Ảnh (1 To Dọc)</span></div>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative sm:col-span-2" id="lbl-mode-1" onclick="selectMode('mode-1')">
+                            <input type="radio" name="mode" value="mode-1" class="hidden">
+                            <div class="mini-grid grid-m1"><div class="mg-box"></div></div>
+                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">Cắt 1 Tấm Lớn Thành 5 Khung (Seamless)</span></div>
+                        </label>
+                    </div>
+
+                    <hr class="my-5 border-gray-100">
+
+                    <label class="block text-sm font-bold text-gray-700 mb-2">2. Tải Hình Ảnh Dự Án</label>
+                    <label class="w-full flex justify-center items-center cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-700 border-2 border-blue-200 border-dashed py-4 px-4 rounded-xl transition font-semibold shadow-sm">
+                        <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        Chọn Nhiều Ảnh Cùng Lúc
+                        <input type="file" accept="image/*" multiple class="hidden" onchange="handleGlobalUpload(event)">
                     </label>
-                    <input type="range" id="logo-margin" min="0" max="20" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                    <p class="text-xs text-gray-500 mt-1">Khoảng cách tới mép ảnh</p>
+                    <p class="text-[11px] text-gray-500 mt-2 text-center">Ảnh dư sẽ tự chuyển xuống dạng "Ảnh Lẻ Đính Kèm".</p>
                 </div>
-                <!-- Độ mờ -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2 flex justify-between">
-                        Độ mờ (Opacity) <span id="opacity-label" class="text-blue-600 font-bold">100%</span>
+
+                <!-- BẢNG THIẾT KẾ Ô (Chỉ hiện khi click vào 1 ô bên phải) -->
+                <div id="design-panel" class="bg-blue-50/50 p-5 rounded-2xl shadow-sm border border-blue-100 hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-base font-bold text-blue-900 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                            Trang Trí Ô Số <span id="lbl-active-zone" class="ml-1 bg-blue-600 text-white px-2 py-0.5 rounded text-sm"></span>
+                        </h2>
+                        <button onclick="triggerUpload(activeZoneId)" class="text-xs bg-white border border-blue-200 text-blue-600 font-semibold py-1.5 px-3 rounded hover:bg-blue-50 shadow-sm">Đổi Ảnh Riêng</button>
+                    </div>
+
+                    <!-- Zoom Control -->
+                    <div class="mb-4 bg-white p-3 rounded-xl border border-blue-100 shadow-sm">
+                        <label class="flex justify-between text-xs font-semibold text-gray-600 mb-2">
+                            <span>Thu/Phóng ảnh (Zoom)</span>
+                            <span id="zoom-val" class="text-blue-600">100%</span>
+                        </label>
+                        <input type="range" id="zoom-slider" min="0.5" max="3" step="0.05" value="1" class="w-full accent-blue-600 cursor-pointer" oninput="handleZoomSlider(this.value)">
+                    </div>
+
+                    <!-- Graphic Design Overlays -->
+                    <div class="bg-white p-4 rounded-xl border border-blue-100 shadow-sm flex flex-col gap-3">
+                        
+                        <!-- Cấu hình Dải màu Gradient Đáy -->
+                        <div>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" id="check-gradient" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateDesignState('gradient', this.checked)">
+                                <span class="ml-2 text-sm font-semibold text-gray-800">Hiển thị dải màu bóng mờ ở đáy</span>
+                            </label>
+                            
+                            <!-- Bảng tuỳ chỉnh Gradient (Chỉ hiện khi check) -->
+                            <div id="gradient-options" class="hidden mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-xs font-semibold text-gray-700">Màu sắc (Theo Branding):</span>
+                                    <input type="color" id="input-grad-color" value="#000000" class="w-8 h-8 rounded cursor-pointer border-0 p-0" onchange="updateDesignState('gradColor', this.value)">
+                                </div>
+                                <div>
+                                    <span class="flex justify-between text-xs font-semibold text-gray-700 mb-2">
+                                        <span>Độ trải dài (Chiều cao):</span>
+                                        <span id="grad-height-val" class="text-blue-600">50%</span>
+                                    </span>
+                                    <input type="range" id="input-grad-height" min="10" max="100" step="5" value="50" class="w-full accent-blue-600 cursor-pointer" oninput="updateDesignState('gradHeight', this.value); document.getElementById('grad-height-val').innerText = this.value + '%'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-gray-100 my-1">
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tiêu đề chính (Chữ lớn)</label>
+                            <input type="text" id="input-title" placeholder="VD: SỰ KIỆN ĐẲNG CẤP" class="w-full text-sm p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" oninput="updateDesignState('title', this.value)">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tiêu đề phụ (Chữ nhỏ)</label>
+                            <input type="text" id="input-sub" placeholder="VD: Kết nối thành công" class="w-full text-sm p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" oninput="updateDesignState('sub', this.value)">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Thông tin Hotline / Địa chỉ</label>
+                            <input type="text" id="input-info" placeholder="VD: 0909 216 216" class="w-full text-sm p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" oninput="updateDesignState('info', this.value)">
+                        </div>
+
+                        <!-- Tùy chọn Theme Style -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-2">Phong Phong cách (Font & Màu sắc)</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="theme" value="modern" id="theme-modern" class="peer hidden" onchange="updateDesignState('theme', this.value)">
+                                    <div class="border border-gray-200 rounded-lg p-2 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                        <span class="block font-bold text-sm">Hiện đại</span>
+                                        <span class="block text-[10px] text-gray-500">Chữ Trắng cơ bản</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="theme" value="luxury" id="theme-luxury" class="peer hidden" onchange="updateDesignState('theme', this.value)">
+                                    <div class="border border-gray-200 rounded-lg p-2 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                        <span class="block font-serif-luxury font-bold text-sm text-gold">Sang trọng</span>
+                                        <span class="block text-[10px] text-gray-500">Chữ Vàng Đồng</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút xuất file Lưới -->
+                <button onclick="processExport()" id="btn-export-grid" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
+                    <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    XUẤT BỘ ẢNH LƯỚI (ZIP)
+                </button>
+            </div>
+
+            <!-- TAB 2: BULK LOGO SETTINGS -->
+            <div id="tab-logo-settings" class="hidden flex-col gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-600 rounded-full mb-3">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                    </div>
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">Đóng Dấu Hàng Loạt Ảnh</h2>
+                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh (không bị cắt vuông), chỉ thêm Logo và Xuất ra hàng loạt.</p>
+                    
+                    <label class="w-full flex justify-center items-center cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-4 px-4 rounded-xl transition font-semibold shadow-md">
+                        <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        Chọn Các File Ảnh Gốc Cần Gắn Logo
+                        <input type="file" accept="image/*" multiple class="hidden" onchange="handleBulkLogoUpload(event)">
                     </label>
-                    <input type="range" id="logo-opacity" min="10" max="100" value="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                    <p class="text-xs text-gray-500 mt-1">Làm logo chìm vào ảnh</p>
                 </div>
-                <!-- Đổ bóng (Xử lý nền sáng) -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Đổ bóng (Dành cho nền sáng)</label>
-                    <select id="logo-shadow" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50 border p-2 text-sm outline-none cursor-pointer">
-                        <option value="none" selected>Không đổ bóng</option>
-                        <option value="light">Bóng mờ nhẹ (Tinh tế)</option>
-                        <option value="dark">Bóng đậm (Rõ nét)</option>
-                    </select>
+                
+                <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
+                    <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    XUẤT ẢNH ĐÃ GẮN LOGO (ZIP)
+                </button>
+            </div>
+
+        </div>
+
+        <!-- --- CỘT PREVIEW (PHẢI) --- -->
+        <div class="lg:col-span-7 bg-white p-4 lg:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col">
+            
+            <!-- TAB 1 PREVIEW: GRID LƯỚI -->
+            <div id="tab-grid-preview" class="flex flex-col flex-1">
+                <div class="bg-amber-50 text-amber-800 text-xs px-4 py-3 rounded-xl mb-4 font-medium flex items-start gap-3 border border-amber-100">
+                    <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" /></svg>
+                    <div class="leading-relaxed">
+                        <strong>HƯỚNG DẪN:</strong> <br>
+                        1. <strong>Tải nhiều ảnh</strong> hoặc click trực tiếp vào từng ô.<br>
+                        2. <strong>Bấm giữ & Kéo chuột</strong> trên ảnh để di chuyển căn góc chụp.<br>
+                        3. <strong>Click chọn lại</strong> một ảnh để mở Bảng Thiết Kế Chữ (bên trái).
+                    </div>
+                </div>
+
+                <div class="w-full max-w-[700px] mx-auto">
+                    <div id="canvas-container" class="rounded-lg">
+                        <!-- Các lớp Render -->
+                        <div id="zones-layer" class="absolute inset-0"></div>
+                        <div id="grid-layer" class="absolute inset-0 pointer-events-none"></div>
+                        <div id="logos-layer" class="absolute inset-0 pointer-events-none z-40"></div>
+                    </div>
+                </div>
+                
+                <p class="text-center text-gray-400 text-xs mt-4">Sản phẩm xuất ra sẽ được cắt theo đúng các vạch kẻ màu trắng.</p>
+
+                <!-- VÙNG HIỂN THỊ ẢNH LẺ ĐÍNH KÈM -->
+                <div class="mt-6 border-t border-gray-100 pt-5">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-sm font-bold text-gray-700">Ảnh Lẻ Đính Kèm (<span id="extra-count">0</span>)</h3>
+                        <span class="text-[11px] text-gray-500 bg-gray-100 px-2 py-1 rounded font-medium border border-gray-200">Sẽ được tự động đóng dấu Logo khi xuất Zip</span>
+                    </div>
+                    <div id="extra-images-container" class="flex gap-2 overflow-x-auto pb-2 no-scrollbar min-h-[5rem]">
+                        <div class="text-[11px] text-gray-400 italic py-4 w-full text-center">Chưa có ảnh lẻ nào. Khi bạn chọn dư số lượng ảnh, ảnh dư sẽ tự động vào đây.</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Khung lỗi chỉ hiện khi link chết hoặc mạng lỗi -->
-        <div id="fallback-logo-section" class="hidden bg-red-50 border border-red-200 rounded-xl p-5 mb-6 shadow-sm fade-in">
-            <div class="flex items-start gap-3 text-red-700 mb-3">
-                <i data-lucide="shield-alert" class="shrink-0 mt-0.5"></i>
-                <p class="text-sm">Không thể lấy Logo từ link (do mạng hoặc bảo mật). Vui lòng chọn file Logo (.PNG) từ điện thoại/máy tính của bạn để tiếp tục.</p>
-            </div>
-            <input type="file" id="logoInput" accept="image/png" class="hidden">
-            <label for="logoInput" class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-2.5 px-4 rounded-lg cursor-pointer inline-flex items-center gap-2 transition-colors shadow-sm">
-                <i data-lucide="upload" class="w-4 h-4"></i> Chọn file Logo thủ công
-            </label>
-        </div>
-
-        <!-- Vùng Chọn Ảnh -->
-        <div class="bg-white p-2 rounded-2xl shadow-sm border border-gray-100 text-center relative">
-            <!-- Lớp phủ khóa nút chọn ảnh khi chưa load xong logo -->
-            <div id="upload-overlay" class="absolute inset-0 bg-white/60 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-2xl">
-                <span class="bg-black/70 text-white px-4 py-2 rounded-full text-sm font-medium animate-pulse">Đang chuẩn bị hệ thống...</span>
-            </div>
-
-            <input type="file" id="imageInput" multiple accept="image/*" class="hidden">
-            <label for="imageInput" class="cursor-pointer border-2 border-dashed border-blue-300 bg-blue-50 hover:bg-blue-100 transition-colors rounded-xl p-10 flex flex-col items-center justify-center gap-4 relative overflow-hidden group">
-                <div class="bg-white p-4 rounded-full shadow-md group-hover:scale-110 transition-transform duration-300">
-                    <i data-lucide="images" class="w-8 h-8 text-blue-600"></i>
+            <!-- TAB 2 PREVIEW: BULK LOGO -->
+            <div id="tab-logo-preview" class="hidden flex-col flex-1 h-full">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-sm font-bold text-gray-700">Hình ảnh đã tải lên (<span id="bulk-count">0</span>)</h3>
+                    <button onclick="clearBulkImages()" class="text-xs text-red-500 font-semibold hover:bg-red-50 px-2 py-1 rounded">Xóa Tất Cả</button>
                 </div>
-                <div>
-                    <p class="font-bold text-lg text-blue-800">Chạm để chọn ảnh từ Album</p>
-                    <p class="text-sm text-gray-500 mt-1">Chọn bao nhiêu ảnh cũng được</p>
+                
+                <div id="bulk-preview-container" class="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto max-h-[600px] content-start p-1 no-scrollbar">
+                    <div class="col-span-full text-center py-10 text-gray-400 italic text-sm border-2 border-dashed border-gray-200 rounded-xl">
+                        Hãy chọn các file ảnh để xem trước kết quả gắn Logo
+                    </div>
                 </div>
-            </label>
-        </div>
-
-        <!-- Trạng thái đang xử lý -->
-        <div id="processing-status" class="hidden mt-8 text-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 fade-in">
-            <div class="relative w-12 h-12 mx-auto mb-3">
-                <div class="absolute inset-0 border-4 border-blue-100 rounded-full"></div>
-                <div class="absolute inset-0 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
             </div>
-            <p class="text-gray-700 font-medium text-lg" id="processing-text">Đang gắn Logo... <span id="progress-count" class="text-blue-600 font-bold">0</span> / <span id="total-count">0</span></p>
+
         </div>
 
-        <!-- Khu vực tải về -->
-        <div id="bulk-download-section" class="hidden mt-8 text-center sticky top-20 z-20 bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-lg border border-green-100 fade-in">
-            <button id="downloadAllBtn" class="bg-green-600 hover:bg-green-700 active:scale-95 text-white font-bold py-3.5 px-8 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 w-full md:w-auto mx-auto text-lg">
-                <i data-lucide="folder-archive" class="w-6 h-6"></i> Tải Xong Hàng Loạt (.ZIP)
-            </button>
-            <div class="mt-3 text-sm text-gray-600 bg-gray-50 rounded-lg p-3 inline-block">
-                Đã xử lý xong <span id="final-count" class="font-bold text-green-600 text-base">0</span> ảnh.<br>
-                <span class="text-xs text-gray-500">Mẹo cho iPhone: Mở ứng dụng <b>"Tệp" (Files)</b> và chạm vào file ZIP để giải nén.</span>
-            </div>
-        </div>
+    </div>
 
-        <!-- Lưới ảnh hiển thị -->
-        <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 pb-10">
-            <!-- Ảnh sinh ra ở đây -->
-        </div>
-
-    </main>
+    <!-- Input file ẩn cho phép Multiple (chọn nhiều file) -->
+    <input type="file" id="zone-file-input" accept="image/*" multiple class="hidden" onchange="handleZoneImageUpload(event)">
 
     <script>
-        lucide.createIcons();
+        // --- CHUYỂN TAB ĐIỀU HƯỚNG ---
+        function switchMainTab(tabId) {
+            document.getElementById('btn-tab-grid').className = tabId === 'grid' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
+            document.getElementById('btn-tab-logo').className = tabId === 'logo' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
 
-        // Elements
-        const imageInput = document.getElementById('imageInput');
-        const logoInput = document.getElementById('logoInput');
-        const gallery = document.getElementById('gallery');
-        const fallbackSection = document.getElementById('fallback-logo-section');
-        const processingStatus = document.getElementById('processing-status');
-        const progressCount = document.getElementById('progress-count');
-        const totalCount = document.getElementById('total-count');
-        const bulkDownloadSection = document.getElementById('bulk-download-section');
-        const downloadAllBtn = document.getElementById('downloadAllBtn');
-        const finalCount = document.getElementById('final-count');
-        const logoStatusBadge = document.getElementById('logo-status-badge');
-        const uploadOverlay = document.getElementById('upload-overlay');
-
-        // BẮT SỰ KIỆN CÀI ĐẶT
-        const sizeSlider = document.getElementById('logo-size');
-        const sizeLabel = document.getElementById('size-label');
-        const positionSelect = document.getElementById('logo-position');
-        const marginSlider = document.getElementById('logo-margin');
-        const marginLabel = document.getElementById('margin-label');
-        const opacitySlider = document.getElementById('logo-opacity');
-        const opacityLabel = document.getElementById('opacity-label');
-        const shadowSelect = document.getElementById('logo-shadow');
-
-        sizeSlider.addEventListener('input', (e) => sizeLabel.textContent = e.target.value + '%');
-        marginSlider.addEventListener('input', (e) => marginLabel.textContent = e.target.value + '%');
-        opacitySlider.addEventListener('input', (e) => opacityLabel.textContent = e.target.value + '%');
-
-        // BƯỚC 1: LOAD LOGO AN TOÀN TỪ PROXY CLOUDFLARE
-        const ORIGINAL_LOGO_URL = "https://techbytruong.wordpress.com/wp-content/uploads/2026/03/chmn.png";
-        const PROXY_URL = `https://wsrv.nl/?url=${encodeURIComponent(ORIGINAL_LOGO_URL)}&output=png`;
-
-        let logoImg = new Image();
-        logoImg.crossOrigin = "anonymous";
-        let isLogoReady = false;
-        let processedImages = [];
-
-        let loadTimeout = setTimeout(() => {
-            if (!isLogoReady) handleLogoError("Hết thời gian tải logo");
-        }, 8000);
-
-        logoImg.onload = () => {
-            clearTimeout(loadTimeout);
-            isLogoReady = true;
-            updateLogoStatus('success', 'Logo đã sẵn sàng');
-            uploadOverlay.classList.add('hidden'); 
-            fallbackSection.classList.add('hidden');
-        };
-
-        logoImg.onerror = () => {
-            clearTimeout(loadTimeout);
-            handleLogoError("Link logo hỏng hoặc bị chặn");
-        };
-
-        logoImg.src = PROXY_URL;
-
-        function handleLogoError(reason) {
-            console.error("Lỗi Logo:", reason);
-            isLogoReady = false;
-            updateLogoStatus('error', 'Lỗi lấy Logo');
-            uploadOverlay.classList.add('hidden'); 
-            fallbackSection.classList.remove('hidden'); 
+            document.getElementById('tab-grid-settings').style.display = tabId === 'grid' ? 'flex' : 'none';
+            document.getElementById('tab-grid-preview').style.display = tabId === 'grid' ? 'flex' : 'none';
+            
+            document.getElementById('tab-logo-settings').style.display = tabId === 'logo' ? 'flex' : 'none';
+            document.getElementById('tab-logo-preview').style.display = tabId === 'logo' ? 'flex' : 'none';
+            
+            if(tabId === 'logo') renderBulkLogoView(); // Re-render preview nếu có đổi kích thước logo bên tab grid
         }
 
-        function updateLogoStatus(type, text) {
-            if (type === 'success') {
-                logoStatusBadge.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4"></i> ${text}`;
-                logoStatusBadge.className = "text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 font-medium";
-            } else {
-                logoStatusBadge.innerHTML = `<i data-lucide="x-circle" class="w-4 h-4"></i> ${text}`;
-                logoStatusBadge.className = "text-xs bg-red-100 text-red-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 font-medium cursor-pointer";
-                logoStatusBadge.onclick = () => {
-                    updateLogoStatus('loading', 'Đang nạp lại...');
-                    logoImg.src = PROXY_URL + "&t=" + new Date().getTime(); 
-                };
-            }
-            if(type === 'loading') {
-                logoStatusBadge.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> ${text}`;
-                logoStatusBadge.className = "text-xs bg-yellow-100 text-yellow-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 font-medium transition-all";
-            }
-            lucide.createIcons({ root: logoStatusBadge });
+        // --- HELPER CHUYỂN MÃ MÀU (HEX TO RGBA) ---
+        function hexToRgba(hex, alpha) {
+            // Loại bỏ dấu # nếu có
+            hex = hex.replace(/^#/, '');
+            // Parse r, g, b
+            let r = parseInt(hex.substring(0, 2), 16);
+            let g = parseInt(hex.substring(2, 4), 16);
+            let b = parseInt(hex.substring(4, 6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
-        logoInput.addEventListener('change', (e) => {
-            if (e.target.files && e.target.files[0]) {
-                const url = URL.createObjectURL(e.target.files[0]);
-                logoImg = new Image();
-                logoImg.onload = () => {
-                    isLogoReady = true;
-                    updateLogoStatus('success', 'Đã dùng Logo tải lên');
-                    fallbackSection.classList.add('hidden');
-                };
-                logoImg.src = url;
+        // --- 1. CONFIG BỐ CỤC KHUNG FB ---
+        const MODES = {
+            'mode-1': {
+                id: 'mode-1',
+                zones: [ { id: 0, x: 0, y: 0, w: 1, h: 1, label: "Tải 1 Ảnh Toàn Cảnh (Phủ kín)" } ],
+                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
+                exports: [
+                    { name: '1_TrenTrai.jpg', src: 0, cut: {x:0, y:0, w:0.5, h:0.5}, ratio: 1 },
+                    { name: '2_TrenPhai.jpg', src: 0, cut: {x:0.5, y:0, w:0.5, h:0.5}, ratio: 1 },
+                    { name: '3_DuoiTrai.jpg', src: 0, cut: {x:0, y:0.5, w:0.3333, h:0.5}, ratio: 1 },
+                    { name: '4_DuoiGiua.jpg', src: 0, cut: {x:0.3333, y:0.5, w:0.3333, h:0.5}, ratio: 1 },
+                    { name: '5_DuoiPhai.jpg', src: 0, cut: {x:0.6666, y:0.5, w:0.3334, h:0.5}, ratio: 1 }
+                ]
+            },
+            'mode-2': {
+                id: 'mode-2',
+                zones: [
+                    { id: 0, x: 0, y: 0, w: 1, h: 0.5, label: "Ảnh Banner (Cắt đôi)" },
+                    { id: 1, x: 0, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 1" },
+                    { id: 2, x: 0.3333, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 2" },
+                    { id: 3, x: 0.6666, y: 0.5, w: 0.3334, h: 0.5, label: "Ảnh Lẻ 3" }
+                ],
+                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
+                exports: [
+                    { name: '1_BannerTrai.jpg', src: 0, cut: {x:0, y:0, w:0.5, h:1}, ratio: 1 },
+                    { name: '2_BannerPhai.jpg', src: 0, cut: {x:0.5, y:0, w:0.5, h:1}, ratio: 1 },
+                    { name: '3_DuoiTrai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '4_DuoiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '5_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
+                ]
+            },
+            'mode-3': {
+                id: 'mode-3',
+                zones: [
+                    { id: 0, x: 0, y: 0, w: 1, h: 0.5, label: "Ảnh Ngang Trọn Vẹn" },
+                    { id: 1, x: 0, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 1" },
+                    { id: 2, x: 0.3333, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 2" },
+                    { id: 3, x: 0.6666, y: 0.5, w: 0.3334, h: 0.5, label: "Ảnh Lẻ 3" }
+                ],
+                gridLines: [ { x: 0, y: 0, w: 1, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
+                exports: [
+                    { name: '1_To_Ngang.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 2 },
+                    { name: '2_DuoiTrai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '3_DuoiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '4_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
+                ]
+            },
+            'mode-4': {
+                id: 'mode-4',
+                zones: [
+                    { id: 0, x: 0, y: 0, w: 0.5, h: 1, label: "Ảnh Dọc Trọn Vẹn" },
+                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.3333, label: "Ảnh Lẻ 1" },
+                    { id: 2, x: 0.5, y: 0.3333, w: 0.5, h: 0.3333, label: "Ảnh Lẻ 2" },
+                    { id: 3, x: 0.5, y: 0.6666, w: 0.5, h: 0.3334, label: "Ảnh Lẻ 3" }
+                ],
+                gridLines: [ { x: 0, y: 0, w: 0.5, h: 1 }, { x: 0.5, y: 0, w: 0.5, h: 0.3333 }, { x: 0.5, y: 0.3333, w: 0.5, h: 0.3333 }, { x: 0.5, y: 0.6666, w: 0.5, h: 0.3334 } ],
+                exports: [
+                    { name: '1_To_Doc.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 },
+                    { name: '2_PhaiTren.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '3_PhaiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '4_PhaiDuoi.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
+                ]
+            },
+            'mode-5': { // Grid 4 ô vuông
+                id: 'mode-5',
+                zones: [
+                    { id: 0, x: 0, y: 0, w: 0.5, h: 0.5, label: "Ảnh 1" },
+                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.5, label: "Ảnh 2" },
+                    { id: 2, x: 0, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh 3" },
+                    { id: 3, x: 0.5, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh 4" }
+                ],
+                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.5, h: 0.5 }, { x: 0.5, y: 0.5, w: 0.5, h: 0.5 } ],
+                exports: [
+                    { name: '1_TrenTrai.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '2_TrenPhai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '3_DuoiTrai.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '4_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
+                ]
             }
-        });
+        };
 
-        // BƯỚC 3: XỬ LÝ ẢNH (CHỐNG RỚT ẢNH)
-        imageInput.addEventListener('change', async (e) => {
-            const files = e.target.files;
-            if (!files.length) return;
+        // --- 2. GLOBAL STATES ---
+        let currentMode = 'mode-2';
+        let state = {}; 
+        let extraImages = []; // Danh sách ảnh lẻ đính kèm (Tab Grid)
+        let bulkLogoImages = []; // Danh sách ảnh upload hàng loạt (Tab Logo)
+        
+        let logoImgObj = null;
+        let logoScale = 1; // Hệ số nhân kích thước logo
+        
+        let activeZoneId = null; 
+        const EXPORT_SIZE = 1200;
+        const DEFAULT_LOGO_URL = "https://techbytruong.wordpress.com/wp-content/uploads/2026/03/chmn.png";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            selectMode('mode-2');
+            setupDragEvents();
             
-            if (!isLogoReady) {
-                alert("Logo chưa sẵn sàng. Vui lòng chọn logo thủ công ở khung màu đỏ trước nhé!");
-                return;
-            }
-
-            // CHUYỂN ĐỔI THÀNH ARRAY ĐỂ CHỐNG RỚT FILE TRÊN ĐIỆN THOẠI
-            const filesArray = Array.from(files);
-
-            // Reset giao diện
-            gallery.innerHTML = '';
-            processedImages = [];
-            bulkDownloadSection.classList.add('hidden');
-            processingStatus.classList.remove('hidden');
-            totalCount.textContent = filesArray.length;
-            progressCount.textContent = "0";
-
-            let processed = 0;
-            
-            // XỬ LÝ TUẦN TỰ KÈM NHỊP NGHỈ
-            for (let i = 0; i < filesArray.length; i++) {
-                try {
-                    const file = filesArray[i];
-                    const dataUrl = await processSingleImage(file);
+            // Hàm tải logo có xử lý vượt rào CORS (bảo mật 2 lớp)
+            function loadDefaultLogo(url, retryLevel = 0) {
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.onload = () => {
+                    logoImgObj = img;
+                    const logoPreview = document.getElementById('logo-preview-small');
+                    logoPreview.src = img.src; // Hiển thị hình thu nhỏ bên trái
+                    logoPreview.classList.remove('hidden');
                     
-                    processedImages.push({ name: file.name, data: dataUrl });
-                    createImageCard(dataUrl, file.name);
-                    
-                    // THÊM NHỊP NGHỈ 0.2 GIÂY ĐỂ TRÌNH DUYỆT ĐIỆN THOẠI "THỞ" VÀ DỌN RÁC RAM
-                    await new Promise(resolve => setTimeout(resolve, 200));
-
-                } catch (error) {
-                    console.error("Lỗi khi ghép ảnh thứ " + (i+1) + ":", error);
-                    if(error.message === "TAINTED") {
-                        handleLogoError("Trình duyệt chặn xuất file bảo mật");
-                        break; 
+                    renderView(); // Hiển thị logo lên lưới
+                    if (document.getElementById('tab-logo-settings').style.display !== 'none') {
+                        renderBulkLogoView();
                     }
-                    // Nếu lỗi ảnh hỏng, chỉ bỏ qua ảnh đó, vẫn chạy tiếp các ảnh còn lại
-                }
-                
-                processed++;
-                progressCount.textContent = processed;
+                };
+                img.onerror = () => {
+                    if (retryLevel === 0) {
+                        console.log("Đang lấy logo qua proxy chuyên dụng ảnh (wsrv.nl)...");
+                        // Lớp dự phòng 1: Dùng proxy chuyên lưu trữ và phân phối ảnh
+                        loadDefaultLogo(`https://wsrv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&v=${Date.now()}`, 1);
+                    } else if (retryLevel === 1) {
+                        console.log("Đang lấy qua proxy tổng hợp (corsproxy.io)...");
+                        // Lớp dự phòng 2: Dùng proxy vượt rào CORS mạnh
+                        loadDefaultLogo(`https://corsproxy.io/?${encodeURIComponent(url)}`, 2);
+                    } else {
+                        console.error("Không thể tải logo do máy chủ WordPress chặn truy cập. Vui lòng bấm nút 'Tải Logo PNG' để up thủ công.");
+                    }
+                };
+                // Thêm timestamp để tránh bị trình duyệt cache lại phiên bản lỗi
+                img.src = retryLevel === 0 ? `${url}?v=${Date.now()}` : url;
             }
 
-            // Hoàn tất
-            processingStatus.classList.add('hidden');
-            if (processedImages.length > 0) {
-                bulkDownloadSection.classList.remove('hidden');
-                finalCount.textContent = processedImages.length;
-            }
-            
-            imageInput.value = ''; 
+            loadDefaultLogo(DEFAULT_LOGO_URL);
         });
 
-        // THUẬT TOÁN CANVAS TĂNG LÊN 40%
-        function processSingleImage(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const mainImg = new Image();
-                    mainImg.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
+        // --- 3. ĐIỀU KHIỂN CHẾ ĐỘ LƯỚI ---
+        function selectMode(m) {
+            currentMode = m;
+            document.querySelectorAll('input[name="mode"]').forEach(r => {
+                const lbl = r.closest('label');
+                lbl.classList.remove('border-blue-500', 'bg-blue-50');
+                lbl.classList.add('border-gray-200');
+                lbl.querySelector('.mini-grid').style.background = '#cbd5e1';
+                lbl.querySelectorAll('.mg-box').forEach(b => b.style.background = '#94a3b8');
+            });
+            const act = document.getElementById(`lbl-${m}`);
+            if(act) {
+                act.classList.add('border-blue-500', 'bg-blue-50');
+                act.classList.remove('border-gray-200');
+                act.querySelector('input').checked = true;
+                act.querySelector('.mini-grid').style.background = '#93c5fd';
+                act.querySelectorAll('.mg-box').forEach(b => b.style.background = '#3b82f6');
+            }
 
-                        canvas.width = mainImg.width;
-                        canvas.height = mainImg.height;
-                        ctx.drawImage(mainImg, 0, 0);
+            const validZones = MODES[currentMode].zones.map(z => z.id);
+            if (!validZones.includes(activeZoneId)) {
+                closeDesignPanel();
+            }
 
-                        // LẤY THÔNG SỐ CÀI ĐẶT TỪ GIAO DIỆN
-                        const sizePct = parseInt(sizeSlider.value) / 100;
-                        const marginPct = parseInt(marginSlider.value) / 100;
-                        const position = positionSelect.value;
-                        const opacityPct = parseInt(opacitySlider.value) / 100;
-                        const shadowType = shadowSelect.value;
+            renderView();
+            setTimeout(() => { Object.keys(state).forEach(id => calcCoverTransform(id)); }, 50);
+        }
 
-                        // TÍNH TOÁN KÍCH THƯỚC LOGO TỐI ƯU (Tránh bị quá to trên ảnh ngang)
-                        const baseDimension = Math.min(canvas.width, canvas.height);
-                        const logoWidth = baseDimension * sizePct; 
-                        const logoHeight = (logoImg.height / logoImg.width) * logoWidth;
-                        
-                        // TÍNH TOÁN KHOẢNG CÁCH LỀ
-                        const padding = baseDimension * marginPct;
-
-                        // TÍNH TOÁN VỊ TRÍ X, Y
-                        let x = 0; 
-                        let y = 0;
-
-                        switch (position) {
-                            case 'top-left':
-                                x = padding; y = padding; break;
-                            case 'top-right':
-                                x = canvas.width - logoWidth - padding; y = padding; break;
-                            case 'top-center':
-                                x = (canvas.width - logoWidth) / 2; y = padding; break;
-                            case 'bottom-left':
-                                x = padding; y = canvas.height - logoHeight - padding; break;
-                            case 'bottom-right':
-                                x = canvas.width - logoWidth - padding; y = canvas.height - logoHeight - padding; break;
-                            case 'bottom-center':
-                                x = (canvas.width - logoWidth) / 2; y = canvas.height - logoHeight - padding; break;
-                            case 'center':
-                                x = (canvas.width - logoWidth) / 2; y = (canvas.height - logoHeight) / 2; break;
-                        }
-
-                        // ÁP DỤNG ĐỘ MỜ
-                        ctx.globalAlpha = opacityPct;
-
-                        // ÁP DỤNG ĐỔ BÓNG (NỔI TRÊN NỀN SÁNG)
-                        if (shadowType === 'light') {
-                            ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
-                            ctx.shadowBlur = baseDimension * 0.01; // Tự động nhòe theo kích thước ảnh
-                            ctx.shadowOffsetX = 0;
-                            ctx.shadowOffsetY = baseDimension * 0.002;
-                        } else if (shadowType === 'dark') {
-                            ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
-                            ctx.shadowBlur = baseDimension * 0.02;
-                            ctx.shadowOffsetX = 0;
-                            ctx.shadowOffsetY = baseDimension * 0.004;
-                        } else {
-                            ctx.shadowColor = "transparent";
-                            ctx.shadowBlur = 0;
-                        }
-
-                        ctx.drawImage(logoImg, x, y, logoWidth, logoHeight);
-
-                        try {
-                            const finalDataUrl = canvas.toDataURL(file.type || 'image/jpeg', 0.95);
-                            resolve(finalDataUrl);
-                        } catch (err) {
-                            reject(new Error("TAINTED")); 
-                        }
-                    };
-                    mainImg.onerror = () => reject(new Error("Không thể đọc ảnh gốc"));
-                    mainImg.src = event.target.result;
+        // Tải & Chỉnh Kích thước Logo
+        function handleLogoUpload(e) {
+            const f = e.target.files[0];
+            if (!f) return;
+            const r = new FileReader();
+            r.onload = (evt) => {
+                const i = new Image();
+                i.onload = () => {
+                    logoImgObj = i;
+                    document.getElementById('logo-preview-small').src = evt.target.result;
+                    document.getElementById('logo-preview-small').classList.remove('hidden');
+                    renderView();
+                    renderBulkLogoView();
                 };
-                reader.onerror = () => reject(new Error("Không thể đọc File"));
-                reader.readAsDataURL(file);
+                i.src = evt.target.result;
+            }
+            r.readAsDataURL(f);
+            e.target.value = '';
+        }
+
+        function updateLogoScale(val) {
+            logoScale = parseFloat(val);
+            document.getElementById('logo-scale-val').innerText = Math.round(logoScale * 100) + '%';
+            renderView(); 
+            renderBulkLogoView();
+        }
+
+        function activateZone(id) {
+            if (!state[id]) return; 
+            activeZoneId = id;
+            
+            document.getElementById('design-panel').classList.remove('hidden');
+            document.getElementById('lbl-active-zone').innerText = (parseInt(id) + 1);
+            
+            const gradChecked = state[id].gradient || false;
+            document.getElementById('check-gradient').checked = gradChecked;
+            document.getElementById('gradient-options').style.display = gradChecked ? 'block' : 'none';
+            document.getElementById('input-grad-color').value = state[id].gradColor || '#000000';
+            document.getElementById('input-grad-height').value = state[id].gradHeight || 50;
+            document.getElementById('grad-height-val').innerText = (state[id].gradHeight || 50) + '%';
+            
+            document.getElementById('input-title').value = state[id].title || '';
+            document.getElementById('input-sub').value = state[id].sub || '';
+            document.getElementById('input-info').value = state[id].info || '';
+            
+            const theme = state[id].theme || 'modern';
+            document.getElementById(`theme-${theme}`).checked = true;
+
+            document.getElementById('zoom-slider').value = state[id].zoomScale || 1;
+            document.getElementById('zoom-val').innerText = Math.round((state[id].zoomScale || 1)*100) + '%';
+
+            renderView();
+        }
+
+        function closeDesignPanel() {
+            activeZoneId = null;
+            document.getElementById('design-panel').classList.add('hidden');
+            renderView();
+        }
+
+        // Cập nhật cấu hình Gradient & Design
+        function updateDesignState(key, val) {
+            if (activeZoneId === null || !state[activeZoneId]) return;
+            state[activeZoneId][key] = val;
+            if(key === 'gradient') {
+                document.getElementById('gradient-options').style.display = val ? 'block' : 'none';
+            }
+            renderView();
+        }
+
+        // --- 4. TẢI ẢNH TAB 1 (LƯỚI) ---
+        let uploadTargetZone = null;
+        function triggerUpload(zoneId) {
+            uploadTargetZone = zoneId;
+            document.getElementById('zone-file-input').click();
+        }
+        function handleZoneImageUpload(e) {
+            handleMultipleUpload(e.target.files, uploadTargetZone);
+            e.target.value = ''; 
+        }
+        function handleGlobalUpload(e) {
+            handleMultipleUpload(e.target.files, null);
+            e.target.value = '';
+        }
+
+        function readFileAsImage(file) {
+            return new Promise((resolve) => {
+                const r = new FileReader();
+                r.onload = (e) => {
+                    const i = new Image();
+                    i.onload = () => resolve({img: i, name: file.name});
+                    i.src = e.target.result;
+                }
+                r.readAsDataURL(file);
             });
         }
 
-        function createImageCard(dataUrl, originalName) {
-            const card = document.createElement('div');
-            card.className = 'bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex flex-col group fade-in';
+        function handleMultipleUpload(files, targetZoneId = null) {
+            if (!files || files.length === 0) return;
+            const m = MODES[currentMode];
+            const loadPromises = Array.from(files).map(f => readFileAsImage(f));
             
-            const safeName = originalName.replace(/\.[^/.]+$/, "");
-            const downloadName = "Da_Gan_Logo_" + safeName + ".jpg";
-
-            card.innerHTML = `
-                <div class="relative aspect-[4/5] bg-gray-100 overflow-hidden">
-                    <img src="${dataUrl}" class="w-full h-full object-cover">
-                </div>
-                <a href="${dataUrl}" download="${downloadName}" class="bg-blue-50/50 hover:bg-blue-100 text-blue-600 font-semibold py-2.5 px-3 text-center text-sm transition-colors border-t border-gray-100 flex justify-center items-center gap-1.5">
-                    <i data-lucide="download" class="w-4 h-4"></i> Tải lẻ
-                </a>
-            `;
-            gallery.appendChild(card);
-            lucide.createIcons({ root: card });
+            Promise.all(loadPromises).then(results => {
+                let imgIdx = 0;
+                
+                // Đè lên ô cụ thể nếu click
+                if (targetZoneId !== null && imgIdx < results.length) {
+                     initStateForZone(targetZoneId, results[imgIdx].img);
+                     imgIdx++;
+                }
+                
+                // Lấp đầy lưới trống
+                for (const z of m.zones) {
+                    if (imgIdx >= results.length) break;
+                    if (!state[z.id]) {
+                        initStateForZone(z.id, results[imgIdx].img);
+                        imgIdx++;
+                    }
+                }
+                
+                // Đẩy vào ảnh dư
+                while (imgIdx < results.length) {
+                    extraImages.push({
+                        id: Date.now() + Math.random(),
+                        img: results[imgIdx].img
+                    });
+                    imgIdx++;
+                }
+                
+                renderView();
+                renderExtraImages();
+            });
         }
 
-        downloadAllBtn.addEventListener('click', async () => {
-            if(processedImages.length === 0) return;
+        function initStateForZone(zoneId, img) {
+            state[zoneId] = { 
+                img: img, x: 0, y: 0, scale: 1, zoomScale: 1,
+                gradient: false, gradColor: '#000000', gradHeight: 50,
+                title: '', sub: '', info: '', theme: 'modern' 
+            };
+            if (activeZoneId === zoneId) activateZone(zoneId); 
+            setTimeout(() => calcCoverTransform(zoneId), 50);
+        }
+
+        function renderExtraImages() {
+            const container = document.getElementById('extra-images-container');
+            document.getElementById('extra-count').innerText = extraImages.length;
             
-            const originalContent = downloadAllBtn.innerHTML;
-            downloadAllBtn.innerHTML = `<i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i> Đang đóng gói File...`;
-            downloadAllBtn.disabled = true;
-            downloadAllBtn.classList.replace('bg-green-600', 'bg-gray-500');
+            if (extraImages.length === 0) {
+                container.innerHTML = '<div class="text-[11px] text-gray-400 italic py-4 w-full text-center">Chưa có ảnh lẻ nào. Khi bạn chọn dư số lượng ảnh, ảnh dư sẽ tự động vào đây.</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            extraImages.forEach((ex, index) => {
+                const div = document.createElement('div');
+                div.className = 'relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-300 group shadow-sm';
+                const img = document.createElement('img');
+                img.src = ex.img.src;
+                img.className = 'w-full h-full object-cover';
+                const btn = document.createElement('button');
+                btn.innerHTML = '&times;';
+                btn.className = 'absolute top-0 right-0 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-bl-lg opacity-0 group-hover:opacity-100 transition text-xs font-bold';
+                btn.onclick = () => { extraImages.splice(index, 1); renderExtraImages(); };
+                
+                div.appendChild(img); div.appendChild(btn); container.appendChild(div);
+            });
+        }
+
+        // --- 5. ZOOM & PAN CHUỘT (TAB LƯỚI) ---
+        function handleZoomSlider(val) {
+            if (activeZoneId === null || !state[activeZoneId]) return;
+            const zId = activeZoneId;
+            const num = parseFloat(val);
+            document.getElementById('zoom-val').innerText = Math.round(num*100) + '%';
+            
+            state[zId].zoomScale = num;
+            const zoneEl = document.getElementById(`zone-${zId}`);
+            const zw = zoneEl.offsetWidth; const zh = zoneEl.offsetHeight;
+            const iw = state[zId].img.width; const ih = state[zId].img.height;
+            const baseCoverScale = Math.max(zw / iw, zh / ih);
+            
+            const newFinalScale = baseCoverScale * num;
+            const oldFinalScale = state[zId].scale;
+
+            state[zId].x = (zw/2) - ((zw/2) - state[zId].x) * (newFinalScale / oldFinalScale);
+            state[zId].y = (zh/2) - ((zh/2) - state[zId].y) * (newFinalScale / oldFinalScale);
+            state[zId].scale = newFinalScale;
+
+            applyTransformCSS(zId);
+        }
+
+        function calcCoverTransform(id) {
+            if (!state[id]) return;
+            const zEl = document.getElementById(`zone-${id}`);
+            if (!zEl) return;
+            const zw = zEl.offsetWidth, zh = zEl.offsetHeight;
+            const iw = state[id].img.width, ih = state[id].img.height;
+            
+            const baseScale = Math.max(zw / iw, zh / ih);
+            const finalScale = baseScale * (state[id].zoomScale || 1);
+            
+            state[id].scale = finalScale;
+            state[id].x = (zw - iw * finalScale) / 2;
+            state[id].y = (zh - ih * finalScale) / 2;
+            applyTransformCSS(id);
+        }
+
+        function applyTransformCSS(id) {
+            const el = document.getElementById(`img-${id}`);
+            if (el && state[id]) {
+                el.style.transformOrigin = '0 0';
+                el.style.transform = `translate(${state[id].x}px, ${state[id].y}px) scale(${state[id].scale})`;
+            }
+        }
+
+        let isDrag = false, startX, startY, dragId = null;
+        function setupDragEvents() {
+            window.addEventListener('mousemove', e => {
+                if (!isDrag || dragId === null) return;
+                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+                state[dragId].x += (clientX - startX);
+                state[dragId].y += (clientY - startY);
+                startX = clientX; startY = clientY;
+                applyTransformCSS(dragId);
+            });
+            const stop = () => { isDrag = false; document.body.style.cursor = 'default'; };
+            window.addEventListener('mouseup', stop);
+            window.addEventListener('touchend', stop);
+        }
+
+        function onMouseDown(e, id) {
+            if (!state[id]) { triggerUpload(id); return; }
+            activateZone(id); 
+            isDrag = true; dragId = id;
+            startX = e.clientX || (e.touches && e.touches[0].clientX);
+            startY = e.clientY || (e.touches && e.touches[0].clientY);
+            document.body.style.cursor = 'grabbing';
+        }
+
+        // --- 6. VẼ GIAO DIỆN PREVIEW (TAB LƯỚI) ---
+        function renderView() {
+            const m = MODES[currentMode];
+            const layer = document.getElementById('zones-layer');
+            const grid = document.getElementById('grid-layer');
+            layer.innerHTML = ''; grid.innerHTML = '';
+
+            m.zones.forEach(z => {
+                const div = document.createElement('div');
+                div.id = `zone-${z.id}`;
+                div.className = `absolute zone-container overflow-hidden bg-white transition-colors ${state[z.id] ? 'cursor-grab' : 'cursor-pointer hover:bg-gray-50 border border-gray-200'}`;
+                if (activeZoneId == z.id) div.classList.add('zone-active');
+
+                div.style.left = `${z.x * 100}%`; div.style.top = `${z.y * 100}%`;
+                div.style.width = `${z.w * 100}%`; div.style.height = `${z.h * 100}%`;
+                div.onmousedown = (e) => onMouseDown(e, z.id);
+
+                if (state[z.id]) {
+                    const st = state[z.id];
+                    // Ảnh
+                    const img = document.createElement('img');
+                    img.id = `img-${z.id}`; img.src = st.img.src; img.className = 'absolute max-w-none';
+                    div.appendChild(img);
+                    setTimeout(() => applyTransformCSS(z.id), 0);
+
+                    // Gradient Custom Overlay
+                    if (st.gradient) {
+                        const h = st.gradHeight || 50;
+                        const c = st.gradColor || '#000000';
+                        const rgba85 = hexToRgba(c, 0.85);
+                        const rgba0 = hexToRgba(c, 0);
+
+                        const grad = document.createElement('div');
+                        grad.className = 'absolute inset-x-0 bottom-0 pointer-events-none z-10';
+                        grad.style.height = `${h}%`;
+                        grad.style.background = `linear-gradient(to top, ${rgba85} 0%, ${rgba0} 100%)`;
+                        div.appendChild(grad);
+                    }
+
+                    // Text Overlays
+                    if (st.title || st.sub || st.info) {
+                        const txtBox = document.createElement('div');
+                        txtBox.className = 'absolute inset-x-0 bottom-[8cqw] px-[6cqw] flex flex-col items-center text-center pointer-events-none z-20 drop-shadow-md';
+                        
+                        const isLuxury = st.theme === 'luxury';
+                        const fontClass = isLuxury ? 'font-serif-luxury text-gold' : 'font-sans text-white';
+
+                        if (st.title) {
+                            const t = document.createElement('div');
+                            t.className = `font-bold uppercase tracking-wider ${fontClass} leading-tight mb-[2cqw]`;
+                            t.style.fontSize = isLuxury ? '8cqw' : '7cqw';
+                            t.innerText = st.title;
+                            txtBox.appendChild(t);
+                        }
+                        if (st.sub) {
+                            const s = document.createElement('div');
+                            s.className = `font-medium ${fontClass} leading-snug mb-[3cqw]`;
+                            s.style.fontSize = isLuxury ? '4cqw' : '3.5cqw';
+                            s.innerText = st.sub;
+                            txtBox.appendChild(s);
+                        }
+                        if (st.info) {
+                            const i = document.createElement('div');
+                            if (isLuxury) {
+                                i.className = `font-semibold text-gold font-serif-luxury tracking-widest`;
+                                i.style.fontSize = '3cqw';
+                                i.innerText = st.info;
+                            } else {
+                                i.className = `inline-block border border-white/50 rounded-full text-white font-medium bg-black/30 backdrop-blur-sm`;
+                                i.style.padding = '1.5cqw 3.5cqw';
+                                i.style.fontSize = '2.8cqw';
+                                i.innerText = st.info;
+                            }
+                            txtBox.appendChild(i);
+                        }
+                        div.appendChild(txtBox);
+                    }
+                } else {
+                    div.innerHTML = `<div class="text-gray-400 text-center px-4 w-full pointer-events-none flex flex-col items-center">
+                        <svg class="w-8 h-8 opacity-40 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        <span class="text-[11px] font-semibold">${z.label}</span>
+                    </div>`;
+                }
+                layer.appendChild(div);
+            });
+
+            // Grid giả lập
+            m.gridLines.forEach(l => {
+                const d = document.createElement('div');
+                d.className = 'absolute border-[3px] border-white pointer-events-none z-30 shadow-sm';
+                d.style.left = `${l.x * 100}%`; d.style.top = `${l.y * 100}%`;
+                d.style.width = `${l.w * 100}%`; d.style.height = `${l.h * 100}%`;
+                grid.appendChild(d);
+            });
+            
+            // Vẽ Logo Chung lên trên lưới
+            const logosLayer = document.getElementById('logos-layer');
+            logosLayer.innerHTML = '';
+            if (logoImgObj) {
+                m.exports.forEach(exp => {
+                    const z = m.zones.find(zone => zone.id === exp.src);
+                    if (state[z.id]) { 
+                        const pieceX = z.x + exp.cut.x * z.w;
+                        const pieceY = z.y + exp.cut.y * z.h;
+                        const pieceW = exp.cut.w * z.w;
+                        const pieceH = exp.cut.h * z.h;
+
+                        const pieceDiv = document.createElement('div');
+                        pieceDiv.className = 'absolute pointer-events-none flex';
+                        pieceDiv.style.left = `${pieceX * 100}%`;
+                        pieceDiv.style.top = `${pieceY * 100}%`;
+                        pieceDiv.style.width = `${pieceW * 100}%`;
+                        pieceDiv.style.height = `${pieceH * 100}%`;
+                        
+                        const isVertical = pieceH > pieceW;
+                        const basePct = isVertical ? 60 : 40; 
+                        const finalPct = basePct * logoScale;
+
+                        const logo = document.createElement('img');
+                        logo.src = logoImgObj.src;
+                        logo.className = 'absolute object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]';
+                        logo.style.bottom = '4%';
+                        logo.style.left = '4%';
+                        logo.style.width = `${finalPct}%`; 
+                        logo.style.maxHeight = '40%'; 
+
+                        pieceDiv.appendChild(logo);
+                        logosLayer.appendChild(pieceDiv);
+                    }
+                });
+            }
+        }
+
+        // --- 7. CHỨC NĂNG TAB 2: BULK LOGO ---
+        function handleBulkLogoUpload(e) {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+            
+            const loadPromises = Array.from(files).map(f => readFileAsImage(f));
+            Promise.all(loadPromises).then(results => {
+                results.forEach(res => {
+                    bulkLogoImages.push({
+                        id: Date.now() + Math.random(),
+                        img: res.img,
+                        name: res.name
+                    });
+                });
+                renderBulkLogoView();
+            });
+            e.target.value = '';
+        }
+
+        function clearBulkImages() {
+            bulkLogoImages = [];
+            renderBulkLogoView();
+        }
+
+        function renderBulkLogoView() {
+            const container = document.getElementById('bulk-preview-container');
+            document.getElementById('bulk-count').innerText = bulkLogoImages.length;
+            
+            if (bulkLogoImages.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-10 text-gray-400 italic text-sm border-2 border-dashed border-gray-200 rounded-xl">Hãy chọn các file ảnh để xem trước kết quả gắn Logo</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            bulkLogoImages.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'relative aspect-square bg-gray-100 rounded-lg overflow-hidden border border-gray-200 group shadow-sm';
+                
+                // Nền ảnh
+                const img = document.createElement('img');
+                img.src = item.img.src;
+                img.className = 'w-full h-full object-cover';
+                div.appendChild(img);
+
+                // Add Logo Overlay chuẩn logic
+                if (logoImgObj) {
+                    const isVertical = item.img.height > item.img.width;
+                    const basePct = isVertical ? 60 : 40; 
+                    const finalPct = basePct * logoScale;
+                    
+                    const logo = document.createElement('img');
+                    logo.src = logoImgObj.src;
+                    logo.className = 'absolute object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)] pointer-events-none';
+                    logo.style.bottom = '4%';
+                    logo.style.left = '4%';
+                    logo.style.width = `${finalPct}%`; 
+                    logo.style.maxHeight = '40%';
+                    div.appendChild(logo);
+                }
+
+                // Xóa ảnh lẻ
+                const btn = document.createElement('button');
+                btn.innerHTML = '&times;';
+                btn.className = 'absolute top-0 right-0 bg-red-500 hover:bg-red-600 text-white w-6 h-6 flex items-center justify-center rounded-bl-lg opacity-0 group-hover:opacity-100 transition text-sm font-bold z-10';
+                btn.onclick = () => { bulkLogoImages.splice(index, 1); renderBulkLogoView(); };
+                div.appendChild(btn);
+
+                container.appendChild(div);
+            });
+        }
+
+        // Hàm tái sử dụng cho việc đóng dấu Canvas Export
+        function applyLogoToCanvas(ctx, fw, fh) {
+            if (!logoImgObj) return;
+            const isVertical = fh > fw;
+            const basePct = isVertical ? 0.6 : 0.4;
+            const targetW = fw * basePct * logoScale; 
+            
+            let dw = logoImgObj.width, dh = logoImgObj.height;
+            const r = targetW / dw;
+            dw *= r; dh *= r;
+            
+            const maxH = fh * 0.4;
+            if (dh > maxH) { const r2 = maxH / dh; dw *= r2; dh *= r2; }
+            
+            const padding = 0.04 * Math.min(fw, fh);
+            ctx.shadowColor = "rgba(0,0,0,0.85)"; ctx.shadowBlur = 18; ctx.shadowOffsetY = 3;
+            ctx.drawImage(logoImgObj, padding, fh - dh - padding, dw, dh);
+            ctx.shadowColor = "transparent"; 
+        }
+
+        // --- 8. LOGIC XUẤT FILE ---
+
+        // XUẤT TAB 1 (LƯỚI)
+        async function processExport() {
+            const m = MODES[currentMode];
+            for (const z of m.zones) {
+                if (!state[z.id]) return alert(`Vui lòng tải đủ ảnh cho vị trí: "${z.label}"`);
+            }
+
+            const btn = document.getElementById('btn-export-grid');
+            btn.innerHTML = 'ĐANG ĐÓNG GÓI & RENDER...'; btn.disabled = true;
+            const zip = new JSZip();
 
             try {
-                const zip = new JSZip();
-                const folder = zip.folder("Bo_Suu_Tap_Anh_Logo");
+                // Render Zone to Canvas
+                const zoneCanvases = {};
+                for (const z of m.zones) {
+                    const zw = z.w * EXPORT_SIZE; const zh = z.h * EXPORT_SIZE;
+                    const cvs = document.createElement('canvas');
+                    cvs.width = zw; cvs.height = zh;
+                    const ctx = cvs.getContext('2d');
+                    
+                    const st = state[z.id];
+                    const domZ = document.getElementById(`zone-${z.id}`);
+                    const renderRatio = zw / domZ.offsetWidth;
 
-                processedImages.forEach((img, index) => {
-                    const base64Data = img.data.split(',')[1];
-                    const cleanName = img.name.replace(/\.[^/.]+$/, "");
-                    folder.file(`Anh_${index + 1}_${cleanName}.jpg`, base64Data, {base64: true});
-                });
+                    ctx.drawImage(st.img, st.x * renderRatio, st.y * renderRatio, st.img.width * st.scale * renderRatio, st.img.height * st.scale * renderRatio);
 
-                const content = await zip.generateAsync({type: "blob"});
-                saveAs(content, "Tai_Ve_Hang_Loat_AutoLogo.zip");
+                    if (st.gradient) {
+                        const h = st.gradHeight || 50;
+                        const c = st.gradColor || '#000000';
+                        const rgba85 = hexToRgba(c, 0.85);
+                        const rgba0 = hexToRgba(c, 0);
+                        
+                        const startY = zh * (1 - h/100);
+                        const grd = ctx.createLinearGradient(0, startY, 0, zh);
+                        grd.addColorStop(0, rgba0); grd.addColorStop(1, rgba85);
+                        ctx.fillStyle = grd; ctx.fillRect(0, startY, zw, zh - startY);
+                    }
 
-            } catch (error) {
-                console.error("Lỗi nén zip:", error);
-                alert("Không thể nén ZIP do dung lượng quá lớn, vui lòng tải lẻ từng ảnh.");
-            } finally {
-                downloadAllBtn.innerHTML = originalContent;
-                downloadAllBtn.disabled = false;
-                downloadAllBtn.classList.replace('bg-gray-500', 'bg-green-600');
-                lucide.createIcons({ root: downloadAllBtn });
+                    const fillTextGold = (text, x, y) => {
+                        const g = ctx.createLinearGradient(x-150, y-20, x+150, y+20);
+                        g.addColorStop(0, "#bf953f"); g.addColorStop(0.3, "#fcf6ba");
+                        g.addColorStop(0.7, "#b38728"); g.addColorStop(1, "#fbf5b7");
+                        ctx.fillStyle = g; ctx.fillText(text, x, y);
+                    }
+
+                    if (st.title || st.sub || st.info) {
+                        ctx.textAlign = "center";
+                        const isLux = st.theme === 'luxury';
+                        const fontFam = isLux ? "'Playfair Display', serif" : "'Inter', sans-serif";
+                        ctx.shadowColor = "rgba(0,0,0,0.5)"; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
+                        let currentY = zh - (0.08 * zw); 
+
+                        if (st.info) {
+                            if (isLux) {
+                                ctx.font = `600 ${0.03 * zw}px ${fontFam}`;
+                                fillTextGold(st.info, zw/2, currentY);
+                            } else {
+                                ctx.font = `500 ${0.028 * zw}px ${fontFam}`; ctx.fillStyle = "#ffffff";
+                                const tw = ctx.measureText(st.info).width; const px = 0.035 * zw, py = 0.015 * zw;
+                                ctx.shadowColor = "transparent"; ctx.fillStyle = "rgba(0,0,0,0.4)";
+                                ctx.beginPath(); ctx.roundRect(zw/2 - tw/2 - px, currentY - 0.028*zw - py, tw + px*2, 0.028*zw + py*2, 20); ctx.fill();
+                                ctx.strokeStyle = "rgba(255,255,255,0.6)"; ctx.lineWidth = 2; ctx.stroke();
+                                ctx.fillStyle = "#ffffff"; ctx.fillText(st.info, zw/2, currentY - py*0.5);
+                            }
+                            currentY -= (0.05 * zw); 
+                        }
+
+                        if (st.sub) {
+                            currentY -= (0.03 * zw);
+                            ctx.font = `500 ${isLux ? 0.04*zw : 0.035*zw}px ${fontFam}`;
+                            ctx.shadowColor = "rgba(0,0,0,0.5)";
+                            if (isLux) fillTextGold(st.sub, zw/2, currentY);
+                            else { ctx.fillStyle = "#ffffff"; ctx.fillText(st.sub, zw/2, currentY); }
+                            currentY -= (0.05 * zw);
+                        }
+
+                        if (st.title) {
+                            currentY -= (0.02 * zw);
+                            ctx.font = `bold ${isLux ? 0.08*zw : 0.07*zw}px ${fontFam}`;
+                            ctx.shadowColor = "rgba(0,0,0,0.6)"; ctx.shadowBlur = 10;
+                            if (isLux) fillTextGold(st.title.toUpperCase(), zw/2, currentY);
+                            else { ctx.fillStyle = "#ffffff"; ctx.fillText(st.title.toUpperCase(), zw/2, currentY); }
+                        }
+                    }
+                    zoneCanvases[z.id] = cvs;
+                }
+
+                // Cắt file & add Logo
+                for (const exp of m.exports) {
+                    const zCvs = zoneCanvases[exp.src];
+                    
+                    const sx = exp.cut.x * zCvs.width, sy = exp.cut.y * zCvs.height;
+                    const sw = exp.cut.w * zCvs.width, sh = exp.cut.h * zCvs.height;
+
+                    // TÍNH TOÁN KÍCH THƯỚC ĐỘNG ĐỂ CHỐNG MÉO HÌNH:
+                    // Đảm bảo tỷ lệ khung xuất ra (fw/fh) giống y hệt tỷ lệ khung cắt (sw/sh)
+                    let fw, fh;
+                    if (sw > sh) {
+                        fw = EXPORT_SIZE;
+                        fh = Math.round(EXPORT_SIZE * (sh / sw));
+                    } else {
+                        fh = EXPORT_SIZE;
+                        fw = Math.round(EXPORT_SIZE * (sw / sh));
+                    }
+
+                    const fCvs = document.createElement('canvas');
+                    fCvs.width = fw; fCvs.height = fh;
+                    const fCtx = fCvs.getContext('2d');
+                    
+                    fCtx.drawImage(zCvs, sx, sy, sw, sh, 0, 0, fw, fh);
+
+                    applyLogoToCanvas(fCtx, fw, fh);
+
+                    const blob = await new Promise(r => fCvs.toBlob(r, 'image/jpeg', 0.95));
+                    zip.file(exp.name, blob);
+                }
+
+                // Đóng gói file Lẻ Đính Kèm
+                for (let i = 0; i < extraImages.length; i++) {
+                    const exImg = extraImages[i].img;
+                    let fw = exImg.width; let fh = exImg.height;
+                    if (fw > EXPORT_SIZE || fh > EXPORT_SIZE) {
+                        const r = Math.min(EXPORT_SIZE / fw, EXPORT_SIZE / fh);
+                        fw = Math.round(fw * r); fh = Math.round(fh * r);
+                    }
+                    const eCvs = document.createElement('canvas'); eCvs.width = fw; eCvs.height = fh;
+                    const eCtx = eCvs.getContext('2d');
+                    eCtx.drawImage(exImg, 0, 0, fw, fh);
+                    
+                    applyLogoToCanvas(eCtx, fw, fh);
+                    const blob = await new Promise(r => eCvs.toBlob(r, 'image/jpeg', 0.95));
+                    zip.file(`Anh_Le_Kem_Theo_${i + 1}.jpg`, blob);
+                }
+
+                const zipBlob = await zip.generateAsync({type: "blob"});
+                const link = document.createElement('a'); link.href = URL.createObjectURL(zipBlob);
+                link.download = `UNITE_GROUP_Poster_${Date.now()}.zip`; link.click();
+
+            } catch (e) { alert("Lỗi xử lý ảnh!"); console.error(e); } 
+            finally {
+                btn.innerHTML = '<svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>XUẤT BỘ ẢNH LƯỚI (ZIP)'; 
+                btn.disabled = false;
             }
-        });
+        }
 
+        // XUẤT TAB 2 (BULK LOGO)
+        async function processBulkLogoExport() {
+            if (bulkLogoImages.length === 0) return alert("Vui lòng tải ảnh lên trước!");
+            
+            const btn = document.getElementById('btn-export-bulk');
+            btn.innerHTML = 'ĐANG ĐÓNG DẤU & RENDER...'; btn.disabled = true;
+            const zip = new JSZip();
+
+            try {
+                for (let i = 0; i < bulkLogoImages.length; i++) {
+                    const item = bulkLogoImages[i];
+                    let fw = item.img.width; let fh = item.img.height;
+                    
+                    // Giữ chất lượng gốc nhưng khống chế max 2000px cho nhẹ nếu quá to
+                    const MAX = 2000;
+                    if (fw > MAX || fh > MAX) {
+                        const r = Math.min(MAX / fw, MAX / fh);
+                        fw = Math.round(fw * r); fh = Math.round(fh * r);
+                    }
+                    
+                    const cvs = document.createElement('canvas'); cvs.width = fw; cvs.height = fh;
+                    const ctx = cvs.getContext('2d');
+                    ctx.drawImage(item.img, 0, 0, fw, fh);
+                    
+                    applyLogoToCanvas(ctx, fw, fh);
+                    
+                    const blob = await new Promise(r => cvs.toBlob(r, 'image/jpeg', 0.95));
+                    zip.file(`UNITE_Logo_${i + 1}.jpg`, blob);
+                }
+
+                const zipBlob = await zip.generateAsync({type: "blob"});
+                const link = document.createElement('a'); link.href = URL.createObjectURL(zipBlob);
+                link.download = `UNITE_Logo_Batch_${Date.now()}.zip`; link.click();
+            } catch (e) { alert("Lỗi xử lý ảnh!"); console.error(e); } 
+            finally {
+                btn.innerHTML = '<svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>XUẤT ẢNH ĐÃ GẮN LOGO (ZIP)'; 
+                btn.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>
