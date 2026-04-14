@@ -40,16 +40,25 @@
         .mini-grid { display: grid; gap: 2px; width: 42px; height: 42px; background: #cbd5e1; padding: 2px; border-radius: 6px; flex-shrink: 0; overflow: hidden;}
         .mg-box { background: #94a3b8; width: 100%; height: 100%; }
         
-        .grid-m1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
-        .grid-m2 { grid-template-columns: repeat(6, 1fr); grid-template-rows: 1fr 1fr; }
-        .grid-m2 .b1 { grid-column: span 3; } .grid-m2 .b2 { grid-column: span 3; }
-        .grid-m2 .b3 { grid-column: span 2; } .grid-m2 .b4 { grid-column: span 2; } .grid-m2 .b5 { grid-column: span 2; }
-        .grid-m3 { grid-template-columns: repeat(6, 1fr); grid-template-rows: 1fr 1fr; }
-        .grid-m3 .b1 { grid-column: span 6; }
-        .grid-m3 .b2 { grid-column: span 2; } .grid-m3 .b3 { grid-column: span 2; } .grid-m3 .b4 { grid-column: span 2; }
-        .grid-m4 { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); }
-        .grid-m4 .b1 { grid-row: span 3; }
-        .grid-m5 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+        .grid-m-1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+        
+        .grid-m-2v { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
+        
+        .grid-m-3l { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+        .grid-m-3l .b1 { grid-row: span 2; }
+        
+        .grid-m-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+        
+        .grid-m-4h { grid-template-columns: repeat(6, 1fr); grid-template-rows: 1fr 1fr; }
+        .grid-m-4h .b1 { grid-column: span 6; }
+        .grid-m-4h .b2 { grid-column: span 2; } .grid-m-4h .b3 { grid-column: span 2; } .grid-m-4h .b4 { grid-column: span 2; }
+        
+        .grid-m-4v { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); }
+        .grid-m-4v .b1 { grid-row: span 3; }
+        
+        .grid-m-5 { grid-template-columns: repeat(6, 1fr); grid-template-rows: 1fr 1fr; }
+        .grid-m-5 .b1 { grid-column: span 3; } .grid-m-5 .b2 { grid-column: span 3; }
+        .grid-m-5 .b3 { grid-column: span 2; } .grid-m-5 .b4 { grid-column: span 2; } .grid-m-5 .b5 { grid-column: span 2; }
 
         /* Hiệu ứng focus ô */
         .zone-active::after {
@@ -80,51 +89,60 @@
 
             <!-- CẤU HÌNH LOGO (Dùng chung cho cả 2 tab) -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Cấu Hình Logo (Watermark)</label>
-                <div class="flex items-center gap-3">
-                    <label class="cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 px-4 rounded-lg transition text-xs font-semibold border border-gray-300 shadow-sm whitespace-nowrap">
-                        Tải Logo PNG
-                        <input type="file" accept="image/png, image/jpeg" class="hidden" onchange="handleLogoUpload(event)">
-                    </label>
-                    <img id="logo-preview-small" src="" alt="Logo" class="h-8 object-contain hidden border border-gray-200 p-1 bg-white rounded shadow-sm">
+                <label class="block text-sm font-bold text-gray-700 mb-3">Cấu Hình Logo (Hỗ trợ nhiều Logo)</label>
+                <p class="text-xs text-gray-500 mb-3">Chọn vị trí và upload logo bạn muốn gắn. Các logo sẽ có thêm bóng mờ nổi bật.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="logo-slots-container">
+                    <!-- Được render bằng JS -->
                 </div>
+
                 <!-- Slider Kích thước Logo -->
-                <div class="mt-3 flex items-center gap-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
-                    <span class="text-xs text-gray-600 font-semibold whitespace-nowrap">Kích cỡ Logo:</span>
+                <div class="mt-4 flex items-center gap-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
+                    <span class="text-xs text-gray-600 font-semibold whitespace-nowrap">Kích cỡ chung:</span>
                     <input type="range" id="logo-scale-slider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-blue-600 cursor-pointer" oninput="updateLogoScale(this.value)">
-                    <span id="logo-scale-val" class="text-xs text-blue-700 font-bold w-12 text-right">130%</span>
+                    <span id="logo-scale-val" class="text-xs text-blue-700 font-bold w-12 text-right">100%</span>
                 </div>
             </div>
 
             <!-- TAB 1: GRID SETTINGS -->
             <div id="tab-grid-settings" class="flex flex-col gap-4">
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                    <label class="block text-sm font-bold text-gray-700 mb-3">1. Chọn kiểu thiết kế lưới</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-2" onclick="selectMode('mode-2')">
-                            <input type="radio" name="mode" value="mode-2" class="hidden">
-                            <div class="mini-grid grid-m2"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div><div class="mg-box b5"></div></div>
-                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">5 Ảnh (2 Trên)</span></div>
+                    <label class="block text-sm font-bold text-gray-700 mb-3">1. Chọn kiểu thiết kế lưới FB</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-2v" onclick="selectMode('mode-2v')">
+                            <input type="radio" name="mode" value="mode-2v" class="hidden">
+                            <div class="mini-grid grid-m-2v"><div class="mg-box"></div><div class="mg-box"></div></div>
+                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">2 Ảnh<br>(Dọc)</span></div>
                         </label>
-                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-5" onclick="selectMode('mode-5')">
-                            <input type="radio" name="mode" value="mode-5" class="hidden">
-                            <div class="mini-grid grid-m5"><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div></div>
-                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">4 Ảnh (Vuông 2x2)</span></div>
+                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-3l" onclick="selectMode('mode-3l')">
+                            <input type="radio" name="mode" value="mode-3l" class="hidden">
+                            <div class="mini-grid grid-m-3l"><div class="mg-box b1"></div><div class="mg-box"></div><div class="mg-box"></div></div>
+                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">3 Ảnh<br>(Trái To)</span></div>
                         </label>
-                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-3" onclick="selectMode('mode-3')">
-                            <input type="radio" name="mode" value="mode-3" class="hidden">
-                            <div class="mini-grid grid-m3"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div></div>
-                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">4 Ảnh (1 To Ngang)</span></div>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-4" onclick="selectMode('mode-4')">
+                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-4" onclick="selectMode('mode-4')">
                             <input type="radio" name="mode" value="mode-4" class="hidden">
-                            <div class="mini-grid grid-m4"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div></div>
-                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">4 Ảnh (1 To Dọc)</span></div>
+                            <div class="mini-grid grid-m-4"><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div></div>
+                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">4 Ảnh<br>(Vuông)</span></div>
                         </label>
-                        <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative sm:col-span-2" id="lbl-mode-1" onclick="selectMode('mode-1')">
+                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-4h" onclick="selectMode('mode-4h')">
+                            <input type="radio" name="mode" value="mode-4h" class="hidden">
+                            <div class="mini-grid grid-m-4h"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div></div>
+                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">4 Ảnh<br>(Ngang)</span></div>
+                        </label>
+                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-4v" onclick="selectMode('mode-4v')">
+                            <input type="radio" name="mode" value="mode-4v" class="hidden">
+                            <div class="mini-grid grid-m-4v"><div class="mg-box b1"></div><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div></div>
+                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">4 Ảnh<br>(Dọc)</span></div>
+                        </label>
+                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-5" onclick="selectMode('mode-5')">
+                            <input type="radio" name="mode" value="mode-5" class="hidden">
+                            <div class="mini-grid grid-m-5"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div><div class="mg-box b5"></div></div>
+                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">5 Ảnh<br>(2 Trên)</span></div>
+                        </label>
+                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative sm:col-span-3" id="lbl-mode-1" onclick="selectMode('mode-1')">
                             <input type="radio" name="mode" value="mode-1" class="hidden">
-                            <div class="mini-grid grid-m1"><div class="mg-box"></div></div>
-                            <div class="ml-3"><span class="block font-semibold text-gray-800 text-xs">Cắt 1 Tấm Lớn Thành 5 Khung (Seamless)</span></div>
+                            <div class="mini-grid grid-m-1"><div class="mg-box"></div></div>
+                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-xs">Cắt 1 Tấm Lớn Thành Khung Theo Tỷ Lệ Đều Nhau</span></div>
                         </label>
                     </div>
 
@@ -203,7 +221,7 @@
 
                         <!-- Tùy chọn Theme Style -->
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-2">Phong Phong cách (Font & Màu sắc)</label>
+                            <label class="block text-xs font-semibold text-gray-600 mb-2">Phong cách (Font & Màu sắc)</label>
                             <div class="grid grid-cols-2 gap-2">
                                 <label class="cursor-pointer">
                                     <input type="radio" name="theme" value="modern" id="theme-modern" class="peer hidden" onchange="updateDesignState('theme', this.value)">
@@ -238,7 +256,7 @@
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                     </div>
                     <h2 class="text-lg font-bold text-gray-800 mb-2">Đóng Dấu Hàng Loạt Ảnh</h2>
-                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh (không bị cắt vuông), chỉ thêm Logo và Xuất ra hàng loạt.</p>
+                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh (không bị cắt vuông), tự động gắn các Logo bạn đã cấu hình phía trên và xuất ra hàng loạt.</p>
                     
                     <label class="w-full flex justify-center items-center cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-4 px-4 rounded-xl transition font-semibold shadow-md">
                         <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -315,47 +333,84 @@
     <input type="file" id="zone-file-input" accept="image/*" multiple class="hidden" onchange="handleZoneImageUpload(event)">
 
     <script>
-        // --- CHUYỂN TAB ĐIỀU HƯỚNG ---
-        function switchMainTab(tabId) {
-            document.getElementById('btn-tab-grid').className = tabId === 'grid' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
-            document.getElementById('btn-tab-logo').className = tabId === 'logo' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
-
-            document.getElementById('tab-grid-settings').style.display = tabId === 'grid' ? 'flex' : 'none';
-            document.getElementById('tab-grid-preview').style.display = tabId === 'grid' ? 'flex' : 'none';
-            
-            document.getElementById('tab-logo-settings').style.display = tabId === 'logo' ? 'flex' : 'none';
-            document.getElementById('tab-logo-preview').style.display = tabId === 'logo' ? 'flex' : 'none';
-            
-            if(tabId === 'logo') renderBulkLogoView(); // Re-render preview nếu có đổi kích thước logo bên tab grid
-        }
-
-        // --- HELPER CHUYỂN MÃ MÀU (HEX TO RGBA) ---
-        function hexToRgba(hex, alpha) {
-            // Loại bỏ dấu # nếu có
-            hex = hex.replace(/^#/, '');
-            // Parse r, g, b
-            let r = parseInt(hex.substring(0, 2), 16);
-            let g = parseInt(hex.substring(2, 4), 16);
-            let b = parseInt(hex.substring(4, 6), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
-
         // --- 1. CONFIG BỐ CỤC KHUNG FB ---
         const MODES = {
-            'mode-1': {
-                id: 'mode-1',
-                zones: [ { id: 0, x: 0, y: 0, w: 1, h: 1, label: "Tải 1 Ảnh Toàn Cảnh (Phủ kín)" } ],
-                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
+            'mode-2v': {
+                id: 'mode-2v',
+                zones: [
+                    { id: 0, x: 0, y: 0, w: 0.5, h: 1, label: "Ảnh Trái" },
+                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 1, label: "Ảnh Phải" }
+                ],
+                gridLines: [ { x: 0, y: 0, w: 0.5, h: 1 }, { x: 0.5, y: 0, w: 0.5, h: 1 } ],
                 exports: [
-                    { name: '1_TrenTrai.jpg', src: 0, cut: {x:0, y:0, w:0.5, h:0.5}, ratio: 1 },
-                    { name: '2_TrenPhai.jpg', src: 0, cut: {x:0.5, y:0, w:0.5, h:0.5}, ratio: 1 },
-                    { name: '3_DuoiTrai.jpg', src: 0, cut: {x:0, y:0.5, w:0.3333, h:0.5}, ratio: 1 },
-                    { name: '4_DuoiGiua.jpg', src: 0, cut: {x:0.3333, y:0.5, w:0.3333, h:0.5}, ratio: 1 },
-                    { name: '5_DuoiPhai.jpg', src: 0, cut: {x:0.6666, y:0.5, w:0.3334, h:0.5}, ratio: 1 }
+                    { name: '1_Trai.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 },
+                    { name: '2_Phai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 }
                 ]
             },
-            'mode-2': {
-                id: 'mode-2',
+            'mode-3l': {
+                id: 'mode-3l',
+                zones: [
+                    { id: 0, x: 0, y: 0, w: 0.5, h: 1, label: "Ảnh Trái (To)" },
+                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.5, label: "Ảnh Phải (Trên)" },
+                    { id: 2, x: 0.5, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh Phải (Dưới)" }
+                ],
+                gridLines: [ { x: 0, y: 0, w: 0.5, h: 1 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0.5, w: 0.5, h: 0.5 } ],
+                exports: [
+                    { name: '1_Trai_To.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 },
+                    { name: '2_Phai_Tren.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '3_Phai_Duoi.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
+                ]
+            },
+            'mode-4': {
+                id: 'mode-4',
+                zones: [
+                    { id: 0, x: 0, y: 0, w: 0.5, h: 0.5, label: "Ảnh 1" },
+                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.5, label: "Ảnh 2" },
+                    { id: 2, x: 0, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh 3" },
+                    { id: 3, x: 0.5, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh 4" }
+                ],
+                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.5, h: 0.5 }, { x: 0.5, y: 0.5, w: 0.5, h: 0.5 } ],
+                exports: [
+                    { name: '1_TrenTrai.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '2_TrenPhai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '3_DuoiTrai.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '4_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
+                ]
+            },
+            'mode-4h': {
+                id: 'mode-4h',
+                zones: [
+                    { id: 0, x: 0, y: 0, w: 1, h: 0.5, label: "Ảnh Ngang Trọn Vẹn" },
+                    { id: 1, x: 0, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 1" },
+                    { id: 2, x: 0.3333, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 2" },
+                    { id: 3, x: 0.6666, y: 0.5, w: 0.3334, h: 0.5, label: "Ảnh Lẻ 3" }
+                ],
+                gridLines: [ { x: 0, y: 0, w: 1, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
+                exports: [
+                    { name: '1_To_Ngang.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 2 },
+                    { name: '2_DuoiTrai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '3_DuoiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '4_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
+                ]
+            },
+            'mode-4v': {
+                id: 'mode-4v',
+                zones: [
+                    { id: 0, x: 0, y: 0, w: 0.5, h: 1, label: "Ảnh Dọc Trọn Vẹn" },
+                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.3333, label: "Ảnh Lẻ 1" },
+                    { id: 2, x: 0.5, y: 0.3333, w: 0.5, h: 0.3333, label: "Ảnh Lẻ 2" },
+                    { id: 3, x: 0.5, y: 0.6666, w: 0.5, h: 0.3334, label: "Ảnh Lẻ 3" }
+                ],
+                gridLines: [ { x: 0, y: 0, w: 0.5, h: 1 }, { x: 0.5, y: 0, w: 0.5, h: 0.3333 }, { x: 0.5, y: 0.3333, w: 0.5, h: 0.3333 }, { x: 0.5, y: 0.6666, w: 0.5, h: 0.3334 } ],
+                exports: [
+                    { name: '1_To_Doc.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 },
+                    { name: '2_PhaiTren.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '3_PhaiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
+                    { name: '4_PhaiDuoi.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
+                ]
+            },
+            'mode-5': {
+                id: 'mode-5',
                 zones: [
                     { id: 0, x: 0, y: 0, w: 1, h: 0.5, label: "Ảnh Banner (Cắt đôi)" },
                     { id: 1, x: 0, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 1" },
@@ -371,107 +426,150 @@
                     { name: '5_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
                 ]
             },
-            'mode-3': {
-                id: 'mode-3',
-                zones: [
-                    { id: 0, x: 0, y: 0, w: 1, h: 0.5, label: "Ảnh Ngang Trọn Vẹn" },
-                    { id: 1, x: 0, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 1" },
-                    { id: 2, x: 0.3333, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 2" },
-                    { id: 3, x: 0.6666, y: 0.5, w: 0.3334, h: 0.5, label: "Ảnh Lẻ 3" }
-                ],
-                gridLines: [ { x: 0, y: 0, w: 1, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
+            'mode-1': {
+                id: 'mode-1',
+                zones: [ { id: 0, x: 0, y: 0, w: 1, h: 1, label: "Tải 1 Ảnh Toàn Cảnh (Phủ kín)" } ],
+                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
                 exports: [
-                    { name: '1_To_Ngang.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 2 },
-                    { name: '2_DuoiTrai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '3_DuoiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '4_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
-                ]
-            },
-            'mode-4': {
-                id: 'mode-4',
-                zones: [
-                    { id: 0, x: 0, y: 0, w: 0.5, h: 1, label: "Ảnh Dọc Trọn Vẹn" },
-                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.3333, label: "Ảnh Lẻ 1" },
-                    { id: 2, x: 0.5, y: 0.3333, w: 0.5, h: 0.3333, label: "Ảnh Lẻ 2" },
-                    { id: 3, x: 0.5, y: 0.6666, w: 0.5, h: 0.3334, label: "Ảnh Lẻ 3" }
-                ],
-                gridLines: [ { x: 0, y: 0, w: 0.5, h: 1 }, { x: 0.5, y: 0, w: 0.5, h: 0.3333 }, { x: 0.5, y: 0.3333, w: 0.5, h: 0.3333 }, { x: 0.5, y: 0.6666, w: 0.5, h: 0.3334 } ],
-                exports: [
-                    { name: '1_To_Doc.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 },
-                    { name: '2_PhaiTren.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '3_PhaiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '4_PhaiDuoi.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
-                ]
-            },
-            'mode-5': { // Grid 4 ô vuông
-                id: 'mode-5',
-                zones: [
-                    { id: 0, x: 0, y: 0, w: 0.5, h: 0.5, label: "Ảnh 1" },
-                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.5, label: "Ảnh 2" },
-                    { id: 2, x: 0, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh 3" },
-                    { id: 3, x: 0.5, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh 4" }
-                ],
-                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.5, h: 0.5 }, { x: 0.5, y: 0.5, w: 0.5, h: 0.5 } ],
-                exports: [
-                    { name: '1_TrenTrai.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '2_TrenPhai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '3_DuoiTrai.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '4_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
+                    { name: '1_TrenTrai.jpg', src: 0, cut: {x:0, y:0, w:0.5, h:0.5}, ratio: 1 },
+                    { name: '2_TrenPhai.jpg', src: 0, cut: {x:0.5, y:0, w:0.5, h:0.5}, ratio: 1 },
+                    { name: '3_DuoiTrai.jpg', src: 0, cut: {x:0, y:0.5, w:0.3333, h:0.5}, ratio: 1 },
+                    { name: '4_DuoiGiua.jpg', src: 0, cut: {x:0.3333, y:0.5, w:0.3333, h:0.5}, ratio: 1 },
+                    { name: '5_DuoiPhai.jpg', src: 0, cut: {x:0.6666, y:0.5, w:0.3334, h:0.5}, ratio: 1 }
                 ]
             }
         };
 
         // --- 2. GLOBAL STATES ---
-        let currentMode = 'mode-2';
+        let currentMode = 'mode-2v';
         let state = {}; 
         let extraImages = []; // Danh sách ảnh lẻ đính kèm (Tab Grid)
         let bulkLogoImages = []; // Danh sách ảnh upload hàng loạt (Tab Logo)
-        
-        let logoImgObj = null;
-        let logoScale = 1; // Hệ số nhân kích thước logo
-        
         let activeZoneId = null; 
         const EXPORT_SIZE = 1200;
-        const DEFAULT_LOGO_URL = "https://techbytruong.wordpress.com/wp-content/uploads/2026/03/chmn.png";
+        
+        // Cấu hình Logos (Hỗ trợ 4 góc)
+        let logosConfig = [
+            { id: 'tl', title: 'Góc Trái Trên', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2025/11/logo-ucr.png', img: null, enabled: true, x: 'left', y: 'top' },
+            { id: 'bl', title: 'Góc Trái Dưới', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2026/03/chmn.png', img: null, enabled: true, x: 'left', y: 'bottom' },
+            { id: 'tr', title: 'Góc Phải Trên', defaultUrl: '', img: null, enabled: false, x: 'right', y: 'top' },
+            { id: 'br', title: 'Góc Phải Dưới', defaultUrl: '', img: null, enabled: false, x: 'right', y: 'bottom' }
+        ];
+        let logoScale = 1; // Hệ số nhân kích thước logo
 
         document.addEventListener('DOMContentLoaded', () => {
-            selectMode('mode-2');
+            selectMode('mode-2v');
             setupDragEvents();
+            renderLogoConfigUI();
             
-            // Hàm tải logo có xử lý vượt rào CORS (bảo mật 2 lớp)
-            function loadDefaultLogo(url, retryLevel = 0) {
-                const img = new Image();
-                img.crossOrigin = "anonymous";
-                img.onload = () => {
-                    logoImgObj = img;
-                    const logoPreview = document.getElementById('logo-preview-small');
-                    logoPreview.src = img.src; // Hiển thị hình thu nhỏ bên trái
-                    logoPreview.classList.remove('hidden');
-                    
-                    renderView(); // Hiển thị logo lên lưới
-                    if (document.getElementById('tab-logo-settings').style.display !== 'none') {
-                        renderBulkLogoView();
-                    }
-                };
-                img.onerror = () => {
-                    if (retryLevel === 0) {
-                        console.log("Đang lấy logo qua proxy chuyên dụng ảnh (wsrv.nl)...");
-                        // Lớp dự phòng 1: Dùng proxy chuyên lưu trữ và phân phối ảnh
-                        loadDefaultLogo(`https://wsrv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&v=${Date.now()}`, 1);
-                    } else if (retryLevel === 1) {
-                        console.log("Đang lấy qua proxy tổng hợp (corsproxy.io)...");
-                        // Lớp dự phòng 2: Dùng proxy vượt rào CORS mạnh
-                        loadDefaultLogo(`https://corsproxy.io/?${encodeURIComponent(url)}`, 2);
-                    } else {
-                        console.error("Không thể tải logo do máy chủ WordPress chặn truy cập. Vui lòng bấm nút 'Tải Logo PNG' để up thủ công.");
-                    }
-                };
-                // Thêm timestamp để tránh bị trình duyệt cache lại phiên bản lỗi
-                img.src = retryLevel === 0 ? `${url}?v=${Date.now()}` : url;
-            }
-
-            loadDefaultLogo(DEFAULT_LOGO_URL);
+            // Tải mặc định 2 logo Trái
+            loadLogoForSlot(0, logosConfig[0].defaultUrl);
+            loadLogoForSlot(1, logosConfig[1].defaultUrl);
         });
+
+        // --- HỆ THỐNG LOGOS ---
+        function renderLogoConfigUI() {
+            const container = document.getElementById('logo-slots-container');
+            container.innerHTML = '';
+            logosConfig.forEach((conf, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center gap-2 p-2 rounded-xl border ${conf.enabled ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'} transition-colors`;
+                div.innerHTML = `
+                    <input type="checkbox" id="logo-enable-${index}" ${conf.enabled ? 'checked' : ''} onchange="toggleLogo(${index})" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                    <div class="flex-1 text-xs font-semibold ${conf.enabled ? 'text-blue-800' : 'text-gray-500'} cursor-pointer" onclick="document.getElementById('logo-enable-${index}').click()">${conf.title}</div>
+                    <label class="cursor-pointer text-gray-500 hover:text-blue-600 p-1 flex-shrink-0" title="Đổi Logo Khác">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                        <input type="file" accept="image/png, image/jpeg" class="hidden" onchange="uploadLogoForSlot(event, ${index})">
+                    </label>
+                    <img id="preview-logo-${index}" src="${conf.img ? conf.img.src : ''}" class="h-6 w-8 object-contain ${conf.img ? '' : 'hidden'} bg-white border border-gray-200 rounded p-0.5">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadLogoForSlot(index, url, retryLevel = 0) {
+            if(!url) return;
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = () => {
+                logosConfig[index].img = img;
+                const previewEl = document.getElementById(`preview-logo-${index}`);
+                if(previewEl) {
+                    previewEl.src = img.src;
+                    previewEl.classList.remove('hidden');
+                }
+                renderView();
+                if (document.getElementById('tab-logo-settings').style.display !== 'none') {
+                    renderBulkLogoView();
+                }
+            };
+            img.onerror = () => {
+                if (retryLevel === 0) {
+                    loadLogoForSlot(index, `https://wsrv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&v=${Date.now()}`, 1);
+                } else if (retryLevel === 1) {
+                    loadLogoForSlot(index, `https://corsproxy.io/?${encodeURIComponent(url)}`, 2);
+                } else {
+                    console.error("Không thể tải logo cho slot " + index);
+                }
+            };
+            img.src = retryLevel === 0 ? `${url}?v=${Date.now()}` : url;
+        }
+
+        function toggleLogo(index) {
+            logosConfig[index].enabled = document.getElementById(`logo-enable-${index}`).checked;
+            renderLogoConfigUI(); // Update background color of slot
+            renderView();
+            renderBulkLogoView();
+        }
+
+        function uploadLogoForSlot(e, index) {
+            const f = e.target.files[0];
+            if (!f) return;
+            const r = new FileReader();
+            r.onload = (evt) => {
+                const i = new Image();
+                i.onload = () => {
+                    logosConfig[index].img = i;
+                    logosConfig[index].enabled = true;
+                    renderLogoConfigUI();
+                    renderView();
+                    renderBulkLogoView();
+                };
+                i.src = evt.target.result;
+            }
+            r.readAsDataURL(f);
+            e.target.value = '';
+        }
+
+        function updateLogoScale(val) {
+            logoScale = parseFloat(val);
+            document.getElementById('logo-scale-val').innerText = Math.round(logoScale * 100) + '%';
+            renderView(); 
+            renderBulkLogoView();
+        }
+
+        // --- CHUYỂN TAB ĐIỀU HƯỚNG ---
+        function switchMainTab(tabId) {
+            document.getElementById('btn-tab-grid').className = tabId === 'grid' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
+            document.getElementById('btn-tab-logo').className = tabId === 'logo' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
+
+            document.getElementById('tab-grid-settings').style.display = tabId === 'grid' ? 'flex' : 'none';
+            document.getElementById('tab-grid-preview').style.display = tabId === 'grid' ? 'flex' : 'none';
+            
+            document.getElementById('tab-logo-settings').style.display = tabId === 'logo' ? 'flex' : 'none';
+            document.getElementById('tab-logo-preview').style.display = tabId === 'logo' ? 'flex' : 'none';
+            
+            if(tabId === 'logo') renderBulkLogoView();
+        }
+
+        // --- HELPER CHUYỂN MÃ MÀU (HEX TO RGBA) ---
+        function hexToRgba(hex, alpha) {
+            hex = hex.replace(/^#/, '');
+            let r = parseInt(hex.substring(0, 2), 16);
+            let g = parseInt(hex.substring(2, 4), 16);
+            let b = parseInt(hex.substring(4, 6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
 
         // --- 3. ĐIỀU KHIỂN CHẾ ĐỘ LƯỚI ---
         function selectMode(m) {
@@ -499,33 +597,6 @@
 
             renderView();
             setTimeout(() => { Object.keys(state).forEach(id => calcCoverTransform(id)); }, 50);
-        }
-
-        // Tải & Chỉnh Kích thước Logo
-        function handleLogoUpload(e) {
-            const f = e.target.files[0];
-            if (!f) return;
-            const r = new FileReader();
-            r.onload = (evt) => {
-                const i = new Image();
-                i.onload = () => {
-                    logoImgObj = i;
-                    document.getElementById('logo-preview-small').src = evt.target.result;
-                    document.getElementById('logo-preview-small').classList.remove('hidden');
-                    renderView();
-                    renderBulkLogoView();
-                };
-                i.src = evt.target.result;
-            }
-            r.readAsDataURL(f);
-            e.target.value = '';
-        }
-
-        function updateLogoScale(val) {
-            logoScale = parseFloat(val);
-            document.getElementById('logo-scale-val').innerText = Math.round(logoScale * 100) + '%';
-            renderView(); 
-            renderBulkLogoView();
         }
 
         function activateZone(id) {
@@ -561,7 +632,6 @@
             renderView();
         }
 
-        // Cập nhật cấu hình Gradient & Design
         function updateDesignState(key, val) {
             if (activeZoneId === null || !state[activeZoneId]) return;
             state[activeZoneId][key] = val;
@@ -837,42 +907,56 @@
                 grid.appendChild(d);
             });
             
-            // Vẽ Logo Chung lên trên lưới
+            // Vẽ Logos Chung lên trên lưới (theo frame xuất)
             const logosLayer = document.getElementById('logos-layer');
             logosLayer.innerHTML = '';
-            if (logoImgObj) {
-                m.exports.forEach(exp => {
-                    const z = m.zones.find(zone => zone.id === exp.src);
-                    if (state[z.id]) { 
-                        const pieceX = z.x + exp.cut.x * z.w;
-                        const pieceY = z.y + exp.cut.y * z.h;
-                        const pieceW = exp.cut.w * z.w;
-                        const pieceH = exp.cut.h * z.h;
+            
+            m.exports.forEach(exp => {
+                const z = m.zones.find(zone => zone.id === exp.src);
+                if (state[z.id]) { 
+                    const pieceX = z.x + exp.cut.x * z.w;
+                    const pieceY = z.y + exp.cut.y * z.h;
+                    const pieceW = exp.cut.w * z.w;
+                    const pieceH = exp.cut.h * z.h;
 
-                        const pieceDiv = document.createElement('div');
-                        pieceDiv.className = 'absolute pointer-events-none flex';
-                        pieceDiv.style.left = `${pieceX * 100}%`;
-                        pieceDiv.style.top = `${pieceY * 100}%`;
-                        pieceDiv.style.width = `${pieceW * 100}%`;
-                        pieceDiv.style.height = `${pieceH * 100}%`;
+                    const pieceDiv = document.createElement('div');
+                    pieceDiv.className = 'absolute pointer-events-none flex';
+                    pieceDiv.style.left = `${pieceX * 100}%`;
+                    pieceDiv.style.top = `${pieceY * 100}%`;
+                    pieceDiv.style.width = `${pieceW * 100}%`;
+                    pieceDiv.style.height = `${pieceH * 100}%`;
+                    
+                    const isVertical = pieceH > pieceW;
+                    const basePct = isVertical ? 60 : 40; 
+                    const finalPct = basePct * logoScale;
+
+                    logosConfig.forEach(conf => {
+                        if (!conf.enabled || !conf.img) return;
+
+                        const logoWrap = document.createElement('div');
+                        logoWrap.className = 'absolute flex items-center justify-center p-2';
+                        logoWrap.style.width = `${finalPct}%`;
+                        logoWrap.style.maxHeight = '40%';
+
+                        if (conf.x === 'left') logoWrap.style.left = '3%';
+                        else logoWrap.style.right = '3%';
                         
-                        const isVertical = pieceH > pieceW;
-                        const basePct = isVertical ? 60 : 40; 
-                        const finalPct = basePct * logoScale;
+                        if (conf.y === 'top') logoWrap.style.top = '3%';
+                        else logoWrap.style.bottom = '3%';
 
                         const logo = document.createElement('img');
-                        logo.src = logoImgObj.src;
-                        logo.className = 'absolute object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]';
-                        logo.style.bottom = '4%';
-                        logo.style.left = '4%';
-                        logo.style.width = `${finalPct}%`; 
-                        logo.style.maxHeight = '40%'; 
+                        logo.src = conf.img.src;
+                        // Dùng drop-shadow CSS để bám theo viền thật nhẹ nhàng
+                        logo.className = 'w-full object-contain';
+                        logo.style.filter = 'drop-shadow(0px 3px 10px rgba(0,0,0,0.65))';
+                        
+                        logoWrap.appendChild(logo);
+                        pieceDiv.appendChild(logoWrap);
+                    });
 
-                        pieceDiv.appendChild(logo);
-                        logosLayer.appendChild(pieceDiv);
-                    }
-                });
-            }
+                    logosLayer.appendChild(pieceDiv);
+                }
+            });
         }
 
         // --- 7. CHỨC NĂNG TAB 2: BULK LOGO ---
@@ -919,21 +1003,34 @@
                 img.className = 'w-full h-full object-cover';
                 div.appendChild(img);
 
-                // Add Logo Overlay chuẩn logic
-                if (logoImgObj) {
-                    const isVertical = item.img.height > item.img.width;
-                    const basePct = isVertical ? 60 : 40; 
-                    const finalPct = basePct * logoScale;
+                // Add Logo Overlay
+                const isVertical = item.img.height > item.img.width;
+                const basePct = isVertical ? 60 : 40; 
+                const finalPct = basePct * logoScale;
+                
+                logosConfig.forEach(conf => {
+                    if (!conf.enabled || !conf.img) return;
+
+                    const logoWrap = document.createElement('div');
+                    logoWrap.className = 'absolute flex items-center justify-center p-2 pointer-events-none';
+                    logoWrap.style.width = `${finalPct}%`;
+                    logoWrap.style.maxHeight = '40%';
+
+                    if (conf.x === 'left') logoWrap.style.left = '3%';
+                    else logoWrap.style.right = '3%';
                     
+                    if (conf.y === 'top') logoWrap.style.top = '3%';
+                    else logoWrap.style.bottom = '3%';
+
                     const logo = document.createElement('img');
-                    logo.src = logoImgObj.src;
-                    logo.className = 'absolute object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)] pointer-events-none';
-                    logo.style.bottom = '4%';
-                    logo.style.left = '4%';
-                    logo.style.width = `${finalPct}%`; 
-                    logo.style.maxHeight = '40%';
-                    div.appendChild(logo);
-                }
+                    logo.src = conf.img.src;
+                    // Dùng drop-shadow CSS để bám theo viền thật nhẹ nhàng
+                    logo.className = 'w-full object-contain pointer-events-none';
+                    logo.style.filter = 'drop-shadow(0px 3px 10px rgba(0,0,0,0.65))';
+                    
+                    logoWrap.appendChild(logo);
+                    div.appendChild(logoWrap);
+                });
 
                 // Xóa ảnh lẻ
                 const btn = document.createElement('button');
@@ -948,22 +1045,35 @@
 
         // Hàm tái sử dụng cho việc đóng dấu Canvas Export
         function applyLogoToCanvas(ctx, fw, fh) {
-            if (!logoImgObj) return;
             const isVertical = fh > fw;
             const basePct = isVertical ? 0.6 : 0.4;
             const targetW = fw * basePct * logoScale; 
-            
-            let dw = logoImgObj.width, dh = logoImgObj.height;
-            const r = targetW / dw;
-            dw *= r; dh *= r;
-            
-            const maxH = fh * 0.4;
-            if (dh > maxH) { const r2 = maxH / dh; dw *= r2; dh *= r2; }
-            
             const padding = 0.04 * Math.min(fw, fh);
-            ctx.shadowColor = "rgba(0,0,0,0.85)"; ctx.shadowBlur = 18; ctx.shadowOffsetY = 3;
-            ctx.drawImage(logoImgObj, padding, fh - dh - padding, dw, dh);
-            ctx.shadowColor = "transparent"; 
+
+            logosConfig.forEach(conf => {
+                if (!conf.enabled || !conf.img) return;
+
+                let dw = conf.img.width, dh = conf.img.height;
+                const r = targetW / dw;
+                dw *= r; dh *= r;
+                
+                const maxH = fh * 0.4;
+                if (dh > maxH) { const r2 = maxH / dh; dw *= r2; dh *= r2; }
+                
+                let x = conf.x === 'left' ? padding : fw - dw - padding;
+                let y = conf.y === 'top' ? padding : fh - dh - padding;
+
+                ctx.save();
+                
+                // Vẽ Logo với Drop Shadow bám viền kênh Alpha
+                ctx.shadowColor = "rgba(0,0,0,0.65)"; 
+                ctx.shadowBlur = 15; 
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 3;
+                ctx.drawImage(conf.img, x, y, dw, dh);
+                
+                ctx.restore(); 
+            });
         }
 
         // --- 8. LOGIC XUẤT FILE ---
@@ -1062,8 +1172,6 @@
                     const sx = exp.cut.x * zCvs.width, sy = exp.cut.y * zCvs.height;
                     const sw = exp.cut.w * zCvs.width, sh = exp.cut.h * zCvs.height;
 
-                    // TÍNH TOÁN KÍCH THƯỚC ĐỘNG ĐỂ CHỐNG MÉO HÌNH:
-                    // Đảm bảo tỷ lệ khung xuất ra (fw/fh) giống y hệt tỷ lệ khung cắt (sw/sh)
                     let fw, fh;
                     if (sw > sh) {
                         fw = EXPORT_SIZE;
