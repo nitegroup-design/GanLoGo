@@ -67,14 +67,11 @@
             text-shadow: 0px 2px 4px rgba(0,0,0,0.3);
         }
     
-
         /* Pro UI upgrade */
         body { background: linear-gradient(135deg, #f8fafc 0%, #eef4ff 45%, #fff7ed 100%); }
         .pro-card { border: 1px solid rgba(226,232,240,.9); box-shadow: 0 18px 45px -35px rgba(15, 23, 42, .55); }
         .progress-track { width: 100%; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
         .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #2563eb, #0f172a); border-radius: 999px; transition: width .2s ease; }
-        .enterprise-upload { background: linear-gradient(135deg, #2563eb, #0f172a); }
-
 
         /* Bulk review upgrade: xem rõ toàn ảnh, không crop thumbnail */
         .bulk-toolbar-btn { border: 1px solid #dbe4f0; background: white; color: #334155; border-radius: 999px; padding: 8px 12px; font-size: 12px; font-weight: 800; transition: all .18s ease; }
@@ -105,228 +102,44 @@
             transform: translateY(-1px);
             box-shadow: 0 18px 35px -28px rgba(37, 99, 235, .9);
         }
-        .bulk-drop-zone::after {
-            content: '';
-            position: absolute;
-            inset: 8px;
-            border-radius: 18px;
-            pointer-events: none;
-            border: 1px solid rgba(255,255,255,.72);
-        }
-        .drop-action-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            border-radius: 14px;
-            padding: 12px 14px;
-            font-weight: 900;
-            font-size: 13px;
-            transition: all .18s ease;
-            cursor: pointer;
-            position: relative;
-            z-index: 2;
-        }
+        .drop-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; padding: 12px 14px; font-weight: 900; font-size: 13px; transition: all .18s ease; cursor: pointer; position: relative; z-index: 2; }
         .drop-action-btn.primary { background: #2563eb; color: white; box-shadow: 0 14px 25px -18px rgba(37,99,235,.8); }
         .drop-action-btn.primary:hover { background: #1d4ed8; }
         .drop-action-btn.secondary { background: white; color: #0f172a; border: 1px solid #dbe4f0; }
         .drop-action-btn.secondary:hover { background: #f8fafc; border-color: #93c5fd; color: #1d4ed8; }
         .folder-output-btn { background: linear-gradient(135deg, #0f172a, #334155); }
 
-
         /* Mobile share: tối ưu cho iPhone, Zalo/Messenger/AirDrop */
-        .mobile-share-btn {
-            background: linear-gradient(135deg, #0ea5e9, #2563eb);
-        }
-        .mobile-share-panel {
-            background: linear-gradient(135deg, #eff6ff, #ffffff);
-            border: 1px solid #bfdbfe;
-            border-radius: 22px;
-            padding: 16px;
-            box-shadow: 0 18px 42px -34px rgba(37,99,235,.86);
-        }
-        .mobile-share-action {
-            border-radius: 16px;
-            padding: 12px 14px;
-            font-weight: 900;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all .18s ease;
-        }
+        .mobile-share-btn { background: linear-gradient(135deg, #0ea5e9, #2563eb); }
+        .mobile-share-panel { background: linear-gradient(135deg, #eff6ff, #ffffff); border: 1px solid #bfdbfe; border-radius: 22px; padding: 16px; box-shadow: 0 18px 42px -34px rgba(37,99,235,.86); }
+        .mobile-share-action { border-radius: 16px; padding: 12px 14px; font-weight: 900; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all .18s ease; }
         .mobile-share-action.primary { color: white; background: linear-gradient(135deg, #2563eb, #0f172a); }
         .mobile-share-action.secondary { color: #0f172a; background: white; border: 1px solid #dbe4f0; }
-        .mobile-share-card {
-            display: grid;
-            grid-template-columns: 58px 1fr;
-            gap: 10px;
-            align-items: center;
-            background: rgba(255,255,255,.88);
-            border: 1px solid #dbeafe;
-            border-radius: 16px;
-            padding: 9px;
-        }
-        .mobile-share-card img {
-            width: 58px;
-            height: 58px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            background: #f8fafc;
-        }
-
+        .mobile-share-card { display: grid; grid-template-columns: 58px 1fr; gap: 10px; align-items: center; background: rgba(255,255,255,.88); border: 1px solid #dbeafe; border-radius: 16px; padding: 9px; }
+        .mobile-share-card img { width: 58px; height: 58px; object-fit: cover; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; }
 
         /* V5 polish: chỉnh lại tổng thể cho gọn, sang và ít cảm giác dang dở */
         :root {
             --ug-ink: #0f172a;
             --ug-muted: #64748b;
-            --ug-line: rgba(203, 213, 225, .78);
-            --ug-blue: #2563eb;
-            --ug-gold: #f2b84b;
             --ug-card: rgba(255,255,255,.92);
         }
         html { scroll-behavior: smooth; }
-        body {
-            color: var(--ug-ink);
-            background:
-                radial-gradient(circle at 6% 0%, rgba(37, 99, 235, .14), transparent 34rem),
-                radial-gradient(circle at 92% 8%, rgba(242, 184, 75, .18), transparent 32rem),
-                linear-gradient(180deg, #f3f7ff 0%, #f8fafc 48%, #ffffff 100%) !important;
-        }
-        .app-hero {
-            overflow: hidden;
-            border-radius: 28px;
-            border: 1px solid rgba(255,255,255,.72);
-            background:
-                linear-gradient(135deg, rgba(15, 23, 42, .98), rgba(15, 23, 42, .91) 50%, rgba(48, 35, 26, .96));
-            color: white;
-            box-shadow: 0 24px 60px -42px rgba(15, 23, 42, .9);
-            position: relative;
-        }
-        .app-hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: .35;
-            background:
-                radial-gradient(circle at 18% 18%, rgba(59,130,246,.75), transparent 26%),
-                radial-gradient(circle at 86% 12%, rgba(242,184,75,.62), transparent 24%);
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border-radius: 999px;
-            background: rgba(255,255,255,.10);
-            border: 1px solid rgba(255,255,255,.16);
-            padding: 7px 12px;
-            font-size: 11px;
-            font-weight: 900;
-            letter-spacing: .18em;
-            color: #dbeafe;
-        }
-        .hero-chip {
-            border-radius: 18px;
-            background: rgba(255,255,255,.105);
-            border: 1px solid rgba(255,255,255,.14);
-            padding: 12px 14px;
-            min-width: 90px;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
-        }
+        body { color: var(--ug-ink); background: radial-gradient(circle at 6% 0%, rgba(37, 99, 235, .14), transparent 34rem), radial-gradient(circle at 92% 8%, rgba(242, 184, 75, .18), transparent 32rem), linear-gradient(180deg, #f3f7ff 0%, #f8fafc 48%, #ffffff 100%) !important; }
+        .app-hero { overflow: hidden; border-radius: 28px; border: 1px solid rgba(255,255,255,.72); background: linear-gradient(135deg, rgba(15, 23, 42, .98), rgba(15, 23, 42, .91) 50%, rgba(48, 35, 26, .96)); color: white; box-shadow: 0 24px 60px -42px rgba(15, 23, 42, .9); position: relative; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.16); padding: 7px 12px; font-size: 11px; font-weight: 900; letter-spacing: .18em; color: #dbeafe; }
+        .hero-chip { border-radius: 18px; background: rgba(255,255,255,.105); border: 1px solid rgba(255,255,255,.14); padding: 12px 14px; min-width: 90px; box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
         .side-column { scrollbar-width: thin; }
-        .panel-card {
-            background: var(--ug-card);
-            border: 1px solid rgba(226,232,240,.82);
-            border-radius: 24px;
-            box-shadow: 0 20px 55px -46px rgba(15, 23, 42, .78);
-            backdrop-filter: blur(10px);
-        }
-        .preview-shell {
-            background: rgba(255,255,255,.94) !important;
-            border: 1px solid rgba(226,232,240,.82) !important;
-            border-radius: 26px !important;
-            box-shadow: 0 24px 70px -55px rgba(15, 23, 42, .82) !important;
-            min-height: min(780px, calc(100vh - 190px));
-        }
-        .tab-shell {
-            background: rgba(255,255,255,.82) !important;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(226,232,240,.85) !important;
-            box-shadow: 0 12px 34px -30px rgba(15, 23, 42, .76);
-        }
-        #btn-tab-grid, #btn-tab-logo {
-            border-radius: 16px !important;
-            letter-spacing: .01em;
-        }
-        label[id^="lbl-mode-"] {
-            min-height: 62px;
-            background: #ffffff;
-            border-radius: 16px !important;
-            box-shadow: 0 10px 20px -18px rgba(15,23,42,.5);
-        }
-        label[id^="lbl-mode-"].bg-blue-50 {
-            background: linear-gradient(135deg, #eff6ff, #ffffff) !important;
-            box-shadow: inset 0 0 0 1px rgba(37,99,235,.18), 0 18px 30px -26px rgba(37,99,235,.78);
-        }
-        .mini-grid { width: 44px !important; height: 44px !important; border-radius: 12px !important; padding: 4px !important; gap: 3px !important; background: #dbe4f0 !important; }
-        .mg-box { border-radius: 4px; }
-        #canvas-container {
-            border-radius: 24px !important;
-            background: linear-gradient(135deg, #f8fafc, #eef2ff) !important;
-            box-shadow: inset 0 0 0 1px rgba(148,163,184,.22), 0 22px 70px -55px rgba(15,23,42,.9) !important;
-        }
-        .bulk-drop-zone {
-            background: linear-gradient(135deg, rgba(239,246,255,.95), rgba(255,255,255,.94)) !important;
-            border-color: #bfdbfe !important;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 18px 45px -38px rgba(37,99,235,.8);
-        }
-        .bulk-drop-zone.drag-over, #bulk-preview-container.drag-over {
-            border-color: #2563eb !important;
-            background: linear-gradient(135deg, #dbeafe, #fff7ed) !important;
-            box-shadow: 0 22px 55px -38px rgba(37,99,235,.88) !important;
-        }
-        .drop-action-btn.primary { background: linear-gradient(135deg, #2563eb, #1d4ed8) !important; }
-        .drop-action-btn.secondary { background: rgba(255,255,255,.86) !important; }
-        .logo-slot-card {
-            min-height: 52px;
-            background: linear-gradient(135deg, #ffffff, #f8fafc);
-            border: 1px solid rgba(203,213,225,.8);
-            border-radius: 16px;
-            transition: all .18s ease;
-        }
-        .logo-slot-card.active {
-            border-color: rgba(37,99,235,.36);
-            background: linear-gradient(135deg, #eff6ff, #ffffff);
-            box-shadow: inset 0 0 0 1px rgba(37,99,235,.10);
-        }
-        .logo-preview-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 4px; }
-        .empty-workbench {
-            min-height: 330px;
-            border: 1.8px dashed #cbd5e1;
-            border-radius: 26px;
-            background:
-                linear-gradient(135deg, rgba(248,250,252,.92), rgba(239,246,255,.88)),
-                repeating-linear-gradient(45deg, rgba(148,163,184,.08) 0 10px, transparent 10px 20px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .workbench-icon {
-            width: 58px; height: 58px;
-            border-radius: 22px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 14px;
-            background: linear-gradient(135deg, #dbeafe, #ffffff);
-            color: #2563eb;
-            border: 1px solid #bfdbfe;
-        }
-        .bulk-card { border-radius: 20px !important; }
-        .bulk-stage { border-radius: 16px 16px 0 0; }
+        .panel-card { background: var(--ug-card); border: 1px solid rgba(226,232,240,.82); border-radius: 24px; box-shadow: 0 20px 55px -46px rgba(15, 23, 42, .78); backdrop-filter: blur(10px); }
+        .preview-shell { background: rgba(255,255,255,.94) !important; border: 1px solid rgba(226,232,240,.82) !important; border-radius: 26px !important; box-shadow: 0 24px 70px -55px rgba(15, 23, 42, .82) !important; min-height: min(780px, calc(100vh - 190px)); }
+        
+        /* Toast UI Styling */
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .ug-toast { background: white; border-radius: 16px; padding: 16px 20px; box-shadow: 0 10px 40px -10px rgba(15,23,42,0.2); border-left: 4px solid #2563eb; font-size: 14px; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 12px; transform: translateX(120%); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; }
+        .ug-toast.show { transform: translateX(0); opacity: 1; }
+        .ug-toast.error { border-left-color: #ef4444; }
+        .ug-toast.success { border-left-color: #10b981; }
+
         @media (min-width: 1024px) {
             .side-column { position: sticky; top: 18px; align-self: start; max-height: calc(100vh - 36px); overflow-y: auto; padding-right: 4px; }
             .preview-shell { position: sticky; top: 18px; align-self: start; }
@@ -337,6 +150,9 @@
     </style>
 </head>
 <body class="min-h-screen p-3 md:p-5 lg:p-6">
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
 
     <header class="max-w-[1500px] mx-auto mb-6 app-hero">
         <div class="relative p-5 md:p-7 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5">
@@ -358,29 +174,23 @@
         <!-- --- CỘT ĐIỀU KHIỂN (TRÁI) --- -->
         <div class="lg:col-span-4 flex flex-col gap-5 side-column">
             
-            <!-- TABS ĐIỀU HƯỚNG -->
-            <div class="flex gap-2 p-1.5 rounded-2xl sticky top-0 z-50 tab-shell">
+            <div class="flex gap-2 p-1.5 rounded-2xl sticky top-0 z-50 bg-white/80 backdrop-blur-md border border-slate-200 shadow-sm">
                 <button id="btn-tab-grid" onclick="switchMainTab('grid')" class="flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm">CẮT GHÉP KHUNG FB</button>
                 <button id="btn-tab-logo" onclick="switchMainTab('logo')" class="flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm">GẮN LOGO HÀNG LOẠT</button>
             </div>
 
-            <!-- CẤU HÌNH LOGO (Dùng chung cho cả 2 tab) -->
+            <!-- CẤU HÌNH LOGO -->
             <div class="panel-card p-5">
                 <label class="block text-sm font-bold text-gray-700 mb-3">Brand Kit Logo & Watermark</label>
                 <p class="text-xs text-gray-500 mb-3">Logo mặc định đang bật ở Góc Phải Trên. Có thể tick thêm vị trí khác khi cần.</p>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="logo-slots-container">
-                    <!-- Được render bằng JS -->
-                </div>
-
-                <!-- Slider Kích thước Logo -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="logo-slots-container"></div>
                 <div class="mt-4 flex items-center gap-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
                     <span class="text-xs text-gray-600 font-semibold whitespace-nowrap">Scale tổng:</span>
                     <input type="range" id="logo-scale-slider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-blue-600 cursor-pointer" oninput="updateLogoScale(this.value)">
                     <span id="logo-scale-val" class="text-xs text-blue-700 font-bold w-12 text-right">100%</span>
                 </div>
                 <div class="mt-2 text-[11px] text-slate-500 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2">
-                    <strong class="text-emerald-700">Smart Halo đang bật:</strong> Web tự dò vùng đặt logo sáng/tối/rối để dùng viền mờ nhẹ, không còn đổ bóng đen quá đậm.
+                    <strong class="text-emerald-700">Smart Halo đang bật:</strong> Web tự dò vùng đặt logo sáng/tối/rối để dùng viền mờ nhẹ, không đổ bóng đen đậm.
                 </div>
             </div>
 
@@ -437,7 +247,7 @@
                     <p class="text-[11px] text-gray-500 mt-2 text-center">Ảnh dư sẽ tự chuyển xuống dạng "Ảnh Lẻ Đính Kèm".</p>
                 </div>
 
-                <!-- BẢNG THIẾT KẾ Ô (Chỉ hiện khi click vào 1 ô bên phải) -->
+                <!-- BẢNG THIẾT KẾ Ô -->
                 <div id="design-panel" class="bg-blue-50/50 p-5 rounded-2xl shadow-sm border border-blue-100 hidden">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-base font-bold text-blue-900 flex items-center">
@@ -447,7 +257,6 @@
                         <button onclick="triggerUpload(activeZoneId)" class="text-xs bg-white border border-blue-200 text-blue-600 font-semibold py-1.5 px-3 rounded hover:bg-blue-50 shadow-sm">Đổi Ảnh Riêng</button>
                     </div>
 
-                    <!-- Zoom Control -->
                     <div class="mb-4 bg-white p-3 rounded-xl border border-blue-100 shadow-sm">
                         <label class="flex justify-between text-xs font-semibold text-gray-600 mb-2">
                             <span>Thu/Phóng ảnh (Zoom)</span>
@@ -456,17 +265,12 @@
                         <input type="range" id="zoom-slider" min="0.5" max="3" step="0.05" value="1" class="w-full accent-blue-600 cursor-pointer" oninput="handleZoomSlider(this.value)">
                     </div>
 
-                    <!-- Graphic Design Overlays -->
                     <div class="bg-white p-4 rounded-xl border border-blue-100 shadow-sm flex flex-col gap-3">
-                        
-                        <!-- Cấu hình Dải màu Gradient Đáy -->
                         <div>
                             <label class="flex items-center cursor-pointer">
                                 <input type="checkbox" id="check-gradient" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateDesignState('gradient', this.checked)">
                                 <span class="ml-2 text-sm font-semibold text-gray-800">Hiển thị dải màu bóng mờ ở đáy</span>
                             </label>
-                            
-                            <!-- Bảng tuỳ chỉnh Gradient (Chỉ hiện khi check) -->
                             <div id="gradient-options" class="hidden mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                                 <div class="flex items-center justify-between mb-3">
                                     <span class="text-xs font-semibold text-gray-700">Màu sắc (Theo Branding):</span>
@@ -481,25 +285,19 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="border-gray-100 my-1">
-
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Tiêu đề chính (Chữ lớn)</label>
                             <input type="text" id="input-title" placeholder="VD: SỰ KIỆN ĐẲNG CẤP" class="w-full text-sm p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" oninput="updateDesignState('title', this.value)">
                         </div>
-
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Tiêu đề phụ (Chữ nhỏ)</label>
                             <input type="text" id="input-sub" placeholder="VD: Kết nối thành công" class="w-full text-sm p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" oninput="updateDesignState('sub', this.value)">
                         </div>
-                        
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Thông tin Hotline / Địa chỉ</label>
                             <input type="text" id="input-info" placeholder="VD: 0909 216 216" class="w-full text-sm p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" oninput="updateDesignState('info', this.value)">
                         </div>
-
-                        <!-- Tùy chọn Theme Style -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-2">Phong cách (Font & Màu sắc)</label>
                             <div class="grid grid-cols-2 gap-2">
@@ -522,7 +320,6 @@
                     </div>
                 </div>
 
-                <!-- Nút xuất file Lưới -->
                 <button onclick="processExport()" id="btn-export-grid" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
                     <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     XUẤT BỘ ẢNH LƯỚI (ZIP)
@@ -536,7 +333,7 @@
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                     </div>
                     <h2 class="text-lg font-bold text-gray-800 mb-2">Đóng Dấu Hàng Loạt Ảnh</h2>
-                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh (không bị cắt vuông), tự động gắn các Logo bạn đã cấu hình phía trên, chuẩn hóa logo từ link/upload về cùng một khung, riêng logo dài sẽ được ưu tiên chiều cao để đỡ nhỏ/bể trên iPhone, rồi xuất ra hàng loạt.</p>
+                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh, tự động tối ưu logo dài, và xuất ra hàng loạt chất lượng cao.</p>
                     
                     <div id="bulk-drop-zone" class="bulk-drop-zone text-left" ondragover="handleBulkDragOver(event)" ondragleave="handleBulkDragLeave(event)" ondrop="handleBulkDrop(event)">
                         <div class="relative z-[2] flex flex-col items-center text-center gap-3">
@@ -545,7 +342,7 @@
                             </div>
                             <div>
                                 <h3 class="text-base font-black text-slate-900">Kéo thả ảnh hoặc cả folder vào đây</h3>
-                                <p class="text-xs text-slate-500 mt-1">Dành cho laptop: kéo file/folder từ File Explorer vào khung này. Hỗ trợ ảnh ngang/dọc/vuông.</p>
+                                <p class="text-xs text-slate-500 mt-1">Dành cho laptop: kéo file/folder từ File Explorer vào khung này.</p>
                             </div>
                             <div class="flex flex-col sm:flex-row gap-2 w-full">
                                 <label class="drop-action-btn primary flex-1">
@@ -559,7 +356,6 @@
                                     <input type="file" accept="image/*" multiple webkitdirectory directory class="hidden" onchange="handleBulkLogoUpload(event)">
                                 </label>
                             </div>
-                            <p id="bulk-drop-hint" class="text-[11px] text-slate-500">Mẹo: có thể thả nguyên folder, web sẽ tự lọc file ảnh và bỏ qua file không phải ảnh.</p>
                         </div>
                     </div>
 
@@ -569,7 +365,6 @@
                             <span id="bulk-progress-percent" class="text-xs font-black text-blue-700">0%</span>
                         </div>
                         <div class="progress-track"><div id="bulk-progress-fill" class="progress-fill"></div></div>
-                        <p class="text-[11px] text-slate-500 mt-2">Web tự chia ZIP theo lô để máy nhân sự không bị đứng khi xử lý nhiều ảnh.</p>
                     </div>
                 </div>
 
@@ -577,7 +372,7 @@
                     <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" /></svg>
                     TẠO ẢNH ĐỂ CHIA SẺ / LƯU ALBUM
                 </button>
-                <p class="text-[11px] text-slate-500 text-center -mt-1">Dành cho iPhone: tạo xong bấm “Chia sẻ” để gửi qua Zalo/Messenger/AirDrop hoặc chọn Lưu hình ảnh.</p>
+                <p class="text-[11px] text-slate-500 text-center -mt-1">Dành cho iPhone: tạo xong bấm “Chia sẻ” để gửi qua Zalo/AirDrop.</p>
 
                 <div id="mobile-share-panel" class="mobile-share-panel hidden mt-2">
                     <div class="flex items-start gap-3">
@@ -593,7 +388,6 @@
                         <button onclick="sharePreparedBulkFiles()" id="btn-share-prepared" class="mobile-share-action primary">Chia sẻ tất cả ảnh</button>
                         <button onclick="downloadPreparedBulkFilesIndividually()" id="btn-download-prepared" class="mobile-share-action secondary">Tải từng ảnh JPG</button>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-3 leading-relaxed">Nếu app không nhận nhiều ảnh cùng lúc, Hạnh bấm “Chia sẻ” từng ảnh bên dưới hoặc chọn ít ảnh hơn rồi tạo lại.</p>
                     <div id="mobile-share-list" class="mt-3 flex flex-col gap-2 max-h-64 overflow-y-auto pr-1"></div>
                 </div>
                 
@@ -606,12 +400,10 @@
                     <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
                     LƯU THẲNG RA THƯ MỤC
                 </button>
-                <p class="text-[11px] text-slate-500 text-center -mt-1">Tùy chọn này dùng tốt trên Chrome/Edge laptop. Nếu trình duyệt không hỗ trợ, dùng ZIP bên trên.</p>
             </div>
         </div>
 
         <!-- --- CỘT PREVIEW (PHẢI) --- -->
-        <!-- ĐÂY LÀ CỘT BỊ THIẾU TRONG MÃ NGUỒN CỦA BẠN - ĐÃ ĐƯỢC KHÔI PHỤC -->
         <div class="lg:col-span-8 p-4 lg:p-6 flex flex-col preview-shell">
             
             <!-- TAB 1 PREVIEW: GRID LƯỚI -->
@@ -628,7 +420,6 @@
 
                 <div class="w-full max-w-[700px] mx-auto">
                     <div id="canvas-container" class="rounded-lg">
-                        <!-- Các lớp Render -->
                         <div id="zones-layer" class="absolute inset-0"></div>
                         <div id="grid-layer" class="absolute inset-0 pointer-events-none"></div>
                         <div id="logos-layer" class="absolute inset-0 pointer-events-none z-40"></div>
@@ -667,7 +458,6 @@
                         <button id="btn-preview-comfort" onclick="setBulkPreviewMode('comfortable')" class="bulk-toolbar-btn active">Dễ nhìn</button>
                         <button id="btn-preview-compact" onclick="setBulkPreviewMode('compact')" class="bulk-toolbar-btn">Gọn</button>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-2">Bản này không crop thumbnail nữa: ảnh ngang/dọc/vuông đều hiện đủ khung, logo preview đặt đúng tỷ lệ hơn.</p>
                 </div>
                 
                 <div id="bulk-preview-container" class="grid bulk-preview-grid-comfort gap-4 overflow-y-auto max-h-[680px] content-start p-1">
@@ -677,16 +467,13 @@
                                 <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
                             </div>
                             <h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3>
-                            <p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên khung chuẩn, tối ưu logo dài cho iPhone và cho xem RV trước khi xuất.</p>
+                            <p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web tự dò vùng viền, tối ưu logo dài và chống crash RAM khi xuất.</p>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 
     <!-- MODAL XEM RV / TOÀN ẢNH CHO BULK LOGO -->
     <div id="bulk-review-modal" class="hidden fixed inset-0 z-[999] bulk-review-backdrop items-center justify-center p-4">
@@ -720,10 +507,33 @@
         </div>
     </div>
 
-    <!-- Input file ẩn cho phép Multiple (chọn nhiều file) -->
     <input type="file" id="zone-file-input" accept="image/*" multiple class="hidden" onchange="handleZoneImageUpload(event)">
 
     <script>
+        // --- TOAST NOTIFICATION SYSTEM ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `ug-toast ${type}`;
+            
+            const icon = type === 'success' 
+                ? `<svg class="w-6 h-6 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`
+                : `<svg class="w-6 h-6 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after delay
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400); // Wait for transition
+            }, 4000);
+        }
+
+
         // --- 1. CONFIG BỐ CỤC KHUNG FB ---
         const MODES = {
             'mode-2v': {
@@ -899,26 +709,26 @@
             });
         }
 
+        // Tối ưu hàm tìm biên: Nhảy step pixel thay vì quét từng pixel để tránh block UI
         function getLogoContentBounds(img) {
-            const maxScanSide = 900;
+            const maxScanSide = 600; // Giảm xuống 600 là đủ cho logic Trim
             const ratio = img.width / img.height;
             const sw = ratio >= 1 ? maxScanSide : Math.max(1, Math.round(maxScanSide * ratio));
             const sh = ratio >= 1 ? Math.max(1, Math.round(maxScanSide / ratio)) : maxScanSide;
+            
             const scanCanvas = document.createElement('canvas');
-            scanCanvas.width = sw;
-            scanCanvas.height = sh;
+            scanCanvas.width = sw; scanCanvas.height = sh;
             const scanCtx = scanCanvas.getContext('2d', { willReadFrequently: true });
-            scanCtx.clearRect(0, 0, sw, sh);
             scanCtx.drawImage(img, 0, 0, sw, sh);
 
             const data = scanCtx.getImageData(0, 0, sw, sh).data;
             let minX = sw, minY = sh, maxX = -1, maxY = -1;
-            for (let y = 0; y < sh; y++) {
-                for (let x = 0; x < sw; x++) {
-                    const idx = (y * sw + x) * 4;
-                    const alpha = data[idx + 3];
-                    // Dò phần logo thật, bỏ các khoảng trong suốt/viền thừa của file lấy từ link.
-                    if (alpha > 12) {
+            
+            // Step 2 to double speed. Alpha threshold 15 to ignore semi-transparent artifacts
+            for (let y = 0; y < sh; y+=2) {
+                for (let x = 0; x < sw; x+=2) {
+                    const alpha = data[(y * sw + x) * 4 + 3];
+                    if (alpha > 15) {
                         if (x < minX) minX = x;
                         if (y < minY) minY = y;
                         if (x > maxX) maxX = x;
@@ -926,33 +736,28 @@
                     }
                 }
             }
+            
+            // Clean up RAM
+            scanCanvas.width = 0; scanCanvas.height = 0; 
 
-            if (maxX < 0 || maxY < 0) {
-                return { x: 0, y: 0, w: img.width, h: img.height };
-            }
+            if (maxX < 0 || maxY < 0) return { x: 0, y: 0, w: img.width, h: img.height };
 
             const sx = img.width / sw;
             const sy = img.height / sh;
             return {
                 x: Math.max(0, Math.floor(minX * sx)),
                 y: Math.max(0, Math.floor(minY * sy)),
-                w: Math.min(img.width, Math.ceil((maxX - minX + 1) * sx)),
-                h: Math.min(img.height, Math.ceil((maxY - minY + 1) * sy))
+                w: Math.min(img.width, Math.ceil((maxX - minX + 2) * sx)), // +2 to ensure we don't clip edge
+                h: Math.min(img.height, Math.ceil((maxY - minY + 2) * sy))
             };
         }
 
+        // Tối ưu chất lượng logo: Tăng độ phân giải khung cơ sở lên x1.5
         function getLogoNormalizeFrame(bounds) {
             const ratio = bounds.w / bounds.h;
-            if (ratio >= 1.35) {
-                // Logo ngang: cho khung rộng hơn một chút để sang ảnh ngang/dọc/vuông đều không bị nhỏ.
-                return { w: 1600, h: 560, pad: 0.055, type: 'ngang' };
-            }
-            if (ratio <= 0.82) {
-                // Logo dọc: cho khung cao hơn một chút để không bị ép thấp khi xuất trên iPhone/app nhắn tin.
-                return { w: 760, h: 940, pad: 0.075, type: 'doc' };
-            }
-            // Logo vuông/gần vuông: cân bằng nhưng vẫn ưu tiên chiều cao rõ hơn.
-            return { w: 840, h: 900, pad: 0.085, type: 'vuong' };
+            if (ratio >= 1.35) return { w: 2400, h: 840, pad: 0.055, type: 'ngang' };
+            if (ratio <= 0.82) return { w: 1140, h: 1410, pad: 0.075, type: 'doc' };
+            return { w: 1260, h: 1350, pad: 0.085, type: 'vuong' };
         }
 
         function loadImageFromDataUrl(src) {
@@ -972,19 +777,26 @@
                 outCanvas.width = frame.w;
                 outCanvas.height = frame.h;
                 const outCtx = outCanvas.getContext('2d');
+                
+                // Kích hoạt chất lượng làm mượt cao nhất khi scale up/down logo
+                outCtx.imageSmoothingEnabled = true;
+                outCtx.imageSmoothingQuality = 'high';
                 outCtx.clearRect(0, 0, frame.w, frame.h);
 
                 const maxW = frame.w * (1 - frame.pad * 2);
                 const maxH = frame.h * (1 - frame.pad * 2);
-                // To thì thu lại, nhỏ thì phóng lên: mọi logo link/upload đều vào chung một khung chuẩn.
                 const scale = Math.min(maxW / bounds.w, maxH / bounds.h);
                 const dw = bounds.w * scale;
                 const dh = bounds.h * scale;
                 const dx = (frame.w - dw) / 2;
                 const dy = (frame.h - dh) / 2;
+                
                 outCtx.drawImage(img, bounds.x, bounds.y, bounds.w, bounds.h, dx, dy, dw, dh);
-
                 const normalized = await loadImageFromDataUrl(outCanvas.toDataURL('image/png'));
+                
+                // Giải phóng RAM
+                outCanvas.width = 0; outCanvas.height = 0;
+                
                 if (normalized) {
                     normalized.dataset.logoFrameType = frame.type;
                     normalized.dataset.originalW = String(img.width || '');
@@ -992,7 +804,6 @@
                     return normalized;
                 }
             } catch (err) {
-                // Nếu browser/app chặn canvas do CORS, vẫn dùng ảnh gốc để không làm gián đoạn quy trình.
                 console.warn('Không chuẩn hóa được logo, dùng ảnh gốc:', err);
             }
             return img;
@@ -1020,6 +831,8 @@
                     loadLogoForSlot(index, `https://wsrv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&v=${Date.now()}`, 1);
                 } else if (retryLevel === 1) {
                     loadLogoForSlot(index, `https://corsproxy.io/?${encodeURIComponent(url)}`, 2);
+                } else {
+                    showToast(`Không tải được Logo số ${index + 1} do lỗi phân quyền ảnh từ link gốc.`, 'error');
                 }
             };
             img.src = retryLevel === 0 ? `${url}?v=${Date.now()}` : url;
@@ -1046,6 +859,7 @@
                     renderLogoConfigUI();
                     renderView();
                     renderBulkLogoView();
+                    showToast('Đã áp dụng Logo tải lên thành công!');
                 };
                 i.src = evt.target.result;
             }
@@ -1214,15 +1028,18 @@
                         imgIdx++;
                     }
                 }
+                let extraCount = 0;
                 while (imgIdx < results.length) {
                     extraImages.push({
                         id: Date.now() + Math.random(),
                         img: results[imgIdx].img
                     });
                     imgIdx++;
+                    extraCount++;
                 }
                 renderView();
                 renderExtraImages();
+                if (extraCount > 0) showToast(`Đã thêm ${extraCount} ảnh vào mục Ảnh Lẻ Đính Kèm.`);
             });
         }
 
@@ -1421,7 +1238,8 @@
                     pieceDiv.style.left = `${pieceX * 100}%`; pieceDiv.style.top = `${pieceY * 100}%`;
                     pieceDiv.style.width = `${pieceW * 100}%`; pieceDiv.style.height = `${pieceH * 100}%`;
                     const isVertical = pieceH > pieceW;
-                    const basePct = isVertical ? 60 : 40; 
+                    // Giảm 15-20% cho logo trong Grid Preview
+                    const basePct = isVertical ? 50 : 34; 
                     
                     logosConfig.forEach(conf => {
                         if (!conf.enabled || !conf.img) return;
@@ -1451,6 +1269,8 @@
 
         // --- BULK MODE PRO: chỉ lưu File + thumbnail nhẹ, không giữ ảnh gốc đã decode trong RAM ---
         function sleep(ms = 0) { return new Promise(resolve => setTimeout(resolve, ms)); }
+        // Dùng requestAnimationFrame để nhường Main Thread, giúp UI mượt hơn
+        function yieldToMain() { return new Promise(resolve => requestAnimationFrame(resolve)); }
 
         function safeFileName(name, fallback = 'image') {
             const base = (name || fallback).replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9_\-À-ỹ ]/g, '').trim() || fallback;
@@ -1487,7 +1307,7 @@
             setTimeout(() => URL.revokeObjectURL(url), 2000);
         }
 
-        function canvasToBlobSafe(canvas, type = 'image/jpeg', quality = 0.9) {
+        function canvasToBlobSafe(canvas, type = 'image/jpeg', quality = 0.96) {
             return new Promise(resolve => canvas.toBlob(resolve, type, quality));
         }
 
@@ -1518,7 +1338,8 @@
             ctx.drawImage(img, 0, 0, tw, th);
             const thumb = canvas.toDataURL('image/jpeg', 0.72);
             const meta = { width: img.naturalWidth || img.width, height: img.naturalHeight || img.height };
-            canvas.width = 1; canvas.height = 1;
+            // Dọn RAM
+            canvas.width = 0; canvas.height = 0;
             URL.revokeObjectURL(url);
             return { thumb, ...meta };
         }
@@ -1620,6 +1441,7 @@
             if (imageFiles.length === 0) {
                 setBulkProgress('Không tìm thấy file ảnh hợp lệ trong lựa chọn/kéo thả.', 100);
                 hideBulkProgressSoon();
+                showToast('Không có ảnh hợp lệ nào được chọn.', 'error');
                 return;
             }
             const existingKeys = new Set(bulkLogoImages.map(item => item.key).filter(Boolean));
@@ -1633,6 +1455,7 @@
             if (uniqueFiles.length === 0) {
                 setBulkProgress('Các ảnh này đã có trong danh sách, web không thêm trùng.', 100);
                 hideBulkProgressSoon();
+                showToast('Ảnh này đã có trong danh sách rồi.');
                 return;
             }
 
@@ -1656,11 +1479,13 @@
                     console.warn('Không đọc được ảnh:', file?.name, err);
                 }
                 setBulkProgress(`Đang nạp ảnh ${i + 1}/${uniqueFiles.length}...`, ((i + 1) / uniqueFiles.length) * 100);
-                if (i % 4 === 0) await sleep(0);
+                // Giúp UI không bị giật lag
+                if (i % 3 === 0) await yieldToMain();
             }
             renderBulkLogoView();
-            setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới. Có thể tạo ảnh chia sẻ, xuất ZIP hoặc lưu thẳng ra thư mục.`, 100);
+            setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới.`, 100);
             hideBulkProgressSoon();
+            showToast(`Đã thêm ${uniqueFiles.length} ảnh thành công!`);
         }
 
         function clearBulkImages() {
@@ -1670,6 +1495,7 @@
             renderBulkLogoView();
             const panel = document.getElementById('bulk-progress-panel');
             if (panel) panel.classList.add('hidden');
+            showToast('Đã xóa danh sách ảnh hàng loạt.');
         }
 
         function getSelectedBulkItems() {
@@ -1719,16 +1545,18 @@
             const padPct = 4;
             const logoType = conf.img?.dataset?.logoFrameType || '';
             if (conf.x === 'center') {
-                let widthPct = ratio > 1.35 ? 52 : (ratio < 0.75 ? 72 : 62);
-                return { widthPct: Math.min(92, widthPct * currentScale), maxHeightPct: ratio > 1.35 ? 22 : 18, padPct };
+                // Giảm 15-20% độ phủ ngang cho logo trung tâm
+                let widthPct = ratio > 1.35 ? 44 : (ratio < 0.75 ? 60 : 52);
+                return { widthPct: Math.min(92, widthPct * currentScale), maxHeightPct: ratio > 1.35 ? 19 : 15, padPct };
             }
             if (logoType === 'ngang') {
-                let targetWide = ratio > 1.35 ? 29 : (ratio < 0.75 ? 36 : 33);
-                return { widthPct: Math.min(52, targetWide * currentScale * (minSide / fw) * 2.05), maxHeightPct: ratio < 0.75 ? 16 : 14, padPct: 3.2 };
+                // Giảm 15-20% độ phủ ngang cho logo dạng dài
+                let targetWide = ratio > 1.35 ? 25 : (ratio < 0.75 ? 30 : 28);
+                return { widthPct: Math.min(52, targetWide * currentScale * (minSide / fw) * 2.05), maxHeightPct: ratio < 0.75 ? 14 : 12, padPct: 3.2 };
             }
-            let target = ratio > 1.35 ? 22 : (ratio < 0.75 ? 26 : 23);
-            // Logo quá ngang sẽ tự giảm chiều rộng để không che ảnh.
-            return { widthPct: Math.min(38, target * currentScale * (minSide / fw) * 1.9), maxHeightPct: 18, padPct };
+            // Giảm 15-20% độ phủ ngang cho logo vuông/dọc thông thường
+            let target = ratio > 1.35 ? 19 : (ratio < 0.75 ? 22 : 19);
+            return { widthPct: Math.min(38, target * currentScale * (minSide / fw) * 1.9), maxHeightPct: 15, padPct };
         }
 
         function appendLogoOverlays(container, fw, fh) {
@@ -1846,7 +1674,7 @@
         }
 
         function openBulkReview(index = 0) {
-            if (bulkLogoImages.length === 0) return alert('Chưa có ảnh để xem RV.');
+            if (bulkLogoImages.length === 0) return showToast('Chưa có ảnh để xem RV.', 'error');
             if (index < 0) index = 0;
             if (index >= bulkLogoImages.length) index = bulkLogoImages.length - 1;
             const item = bulkLogoImages[index];
@@ -1894,7 +1722,6 @@
             openBulkReview(next);
         }
 
-
         function getSmartLogoMetrics(fw, fh, conf) {
             const ratio = fw / fh;
             const minSide = Math.min(fw, fh);
@@ -1903,16 +1730,17 @@
             const logoType = conf.img?.dataset?.logoFrameType || '';
 
             if (conf.x === 'center') {
-                const pct = ratio > 1.35 ? 0.52 : (ratio < 0.75 ? 0.72 : 0.62);
-                const maxH = fh * (ratio > 1.35 ? 0.22 : 0.18);
+                // Giảm kích thước render cho logo trung tâm
+                const pct = ratio > 1.35 ? 0.44 : (ratio < 0.75 ? 0.60 : 0.52);
+                const maxH = fh * (ratio > 1.35 ? 0.19 : 0.15);
                 return { targetW: fw * pct * currentScale, maxH, minH: 0, padding };
             }
 
-            // Logo siêu ngang/thân dài: ưu tiên chiều cao tối thiểu để chữ không bị teo và bể trên iPhone/app nhắn tin.
             if (logoType === 'ngang') {
-                const pctShortWide = ratio > 1.35 ? 0.31 : (ratio < 0.75 ? 0.36 : 0.34);
-                const maxHWide = fh * (ratio < 0.75 ? 0.14 : 0.12);
-                const minHWide = clampNumber(fh * 0.058, 54, 112);
+                // Giảm kích thước render cho logo dài
+                const pctShortWide = ratio > 1.35 ? 0.25 : (ratio < 0.75 ? 0.30 : 0.28);
+                const maxHWide = fh * (ratio < 0.75 ? 0.12 : 0.10);
+                const minHWide = clampNumber(fh * 0.05, 45, 95);
                 return {
                     targetW: minSide * pctShortWide * currentScale,
                     maxH: maxHWide,
@@ -1921,12 +1749,11 @@
                 };
             }
 
-            // Tự nhận diện tỷ lệ ảnh: ngang/dọc/vuông để logo vừa mắt hơn.
-            // Dùng cạnh ngắn làm chuẩn nên logo không bị khổng lồ trên ảnh ngang dài hoặc ảnh dọc cao.
-            let pctShort = ratio > 1.35 ? 0.24 : (ratio < 0.75 ? 0.27 : 0.24);
+            // Giảm kích thước render cho logo vuông/dọc
+            let pctShort = ratio > 1.35 ? 0.20 : (ratio < 0.75 ? 0.23 : 0.20);
             return {
                 targetW: minSide * pctShort * currentScale,
-                maxH: fh * 0.16,
+                maxH: fh * 0.14,
                 minH: 0,
                 padding
             };
@@ -1953,7 +1780,6 @@
                     for (let xx = 0; xx < sw; xx += step) {
                         const idx = (yy * sw + xx) * 4;
                         const r = data[idx], g = data[idx + 1], b = data[idx + 2];
-                        // Relative luminance gần đúng: đủ nhanh cho xử lý hàng loạt trong trình duyệt.
                         const l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
                         sum += l;
                         sumSq += l * l;
@@ -1965,7 +1791,6 @@
                 const variance = count ? (sumSq / count) - (luma * luma) : 0;
                 return { luma, contrast: Math.sqrt(Math.max(0, variance)) };
             } catch (e) {
-                // Nếu trình duyệt chặn đọc pixel vì ảnh/logo cross-origin, dùng hiệu ứng an toàn mặc định.
                 return { luma: 128, contrast: 35 };
             }
         }
@@ -1995,7 +1820,6 @@
             const veryDark = stats.luma < 58;
             const blur = Math.max(3, Math.round(minSide * (busy ? 0.006 : 0.004)));
 
-            // Trường hợp nền quá sáng và ít chi tiết: tạo một nền mờ rất nhẹ, không nặng như shadow đen.
             if (veryBright && !busy) {
                 const pad = Math.max(5, Math.round(minSide * 0.008));
                 ctx.save();
@@ -2014,15 +1838,12 @@
             ctx.shadowOffsetY = 0;
 
             if (dark) {
-                // Nền tối: ưu tiên glow trắng nhẹ thay vì bóng đen.
                 ctx.shadowColor = veryDark ? 'rgba(255,255,255,0.30)' : 'rgba(255,255,255,0.22)';
                 ctx.shadowBlur = blur;
             } else if (bright) {
-                // Nền sáng: viền tối nhẹ quanh logo, giảm hẳn cảm giác lem đen.
                 ctx.shadowColor = busy ? 'rgba(0,0,0,0.24)' : 'rgba(0,0,0,0.18)';
                 ctx.shadowBlur = blur;
             } else {
-                // Nền trung tính: chỉ dùng viền siêu nhẹ.
                 ctx.shadowColor = busy ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.12)';
                 ctx.shadowBlur = Math.max(2, Math.round(minSide * 0.003));
             }
@@ -2069,12 +1890,12 @@
         async function processExport() {
             const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
             if (!hasLogo) {
-                alert("⚠️ Bạn chưa tick chọn Logo nào! Vui lòng chọn ít nhất 1 Logo ở phần 'Brand Kit Logo & Watermark' trước khi tải về.");
+                showToast("⚠️ Bạn chưa tick chọn Logo nào! Vui lòng chọn ít nhất 1 Logo trước khi tải.", "error");
                 return;
             }
             const m = MODES[currentMode];
             for (const z of m.zones) {
-                if (!state[z.id]) return alert(`Vui lòng tải đủ ảnh cho vị trí: "${z.label}"`);
+                if (!state[z.id]) return showToast(`Vui lòng tải đủ ảnh cho vị trí: "${z.label}"`, "error");
             }
             const btn = document.getElementById('btn-export-grid');
             btn.innerHTML = 'ĐANG ĐÓNG GÓI & RENDER...'; btn.disabled = true;
@@ -2086,10 +1907,14 @@
                     const cvs = document.createElement('canvas');
                     cvs.width = zw; cvs.height = zh;
                     const ctx = cvs.getContext('2d');
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    
                     const st = state[z.id];
                     const domZ = document.getElementById(`zone-${z.id}`);
                     const renderRatio = zw / domZ.offsetWidth;
                     ctx.drawImage(st.img, st.x * renderRatio, st.y * renderRatio, st.img.width * st.scale * renderRatio, st.img.height * st.scale * renderRatio);
+                    
                     if (st.gradient) {
                         const h = st.gradHeight || 50;
                         const c = st.gradColor || '#000000';
@@ -2148,25 +1973,49 @@
                     const sw = exp.cut.w * zCvs.width, sh = exp.cut.h * zCvs.height;
                     let fw, fh;
                     if (sw > sh) { fw = EXPORT_SIZE; fh = Math.round(EXPORT_SIZE * (sh / sw)); } else { fh = EXPORT_SIZE; fw = Math.round(EXPORT_SIZE * (sw / sh)); }
+                    
                     const fCvs = document.createElement('canvas'); fCvs.width = fw; fCvs.height = fh;
-                    const fCtx = fCvs.getContext('2d'); fCtx.drawImage(zCvs, sx, sy, sw, sh, 0, 0, fw, fh);
+                    const fCtx = fCvs.getContext('2d'); 
+                    fCtx.imageSmoothingEnabled = true; fCtx.imageSmoothingQuality = 'high';
+                    fCtx.drawImage(zCvs, sx, sy, sw, sh, 0, 0, fw, fh);
+                    
                     applyLogoToCanvas(fCtx, fw, fh);
                     const blob = await new Promise(r => fCvs.toBlob(r, 'image/jpeg', 0.95));
                     zip.file(exp.name, blob);
+                    
+                    // RAM clear
+                    fCvs.width = 0; fCvs.height = 0;
                 }
                 for (let i = 0; i < extraImages.length; i++) {
                     const exImg = extraImages[i].img; let fw = exImg.width; let fh = exImg.height;
                     if (fw > EXPORT_SIZE || fh > EXPORT_SIZE) { const r = Math.min(EXPORT_SIZE / fw, EXPORT_SIZE / fh); fw = Math.round(fw * r); fh = Math.round(fh * r); }
+                    
                     const eCvs = document.createElement('canvas'); eCvs.width = fw; eCvs.height = fh;
-                    const eCtx = eCvs.getContext('2d'); eCtx.drawImage(exImg, 0, 0, fw, fh);
+                    const eCtx = eCvs.getContext('2d'); 
+                    eCtx.imageSmoothingEnabled = true; eCtx.imageSmoothingQuality = 'high';
+                    eCtx.drawImage(exImg, 0, 0, fw, fh);
+                    
                     applyLogoToCanvas(eCtx, fw, fh);
                     const blob = await new Promise(r => eCvs.toBlob(r, 'image/jpeg', 0.95));
                     zip.file(`Anh_Le_Kem_Theo_${i + 1}.jpg`, blob);
+                    
+                    // RAM clear
+                    eCvs.width = 0; eCvs.height = 0;
                 }
+                
+                // Cleanup initial canvases
+                for (const z of m.zones) {
+                    zoneCanvases[z.id].width = 0; zoneCanvases[z.id].height = 0;
+                }
+
                 const zipBlob = await zip.generateAsync({type: "blob"});
                 const link = document.createElement('a'); link.href = URL.createObjectURL(zipBlob);
                 link.download = `UNITE_GROUP_Poster_${Date.now()}.zip`; link.click();
-            } catch (e) { alert("Lỗi xử lý ảnh!"); console.error(e); } 
+                showToast('Xuất ảnh thành công!');
+            } catch (e) { 
+                showToast("Lỗi xử lý ảnh!", "error"); 
+                console.error(e); 
+            } 
             finally {
                 btn.innerHTML = '<svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>XUẤT BỘ ẢNH LƯỚI (ZIP)'; 
                 btn.disabled = false;
@@ -2188,7 +2037,7 @@
         }
 
         async function renderBulkLogoFile(item, exportIndex = 0) {
-            const MAX_EDGE = 2000;
+            const MAX_EDGE = 2400; // Đẩy lên 2400 max edge cho ảnh bulk chất lượng cao nhất
             const JPG_QUALITY = 0.96;
             const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
             try {
@@ -2202,6 +2051,9 @@
                 cvs.width = fw;
                 cvs.height = fh;
                 const ctx = cvs.getContext('2d', { alpha: false });
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, fw, fh);
                 ctx.drawImage(img, 0, 0, fw, fh);
@@ -2209,8 +2061,11 @@
 
                 const blob = await canvasToBlobSafe(cvs, 'image/jpeg', JPG_QUALITY);
                 const fileName = `${String(exportIndex + 1).padStart(3, '0')}_${safeFileName(item.name, 'UNITE_Logo')}.jpg`;
-                cvs.width = 1;
-                cvs.height = 1;
+                
+                // Giải phóng RAM NGAY LẬP TỨC rất quan trọng trên iPhone
+                cvs.width = 0;
+                cvs.height = 0;
+                
                 return new File([blob], fileName, { type: 'image/jpeg', lastModified: Date.now() });
             } finally {
                 URL.revokeObjectURL(url);
@@ -2224,7 +2079,7 @@
             if (!panel || !list) return;
 
             panel.classList.remove('hidden');
-            if (meta) meta.innerText = `Đã tạo ${bulkPreparedShareFiles.length} ảnh JPG. Có thể chia sẻ qua tin nhắn hoặc mở từng ảnh để lưu vào Album.`;
+            if (meta) meta.innerText = `Đã tạo ${bulkPreparedShareFiles.length} ảnh JPG. Có thể chia sẻ qua tin nhắn hoặc lưu vào Album.`;
             list.innerHTML = '';
 
             bulkPreparedShareFiles.forEach((file, index) => {
@@ -2245,14 +2100,15 @@
                 list.appendChild(card);
             });
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            showToast('Tạo ảnh hoàn tất!');
         }
 
         async function prepareBulkLogoShareFiles() {
-            if (bulkLogoImages.length === 0) return alert('Vui lòng tải ảnh lên trước!');
+            if (bulkLogoImages.length === 0) return showToast('Vui lòng tải ảnh lên trước!', 'error');
             const selectedBulkImages = getSelectedBulkItems();
-            if (selectedBulkImages.length === 0) return alert("Bạn chưa chọn ảnh nào để tạo. Hãy bấm 'Chọn tất cả' hoặc tick từng ảnh cần xuất.");
+            if (selectedBulkImages.length === 0) return showToast("Bạn chưa chọn ảnh nào để tạo.", 'error');
             const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
-            if (!hasLogo) return alert("⚠️ Bạn chưa tick chọn Logo nào! Vui lòng chọn ít nhất 1 Logo trước khi tạo ảnh.");
+            if (!hasLogo) return showToast("⚠️ Bạn chưa tick chọn Logo nào!", 'error');
 
             const btn = document.getElementById('btn-prepare-share');
             const oldBtn = btn ? btn.innerHTML : '';
@@ -2267,13 +2123,14 @@
                     setBulkProgress(`Đang tạo ảnh chia sẻ ${i + 1}/${selectedBulkImages.length}...`, (i / selectedBulkImages.length) * 100);
                     const file = await renderBulkLogoFile(selectedBulkImages[i], i);
                     bulkPreparedShareFiles.push(file);
-                    if (i % 2 === 0) await sleep(0);
+                    // Nhường frame cho UI mượt
+                    await yieldToMain();
                 }
-                setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh. Bấm Chia sẻ để gửi qua Zalo/Messenger/AirDrop.`, 100);
+                setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh. Bấm Chia sẻ để gửi đi.`, 100);
                 renderPreparedSharePanel();
             } catch (e) {
                 console.error(e);
-                alert('Có lỗi khi tạo ảnh chia sẻ. Hạnh thử chọn ít ảnh hơn hoặc giảm kích thước ảnh gốc nhé.');
+                showToast('Có lỗi khi tạo ảnh. Vui lòng chọn ít ảnh hơn hoặc giảm tải trang.', 'error');
             } finally {
                 if (btn) {
                     btn.disabled = false;
@@ -2284,24 +2141,23 @@
         }
 
         async function sharePreparedBulkFiles() {
-            if (!bulkPreparedShareFiles.length) return alert('Hạnh bấm “Tạo ảnh để chia sẻ / lưu album” trước nha.');
+            if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
             const files = bulkPreparedShareFiles;
             try {
-                // iPhone/Safari thường ổn định hơn khi chỉ truyền files, không kèm title/text.
                 if (navigator.canShare && navigator.canShare({ files })) {
                     await navigator.share({ files });
                     return;
                 }
                 if (navigator.canShare && navigator.canShare({ files: [files[0]] })) {
                     await navigator.share({ files: [files[0]] });
-                    alert('Trình duyệt/app chỉ nhận 1 ảnh mỗi lần. Hạnh dùng nút “Chia sẻ” ở từng ảnh bên dưới để gửi tiếp nha.');
+                    showToast('Trình duyệt chỉ hỗ trợ gửi 1 ảnh mỗi lần. Vui lòng gửi từng ảnh.', 'error');
                     return;
                 }
-                alert('Trình duyệt này chưa hỗ trợ chia sẻ file ảnh trực tiếp. Hạnh bấm “Mở ảnh” rồi giữ vào ảnh để Lưu hình ảnh hoặc gửi qua app khác.');
+                showToast('Thiết bị không hỗ trợ gửi đa ảnh trực tiếp. Vui lòng tải về máy.', 'error');
             } catch (e) {
                 if (e && e.name === 'AbortError') return;
                 console.warn(e);
-                alert('App nhận chia sẻ không nhận bộ ảnh này. Hạnh thử chọn ít ảnh hơn, hoặc bấm “Chia sẻ” từng ảnh bên dưới nhé.');
+                showToast('Hủy gửi hoặc ứng dụng không nhận diện được file.', 'error');
             }
         }
 
@@ -2313,42 +2169,43 @@
                     await navigator.share({ files: [file] });
                     return;
                 }
-                alert('Trình duyệt này chưa hỗ trợ chia sẻ file ảnh trực tiếp. Hạnh bấm “Mở ảnh” rồi lưu/gửi thủ công nha.');
+                showToast('Chưa hỗ trợ chia sẻ trực tiếp. Hãy bấm "Tải" về máy.', 'error');
             } catch (e) {
-                if (e && e.name !== 'AbortError') alert('Không chia sẻ được ảnh này. Hạnh thử bấm “Mở ảnh” rồi lưu/gửi thủ công nha.');
+                if (e && e.name !== 'AbortError') showToast('Không chia sẻ được ảnh này.', 'error');
             }
         }
 
         async function downloadPreparedBulkFilesIndividually() {
-            if (!bulkPreparedShareFiles.length) return alert('Hạnh bấm “Tạo ảnh để chia sẻ / lưu album” trước nha.');
+            if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
             for (let i = 0; i < bulkPreparedShareFiles.length; i++) {
                 downloadBlob(bulkPreparedShareFiles[i], bulkPreparedShareFiles[i].name);
                 await sleep(250);
             }
+            showToast('Đang tải toàn bộ ảnh xuống...');
         }
 
         async function processBulkLogoExportToFolder() {
             if (!('showDirectoryPicker' in window)) {
-                alert('Trình duyệt này chưa hỗ trợ lưu thẳng vào thư mục. Hạnh dùng Chrome/Edge trên laptop, hoặc dùng nút xuất ZIP phía trên nhé.');
+                showToast('Trình duyệt chưa hỗ trợ lưu thẳng vào thư mục. Dùng nút xuất ZIP nhé.', 'error');
                 return;
             }
-            if (bulkLogoImages.length === 0) return alert('Vui lòng tải ảnh lên trước!');
+            if (bulkLogoImages.length === 0) return showToast('Vui lòng tải ảnh lên trước!', 'error');
             const selectedBulkImages = getSelectedBulkItems();
-            if (selectedBulkImages.length === 0) return alert("Bạn chưa chọn ảnh nào để xuất. Hãy bấm 'Chọn tất cả' hoặc tick từng ảnh cần xuất.");
+            if (selectedBulkImages.length === 0) return showToast("Bạn chưa chọn ảnh nào để xuất.", 'error');
             const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
-            if (!hasLogo) return alert("⚠️ Bạn chưa tick chọn Logo nào! Vui lòng chọn ít nhất 1 Logo trước khi lưu ảnh.");
+            if (!hasLogo) return showToast("⚠️ Bạn chưa chọn Logo nào!", 'error');
 
             let dirHandle;
             try {
                 dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
             } catch (_) {
-                return;
+                return; // User cancelled
             }
 
             const btn = document.getElementById('btn-export-folder');
             const oldBtn = btn.innerHTML;
             btn.disabled = true;
-            const MAX_EDGE = 2000;
+            const MAX_EDGE = 2400; // Tăng chất lượng ảnh xuất folder
             const JPG_QUALITY = 0.96;
             let done = 0;
 
@@ -2356,6 +2213,7 @@
                 for (const item of selectedBulkImages) {
                     setBulkProgress(`Đang lưu ảnh ${done + 1}/${selectedBulkImages.length} vào thư mục...`, (done / selectedBulkImages.length) * 100);
                     btn.innerText = `ĐANG LƯU ${done + 1}/${selectedBulkImages.length}...`;
+                    
                     const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
                     let fw = img.naturalWidth || img.width;
                     let fh = img.naturalHeight || img.height;
@@ -2366,6 +2224,9 @@
                     const cvs = document.createElement('canvas');
                     cvs.width = fw; cvs.height = fh;
                     const ctx = cvs.getContext('2d', { alpha: false });
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    
                     ctx.fillStyle = '#ffffff';
                     ctx.fillRect(0, 0, fw, fh);
                     ctx.drawImage(img, 0, 0, fw, fh);
@@ -2378,15 +2239,18 @@
                     await writable.write(blob);
                     await writable.close();
 
-                    cvs.width = 1; cvs.height = 1;
+                    // Cleanup RAM
+                    cvs.width = 0; cvs.height = 0;
                     URL.revokeObjectURL(url);
+                    
                     done++;
-                    if (done % 3 === 0) await sleep(0);
+                    await yieldToMain();
                 }
-                setBulkProgress(`Hoàn tất ${selectedBulkImages.length} ảnh. Ảnh đã nằm trong thư mục Hạnh chọn.`, 100);
+                setBulkProgress(`Hoàn tất ${selectedBulkImages.length} ảnh.`, 100);
+                showToast(`Đã xuất ${selectedBulkImages.length} ảnh vào thư mục thành công!`);
             } catch (e) {
                 console.error(e);
-                alert('Có lỗi khi lưu vào thư mục. Hạnh thử lại hoặc dùng xuất ZIP nhé.');
+                showToast('Có lỗi khi lưu vào thư mục. Vui lòng thử xuất bằng ZIP.', 'error');
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = oldBtn;
@@ -2395,20 +2259,18 @@
         }
 
         async function processBulkLogoExport() {
-            if (bulkLogoImages.length === 0) return alert("Vui lòng tải ảnh lên trước!");
+            if (bulkLogoImages.length === 0) return showToast("Vui lòng tải ảnh lên trước!", "error");
             const selectedBulkImages = getSelectedBulkItems();
-            if (selectedBulkImages.length === 0) return alert("Bạn chưa chọn ảnh nào để xuất. Hãy bấm 'Chọn tất cả' hoặc tick từng ảnh cần xuất.");
+            if (selectedBulkImages.length === 0) return showToast("Bạn chưa chọn ảnh nào để xuất.", "error");
             const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
-            if (!hasLogo) {
-                alert("⚠️ Bạn chưa tick chọn Logo nào! Vui lòng chọn ít nhất 1 Logo ở phần 'Brand Kit Logo & Watermark' trước khi tải về.");
-                return;
-            }
+            if (!hasLogo) return showToast("⚠️ Bạn chưa tick chọn Logo nào!", "error");
+            
             const btn = document.getElementById('btn-export-bulk');
             btn.disabled = true;
             const oldBtn = btn.innerHTML;
 
-            const MAX_EDGE = 2000;      // Đủ sắc nét cho Facebook/Zalo, nhẹ hơn ảnh gốc 4K/8K rất nhiều.
-            const ZIP_BATCH = 25;       // Tự chia lô để tránh phình RAM khi nhân sự chọn 50-200 ảnh.
+            const MAX_EDGE = 2400;      
+            const ZIP_BATCH = 25;       
             const JPG_QUALITY = 0.96;
             const total = selectedBulkImages.length;
             const totalBatches = Math.ceil(total / ZIP_BATCH);
@@ -2434,6 +2296,9 @@
                         const cvs = document.createElement('canvas');
                         cvs.width = fw; cvs.height = fh;
                         const ctx = cvs.getContext('2d', { alpha: false });
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
+                        
                         ctx.fillStyle = '#ffffff';
                         ctx.fillRect(0, 0, fw, fh);
                         ctx.drawImage(img, 0, 0, fw, fh);
@@ -2442,10 +2307,12 @@
                         const blob = await canvasToBlobSafe(cvs, 'image/jpeg', JPG_QUALITY);
                         zip.file(`${String(done + 1).padStart(3, '0')}_${safeFileName(item.name, 'UNITE_Logo')}.jpg`, blob);
 
-                        cvs.width = 1; cvs.height = 1;
+                        // Cleanup RAM immediately
+                        cvs.width = 0; cvs.height = 0;
                         URL.revokeObjectURL(url);
+                        
                         done++;
-                        if (done % 3 === 0) await sleep(0);
+                        await yieldToMain();
                     }
 
                     setBulkProgress(`Đang nén ZIP ${batchIndex + 1}/${totalBatches}...`, (done / total) * 100);
@@ -2456,11 +2323,12 @@
                     });
                     const suffix = totalBatches > 1 ? `_Part_${batchIndex + 1}_of_${totalBatches}` : '';
                     downloadBlob(zipBlob, `UNITE_Logo_Batch${suffix}_${Date.now()}.zip`);
-                    await sleep(500);
+                    await sleep(400); // Give browser time to save file
                 }
                 setBulkProgress(`Hoàn tất ${total} ảnh. File ZIP đã được tải xuống.`, 100);
+                showToast('Đã tải bộ ảnh ZIP thành công!');
             } catch (e) {
-                alert("Lỗi xử lý ảnh! Nếu ảnh quá nặng, hãy thử chọn ít ảnh hơn hoặc giảm kích thước ảnh gốc.");
+                showToast("Lỗi xử lý! Hãy thử chọn ít ảnh hơn.", "error");
                 console.error(e);
             } finally {
                 btn.innerHTML = oldBtn;
