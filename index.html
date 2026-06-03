@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNITE GROUP - Brand Image Studio V7 iPhone</title>
+    <title>UNITE GROUP - Brand Image Studio V7.1.1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
@@ -21,22 +21,17 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Tùy chỉnh thanh cuộn chung */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
-        /* Ẩn thanh cuộn cho danh sách ảnh dư */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
         .no-select { user-select: none; -webkit-user-select: none; }
 
-        /* Container queries để text thu phóng tỷ lệ thuận với khung DOM */
         .zone-container { container-type: inline-size; }
 
-        /* Giao diện lưới thu nhỏ */
         .mini-grid { display: grid; gap: 2px; width: 42px; height: 42px; background: #cbd5e1; padding: 2px; border-radius: 6px; flex-shrink: 0; overflow: hidden;}
         .mg-box { background: #94a3b8; width: 100%; height: 100%; }
         
@@ -54,12 +49,8 @@
         .grid-m-5 .b1 { grid-column: span 3; } .grid-m-5 .b2 { grid-column: span 3; }
         .grid-m-5 .b3 { grid-column: span 2; } .grid-m-5 .b4 { grid-column: span 2; } .grid-m-5 .b5 { grid-column: span 2; }
 
-        /* Hiệu ứng focus ô */
-        .zone-active::after {
-            content: ''; position: absolute; inset: 0; border: 3px solid #3b82f6; pointer-events: none; z-index: 50; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5);
-        }
+        .zone-active::after { content: ''; position: absolute; inset: 0; border: 3px solid #3b82f6; pointer-events: none; z-index: 50; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5); }
 
-        /* Gradient Vàng Đồng Sang Trọng */
         .text-gold {
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7);
             -webkit-background-clip: text;
@@ -67,13 +58,11 @@
             text-shadow: 0px 2px 4px rgba(0,0,0,0.3);
         }
     
-        /* Pro UI upgrade */
         body { background: linear-gradient(135deg, #f8fafc 0%, #eef4ff 45%, #fff7ed 100%); }
         .pro-card { border: 1px solid rgba(226,232,240,.9); box-shadow: 0 18px 45px -35px rgba(15, 23, 42, .55); }
         .progress-track { width: 100%; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
         .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #2563eb, #0f172a); border-radius: 999px; transition: width .2s ease; }
 
-        /* Bulk review upgrade: xem rõ toàn ảnh, không crop thumbnail */
         .bulk-toolbar-btn { border: 1px solid #dbe4f0; background: white; color: #334155; border-radius: 999px; padding: 8px 12px; font-size: 12px; font-weight: 800; transition: all .18s ease; }
         .bulk-toolbar-btn:hover { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
         .bulk-toolbar-btn.active { background: #0f172a; border-color: #0f172a; color: white; }
@@ -87,20 +76,13 @@
         .bulk-review-backdrop { background: rgba(2, 6, 23, .82); backdrop-filter: blur(10px); }
         .bulk-review-stage { max-width: min(92vw, 1080px); max-height: 72vh; box-shadow: 0 30px 80px -20px rgba(0,0,0,.65); }
 
-        /* V4: laptop drag/drop + folder workflow */
         .bulk-drop-zone {
-            position: relative;
-            border: 2px dashed #cbd5e1;
-            background: linear-gradient(135deg, #f8fafc, #eef6ff);
-            border-radius: 22px;
-            padding: 22px;
-            transition: border-color .18s ease, background .18s ease, transform .18s ease, box-shadow .18s ease;
+            position: relative; border: 2px dashed #cbd5e1; background: linear-gradient(135deg, #f8fafc, #eef6ff);
+            border-radius: 22px; padding: 22px; transition: border-color .18s ease, background .18s ease, transform .18s ease, box-shadow .18s ease;
         }
         .bulk-drop-zone.drag-over {
-            border-color: #2563eb;
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
-            transform: translateY(-1px);
-            box-shadow: 0 18px 35px -28px rgba(37, 99, 235, .9);
+            border-color: #2563eb; background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            transform: translateY(-1px); box-shadow: 0 18px 35px -28px rgba(37, 99, 235, .9);
         }
         .drop-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; padding: 12px 14px; font-weight: 900; font-size: 13px; transition: all .18s ease; cursor: pointer; position: relative; z-index: 2; }
         .drop-action-btn.primary { background: #2563eb; color: white; box-shadow: 0 14px 25px -18px rgba(37,99,235,.8); }
@@ -109,21 +91,21 @@
         .drop-action-btn.secondary:hover { background: #f8fafc; border-color: #93c5fd; color: #1d4ed8; }
         .folder-output-btn { background: linear-gradient(135deg, #0f172a, #334155); }
 
-        /* Mobile share: tối ưu cho iPhone, Zalo/Messenger/AirDrop */
         .mobile-share-btn { background: linear-gradient(135deg, #0ea5e9, #2563eb); }
         .mobile-share-panel { background: linear-gradient(135deg, #eff6ff, #ffffff); border: 1px solid #bfdbfe; border-radius: 22px; padding: 16px; box-shadow: 0 18px 42px -34px rgba(37,99,235,.86); }
-        .mobile-share-action { border-radius: 16px; padding: 12px 14px; font-weight: 900; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all .18s ease; }
+        .mobile-share-action { border-radius: 12px; padding: 10px 12px; font-weight: 800; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all .18s ease; text-align: center; }
         .mobile-share-action.primary { color: white; background: linear-gradient(135deg, #2563eb, #0f172a); }
         .mobile-share-action.secondary { color: #0f172a; background: white; border: 1px solid #dbe4f0; }
-        .mobile-share-card { display: grid; grid-template-columns: 58px 1fr; gap: 10px; align-items: center; background: rgba(255,255,255,.88); border: 1px solid #dbeafe; border-radius: 16px; padding: 9px; }
-        .mobile-share-card img { width: 58px; height: 58px; object-fit: cover; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; }
-
-        /* V5 polish: chỉnh lại tổng thể cho gọn, sang và ít cảm giác dang dở */
-        :root {
-            --ug-ink: #0f172a;
-            --ug-muted: #64748b;
-            --ug-card: rgba(255,255,255,.92);
+        .mobile-share-action.highlight { color: white; background: linear-gradient(135deg, #10b981, #047857); box-shadow: 0 4px 12px -2px rgba(16,185,129,0.4); }
+        
+        .mobile-share-card { display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,.88); border: 1px solid #dbeafe; border-radius: 16px; padding: 12px; }
+        .mobile-share-card img { width: 100%; max-height: 180px; object-fit: contain; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; }
+        @media (min-width: 640px) {
+            .mobile-share-card { flex-direction: row; align-items: center; }
+            .mobile-share-card img { width: 120px; max-height: 120px; }
         }
+
+        :root { --ug-ink: #0f172a; --ug-muted: #64748b; --ug-card: rgba(255,255,255,.92); }
         html { scroll-behavior: smooth; }
         body { color: var(--ug-ink); background: radial-gradient(circle at 6% 0%, rgba(37, 99, 235, .14), transparent 34rem), radial-gradient(circle at 92% 8%, rgba(242, 184, 75, .18), transparent 32rem), linear-gradient(180deg, #f3f7ff 0%, #f8fafc 48%, #ffffff 100%) !important; }
         .app-hero { overflow: hidden; border-radius: 28px; border: 1px solid rgba(255,255,255,.72); background: linear-gradient(135deg, rgba(15, 23, 42, .98), rgba(15, 23, 42, .91) 50%, rgba(48, 35, 26, .96)); color: white; box-shadow: 0 24px 60px -42px rgba(15, 23, 42, .9); position: relative; }
@@ -133,7 +115,6 @@
         .panel-card { background: var(--ug-card); border: 1px solid rgba(226,232,240,.82); border-radius: 24px; box-shadow: 0 20px 55px -46px rgba(15, 23, 42, .78); backdrop-filter: blur(10px); }
         .preview-shell { background: rgba(255,255,255,.94) !important; border: 1px solid rgba(226,232,240,.82) !important; border-radius: 26px !important; box-shadow: 0 24px 70px -55px rgba(15, 23, 42, .82) !important; min-height: min(780px, calc(100vh - 190px)); }
         
-        /* Toast UI Styling */
         #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
         .ug-toast { background: white; border-radius: 16px; padding: 16px 20px; box-shadow: 0 10px 40px -10px rgba(15,23,42,0.2); border-left: 4px solid #2563eb; font-size: 14px; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 12px; transform: translateX(120%); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; }
         .ug-toast.show { transform: translateX(0); opacity: 1; }
@@ -151,7 +132,6 @@
 </head>
 <body class="min-h-screen p-3 md:p-5 lg:p-6">
 
-    <!-- Toast Container -->
     <div id="toast-container"></div>
 
     <header class="max-w-[1500px] mx-auto mb-6 app-hero">
@@ -171,7 +151,6 @@
 
     <div class="max-w-[1500px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5">
         
-        <!-- --- CỘT ĐIỀU KHIỂN (TRÁI) --- -->
         <div class="lg:col-span-4 flex flex-col gap-5 side-column">
             
             <div class="flex gap-2 p-1.5 rounded-2xl sticky top-0 z-50 bg-white/80 backdrop-blur-md border border-slate-200 shadow-sm">
@@ -188,9 +167,6 @@
                     <span class="text-xs text-gray-600 font-semibold whitespace-nowrap">Scale tổng:</span>
                     <input type="range" id="logo-scale-slider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-blue-600 cursor-pointer" oninput="updateLogoScale(this.value)">
                     <span id="logo-scale-val" class="text-xs text-blue-700 font-bold w-12 text-right">100%</span>
-                </div>
-                <div class="mt-2 text-[11px] text-slate-500 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2">
-                    <strong class="text-emerald-700">Smart Halo đang bật:</strong> Web tự dò vùng đặt logo sáng/tối/rối để dùng viền mờ nhẹ, không đổ bóng đen đậm.
                 </div>
             </div>
 
@@ -229,11 +205,6 @@
                             <div class="mini-grid grid-m-5"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div><div class="mg-box b5"></div></div>
                             <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">5 Ảnh<br>(2 Trên)</span></div>
                         </label>
-                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative sm:col-span-3" id="lbl-mode-1" onclick="selectMode('mode-1')">
-                            <input type="radio" name="mode" value="mode-1" class="hidden">
-                            <div class="mini-grid grid-m-1"><div class="mg-box"></div></div>
-                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-xs">Cắt 1 Tấm Lớn Thành Khung Theo Tỷ Lệ Đều Nhau</span></div>
-                        </label>
                     </div>
 
                     <hr class="my-5 border-gray-100">
@@ -244,10 +215,8 @@
                         Chọn Nhiều Ảnh Cùng Lúc
                         <input type="file" accept="image/*" multiple class="hidden" onchange="handleGlobalUpload(event)">
                     </label>
-                    <p class="text-[11px] text-gray-500 mt-2 text-center">Ảnh dư sẽ tự chuyển xuống dạng "Ảnh Lẻ Đính Kèm".</p>
                 </div>
 
-                <!-- BẢNG THIẾT KẾ Ô -->
                 <div id="design-panel" class="bg-blue-50/50 p-5 rounded-2xl shadow-sm border border-blue-100 hidden">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-base font-bold text-blue-900 flex items-center">
@@ -333,7 +302,7 @@
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                     </div>
                     <h2 class="text-lg font-bold text-gray-800 mb-2">Đóng Dấu Hàng Loạt Ảnh</h2>
-                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh, tự động tối ưu logo dài, và xuất ra hàng loạt chất lượng cao.</p>
+                    <p class="text-sm text-gray-500 mb-5">Giữ nguyên tỷ lệ gốc, tự động thu nhỏ logo chuẩn và tối ưu bộ nhớ để không crash máy.</p>
                     
                     <div id="bulk-drop-zone" class="bulk-drop-zone text-left" ondragover="handleBulkDragOver(event)" ondragleave="handleBulkDragLeave(event)" ondrop="handleBulkDrop(event)">
                         <div class="relative z-[2] flex flex-col items-center text-center gap-3">
@@ -342,7 +311,7 @@
                             </div>
                             <div>
                                 <h3 class="text-base font-black text-slate-900">Kéo thả ảnh hoặc cả folder vào đây</h3>
-                                <p class="text-xs text-slate-500 mt-1">Dành cho laptop: kéo file/folder từ File Explorer vào khung này.</p>
+                                <p class="text-xs text-slate-500 mt-1">Hỗ trợ nhận diện file trên cả Laptop và Điện Thoại.</p>
                             </div>
                             <div class="flex flex-col sm:flex-row gap-2 w-full">
                                 <label class="drop-action-btn primary flex-1">
@@ -370,9 +339,9 @@
 
                 <button onclick="prepareBulkLogoShareFiles()" id="btn-prepare-share" class="w-full mobile-share-btn hover:brightness-95 text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
                     <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" /></svg>
-                    TẠO ẢNH ĐỂ CHIA SẺ / LƯU ALBUM
+                    TẠO ẢNH ĐỂ CHIA SẺ / COPY
                 </button>
-                <p class="text-[11px] text-slate-500 text-center -mt-1">Dành cho iPhone: tạo xong bấm “Chia sẻ” để gửi qua Zalo/AirDrop.</p>
+                <p class="text-[11px] text-slate-500 text-center -mt-1">Nhanh gọn cho iPhone/Android để bung ảnh nét ra copy qua Zalo.</p>
 
                 <div id="mobile-share-panel" class="mobile-share-panel hidden mt-2">
                     <div class="flex items-start gap-3">
@@ -380,15 +349,11 @@
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l-3 3m3-3l3 3M12 3v9" /></svg>
                         </div>
                         <div class="min-w-0">
-                            <h3 class="text-sm font-black text-slate-900">Ảnh đã sẵn sàng để chia sẻ</h3>
-                            <p id="mobile-share-meta" class="text-xs text-slate-500 mt-1">Chưa tạo ảnh.</p>
+                            <h3 class="text-sm font-black text-slate-900">Ảnh đã sẵn sàng!</h3>
+                            <p id="mobile-share-meta" class="text-xs text-slate-500 mt-1">Nhấn "MỞ ẢNH GỐC" để hiện ảnh to, rồi Copy mới nét nhé.</p>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-                        <button onclick="sharePreparedBulkFiles()" id="btn-share-prepared" class="mobile-share-action primary">Chia sẻ tất cả ảnh</button>
-                        <button onclick="downloadPreparedBulkFilesIndividually()" id="btn-download-prepared" class="mobile-share-action secondary">Tải từng ảnh JPG</button>
-                    </div>
-                    <div id="mobile-share-list" class="mt-3 flex flex-col gap-2 max-h-64 overflow-y-auto pr-1"></div>
+                    <div id="mobile-share-list" class="mt-4 flex flex-col gap-3 max-h-80 overflow-y-auto pr-1"></div>
                 </div>
                 
                 <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
@@ -403,10 +368,8 @@
             </div>
         </div>
 
-        <!-- --- CỘT PREVIEW (PHẢI) --- -->
         <div class="lg:col-span-8 p-4 lg:p-6 flex flex-col preview-shell">
             
-            <!-- TAB 1 PREVIEW: GRID LƯỚI -->
             <div id="tab-grid-preview" class="flex flex-col flex-1">
                 <div class="bg-amber-50 text-amber-800 text-xs px-4 py-3 rounded-xl mb-4 font-medium flex items-start gap-3 border border-amber-100">
                     <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" /></svg>
@@ -414,7 +377,7 @@
                         <strong>HƯỚNG DẪN:</strong> <br>
                         1. <strong>Tải nhiều ảnh</strong> hoặc click trực tiếp vào từng ô.<br>
                         2. <strong>Bấm giữ & Kéo chuột</strong> trên ảnh để di chuyển căn góc chụp.<br>
-                        3. <strong>Click chọn lại</strong> một ảnh để mở Bảng Thiết Kế Chữ (bên trái).
+                        3. <strong>Click chọn lại</strong> một ảnh để mở Bảng Thiết Kế Chữ.
                     </div>
                 </div>
 
@@ -428,24 +391,22 @@
                 
                 <p class="text-center text-gray-400 text-xs mt-4">Sản phẩm xuất ra sẽ được cắt theo đúng các vạch kẻ màu trắng.</p>
 
-                <!-- VÙNG HIỂN THỊ ẢNH LẺ ĐÍNH KÈM -->
                 <div class="mt-6 border-t border-gray-100 pt-5">
                     <div class="flex justify-between items-center mb-3">
                         <h3 class="text-sm font-bold text-gray-700">Ảnh Lẻ Đính Kèm (<span id="extra-count">0</span>)</h3>
-                        <span class="text-[11px] text-gray-500 bg-gray-100 px-2 py-1 rounded font-medium border border-gray-200">Sẽ được tự động đóng dấu Logo khi xuất Zip</span>
+                        <span class="text-[11px] text-gray-500 bg-gray-100 px-2 py-1 rounded font-medium border border-gray-200">Sẽ được tự động đóng dấu Logo khi xuất</span>
                     </div>
                     <div id="extra-images-container" class="flex gap-2 overflow-x-auto pb-2 no-scrollbar min-h-[5rem]">
-                        <div class="text-[11px] text-gray-400 italic py-4 w-full text-center">Chưa có ảnh lẻ nào. Khi bạn chọn dư số lượng ảnh, ảnh dư sẽ tự động vào đây.</div>
+                        <div class="text-[11px] text-gray-400 italic py-4 w-full text-center">Chưa có ảnh lẻ nào.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 2 PREVIEW: BULK LOGO -->
             <div id="tab-logo-preview" class="hidden flex-col flex-1 h-full">
                 <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3 mb-4">
                     <div>
                         <h3 class="text-sm font-bold text-gray-700">Hình ảnh đã tải lên (<span id="bulk-count">0</span>)</h3>
-                        <p class="text-xs text-slate-500 mt-1">Đã chọn xuất: <b id="bulk-selected-count" class="text-blue-700">0</b> ảnh · Click ảnh để xem RV/toàn ảnh.</p>
+                        <p class="text-xs text-slate-500 mt-1">Đã chọn xuất: <b id="bulk-selected-count" class="text-blue-700">0</b> ảnh · Click ảnh để xem RV.</p>
                     </div>
                     <button onclick="clearBulkImages()" class="text-xs text-red-500 font-semibold hover:bg-red-50 px-2 py-1 rounded self-start">Xóa Tất Cả</button>
                 </div>
@@ -455,8 +416,6 @@
                         <button onclick="selectAllBulk(true)" class="bulk-toolbar-btn">Chọn tất cả</button>
                         <button onclick="selectAllBulk(false)" class="bulk-toolbar-btn">Bỏ chọn tất cả</button>
                         <button onclick="openBulkReview(getFirstReviewIndex())" class="bulk-toolbar-btn active">Xem RV toàn ảnh</button>
-                        <button id="btn-preview-comfort" onclick="setBulkPreviewMode('comfortable')" class="bulk-toolbar-btn active">Dễ nhìn</button>
-                        <button id="btn-preview-compact" onclick="setBulkPreviewMode('compact')" class="bulk-toolbar-btn">Gọn</button>
                     </div>
                 </div>
                 
@@ -467,7 +426,7 @@
                                 <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
                             </div>
                             <h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3>
-                            <p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web tự dò vùng viền, tối ưu logo dài và chống crash RAM khi xuất.</p>
+                            <p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Tự nhận diện ảnh, chỉnh logo thông minh và chống crash.</p>
                         </div>
                     </div>
                 </div>
@@ -489,7 +448,8 @@
 
             <div class="flex items-center justify-center gap-3">
                 <button onclick="navigateBulkReview(-1)" class="hidden md:flex w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 items-center justify-center text-2xl">‹</button>
-                <div id="bulk-review-stage" class="bulk-review-stage relative rounded-2xl bg-white overflow-hidden mx-auto">
+                <div id="bulk-review-stage" class="bulk-review-stage relative rounded-2xl bg-white overflow-hidden mx-auto flex items-center justify-center">
+                    <!-- Ảnh review lỗi sẽ hiển thị được thumbnail nhờ hàm img.onerror bên dưới -->
                     <img id="bulk-review-img" class="w-full h-full object-contain block" alt="Preview">
                     <div id="bulk-review-logo-layer" class="absolute inset-0 pointer-events-none"></div>
                 </div>
@@ -500,7 +460,7 @@
                 <button onclick="navigateBulkReview(-1)" class="bulk-toolbar-btn">Ảnh trước</button>
                 <label class="bulk-toolbar-btn cursor-pointer inline-flex items-center gap-2">
                     <input id="bulk-review-check" type="checkbox" class="accent-blue-600" onchange="toggleBulkSelected(bulkReviewIndex, this.checked)">
-                    Chọn ảnh này để xuất
+                    Chọn xuất
                 </label>
                 <button onclick="navigateBulkReview(1)" class="bulk-toolbar-btn">Ảnh sau</button>
             </div>
@@ -515,26 +475,16 @@
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `ug-toast ${type}`;
-            
             const icon = type === 'success' 
                 ? `<svg class="w-6 h-6 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`
                 : `<svg class="w-6 h-6 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
-                
             toast.innerHTML = `${icon} <span>${message}</span>`;
             container.appendChild(toast);
-            
-            // Trigger animation
             setTimeout(() => toast.classList.add('show'), 10);
-            
-            // Remove after delay
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400); // Wait for transition
-            }, 4000);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 4000);
         }
 
-
-        // --- 1. CONFIG BỐ CỤC KHUNG FB ---
+        // --- GLOBAL STATES ---
         const MODES = {
             'mode-2v': {
                 id: 'mode-2v',
@@ -641,7 +591,6 @@
             }
         };
 
-        // --- 2. GLOBAL STATES ---
         let currentMode = 'mode-2v';
         let state = {}; 
         let extraImages = []; 
@@ -668,7 +617,6 @@
             setupDragEvents();
             setupBulkDragAndDrop();
             renderLogoConfigUI();
-            
             logosConfig.forEach((conf, index) => {
                 if(conf.defaultUrl) loadLogoForSlot(index, conf.defaultUrl);
             });
@@ -690,7 +638,7 @@
                 const div = document.createElement('div');
                 const colSpan = conf.x === 'center' ? 'sm:col-span-2' : '';
                 div.className = `logo-slot-card ${conf.enabled ? 'active' : ''} ${colSpan} flex items-center gap-2 px-3 py-2`;
-                const statusText = conf.enabled ? (conf.id === 'tr' ? 'Mặc định · Chuẩn khung' : 'Đang bật') : 'Đang tắt';
+                const statusText = conf.enabled ? (conf.id === 'tr' ? 'Mặc định' : 'Đang bật') : 'Đang tắt';
                 div.innerHTML = `
                     <label class="flex items-center gap-2 flex-1 cursor-pointer min-w-0">
                         <input type="checkbox" id="logo-enable-${index}" ${conf.enabled ? 'checked' : ''} onchange="toggleLogo(${index})" class="w-4 h-4 text-blue-600 rounded cursor-pointer flex-shrink-0">
@@ -709,9 +657,8 @@
             });
         }
 
-        // Tối ưu hàm tìm biên: Nhảy step pixel thay vì quét từng pixel để tránh block UI
         function getLogoContentBounds(img) {
-            const maxScanSide = 600; // Giảm xuống 600 là đủ cho logic Trim
+            const maxScanSide = 600; 
             const ratio = img.width / img.height;
             const sw = ratio >= 1 ? maxScanSide : Math.max(1, Math.round(maxScanSide * ratio));
             const sh = ratio >= 1 ? Math.max(1, Math.round(maxScanSide / ratio)) : maxScanSide;
@@ -724,11 +671,9 @@
             const data = scanCtx.getImageData(0, 0, sw, sh).data;
             let minX = sw, minY = sh, maxX = -1, maxY = -1;
             
-            // Step 2 to double speed. Alpha threshold 15 to ignore semi-transparent artifacts
             for (let y = 0; y < sh; y+=2) {
                 for (let x = 0; x < sw; x+=2) {
-                    const alpha = data[(y * sw + x) * 4 + 3];
-                    if (alpha > 15) {
+                    if (data[(y * sw + x) * 4 + 3] > 15) {
                         if (x < minX) minX = x;
                         if (y < minY) minY = y;
                         if (x > maxX) maxX = x;
@@ -736,276 +681,168 @@
                     }
                 }
             }
-            
-            // Clean up RAM
             scanCanvas.width = 0; scanCanvas.height = 0; 
-
             if (maxX < 0 || maxY < 0) return { x: 0, y: 0, w: img.width, h: img.height };
-
-            const sx = img.width / sw;
-            const sy = img.height / sh;
+            const sx = img.width / sw; const sy = img.height / sh;
             return {
                 x: Math.max(0, Math.floor(minX * sx)),
                 y: Math.max(0, Math.floor(minY * sy)),
-                w: Math.min(img.width, Math.ceil((maxX - minX + 2) * sx)), // +2 to ensure we don't clip edge
+                w: Math.min(img.width, Math.ceil((maxX - minX + 2) * sx)), 
                 h: Math.min(img.height, Math.ceil((maxY - minY + 2) * sy))
             };
         }
 
-        // Tối ưu chất lượng logo: Tăng độ phân giải khung cơ sở lên x1.5
-        function getLogoNormalizeFrame(bounds) {
-            const ratio = bounds.w / bounds.h;
-            if (ratio >= 1.35) return { w: 2400, h: 840, pad: 0.055, type: 'ngang' };
-            if (ratio <= 0.82) return { w: 1140, h: 1410, pad: 0.075, type: 'doc' };
-            return { w: 1260, h: 1350, pad: 0.085, type: 'vuong' };
-        }
-
         function loadImageFromDataUrl(src) {
-            return new Promise(resolve => {
-                const out = new Image();
-                out.onload = () => resolve(out);
-                out.onerror = () => resolve(null);
-                out.src = src;
-            });
+            return new Promise(resolve => { const out = new Image(); out.onload = () => resolve(out); out.onerror = () => resolve(null); out.src = src; });
         }
 
         async function normalizeLogoImageForAllPlatforms(img) {
             try {
+                // Tối ưu hóa: Chỉ cắt bỏ phần thừa trong suốt (Trim), giữ nguyên tỷ lệ gốc của Logo
                 const bounds = getLogoContentBounds(img);
-                const frame = getLogoNormalizeFrame(bounds);
-                const outCanvas = document.createElement('canvas');
-                outCanvas.width = frame.w;
-                outCanvas.height = frame.h;
-                const outCtx = outCanvas.getContext('2d');
-                
-                // Kích hoạt chất lượng làm mượt cao nhất khi scale up/down logo
-                outCtx.imageSmoothingEnabled = true;
-                outCtx.imageSmoothingQuality = 'high';
-                outCtx.clearRect(0, 0, frame.w, frame.h);
+                if (bounds.w <= 0 || bounds.h <= 0) return img;
 
-                const maxW = frame.w * (1 - frame.pad * 2);
-                const maxH = frame.h * (1 - frame.pad * 2);
-                const scale = Math.min(maxW / bounds.w, maxH / bounds.h);
-                const dw = bounds.w * scale;
-                const dh = bounds.h * scale;
-                const dx = (frame.w - dw) / 2;
-                const dy = (frame.h - dh) / 2;
+                const outCanvas = document.createElement('canvas');
+                outCanvas.width = bounds.w; outCanvas.height = bounds.h;
+                const outCtx = outCanvas.getContext('2d');
+                outCtx.imageSmoothingEnabled = true; outCtx.imageSmoothingQuality = 'high';
                 
-                outCtx.drawImage(img, bounds.x, bounds.y, bounds.w, bounds.h, dx, dy, dw, dh);
+                outCtx.drawImage(img, bounds.x, bounds.y, bounds.w, bounds.h, 0, 0, bounds.w, bounds.h);
                 const normalized = await loadImageFromDataUrl(outCanvas.toDataURL('image/png'));
-                
-                // Giải phóng RAM
                 outCanvas.width = 0; outCanvas.height = 0;
                 
                 if (normalized) {
-                    normalized.dataset.logoFrameType = frame.type;
                     normalized.dataset.originalW = String(img.width || '');
                     normalized.dataset.originalH = String(img.height || '');
                     return normalized;
                 }
-            } catch (err) {
-                console.warn('Không chuẩn hóa được logo, dùng ảnh gốc:', err);
-            }
+            } catch (err) { console.warn('Lỗi chuẩn hóa logo:', err); }
             return img;
         }
 
         function loadLogoForSlot(index, url, retryLevel = 0) {
             if(!url) return;
-            const img = new Image();
-            img.crossOrigin = "anonymous";
+            const img = new Image(); img.crossOrigin = "anonymous";
             img.onload = async () => {
                 const normalizedLogo = await normalizeLogoImageForAllPlatforms(img);
                 logosConfig[index].img = normalizedLogo;
                 const previewEl = document.getElementById(`preview-logo-${index}`);
-                if(previewEl) {
-                    previewEl.src = normalizedLogo.src;
-                    previewEl.classList.remove('hidden');
-                }
+                if(previewEl) { previewEl.src = normalizedLogo.src; previewEl.classList.remove('hidden'); }
                 renderView();
-                if (document.getElementById('tab-logo-settings')?.style.display !== 'none') {
-                    renderBulkLogoView();
-                }
+                if (document.getElementById('tab-logo-settings')?.style.display !== 'none') renderBulkLogoView();
             };
             img.onerror = () => {
-                if (retryLevel === 0) {
-                    loadLogoForSlot(index, `https://wsrv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&v=${Date.now()}`, 1);
-                } else if (retryLevel === 1) {
-                    loadLogoForSlot(index, `https://corsproxy.io/?${encodeURIComponent(url)}`, 2);
-                } else {
-                    showToast(`Không tải được Logo số ${index + 1} do lỗi phân quyền ảnh từ link gốc.`, 'error');
-                }
+                if (retryLevel === 0) loadLogoForSlot(index, `https://wsrv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&v=${Date.now()}`, 1);
+                else if (retryLevel === 1) loadLogoForSlot(index, `https://corsproxy.io/?${encodeURIComponent(url)}`, 2);
             };
             img.src = retryLevel === 0 ? `${url}?v=${Date.now()}` : url;
         }
 
         function toggleLogo(index) {
             logosConfig[index].enabled = document.getElementById(`logo-enable-${index}`).checked;
-            renderLogoConfigUI();
-            renderView();
-            renderBulkLogoView();
+            renderLogoConfigUI(); renderView(); renderBulkLogoView();
             if (bulkReviewIndex >= 0 && bulkLogoImages[bulkReviewIndex]) openBulkReview(bulkReviewIndex);
         }
 
         function uploadLogoForSlot(e, index) {
-            const f = e.target.files[0];
-            if (!f) return;
+            const f = e.target.files[0]; if (!f) return;
             const r = new FileReader();
             r.onload = (evt) => {
                 const i = new Image();
                 i.onload = async () => {
-                    const normalizedLogo = await normalizeLogoImageForAllPlatforms(i);
-                    logosConfig[index].img = normalizedLogo;
+                    logosConfig[index].img = await normalizeLogoImageForAllPlatforms(i);
                     logosConfig[index].enabled = true;
-                    renderLogoConfigUI();
-                    renderView();
-                    renderBulkLogoView();
-                    showToast('Đã áp dụng Logo tải lên thành công!');
+                    renderLogoConfigUI(); renderView(); renderBulkLogoView();
+                    showToast('Đã áp dụng Logo!');
                 };
                 i.src = evt.target.result;
             }
-            r.readAsDataURL(f);
-            e.target.value = '';
+            r.readAsDataURL(f); e.target.value = '';
         }
 
         function updateLogoScale(val) {
             logoScale = parseFloat(val);
             document.getElementById('logo-scale-val').innerText = Math.round(logoScale * 100) + '%';
-            renderView(); 
-            renderBulkLogoView();
+            renderView(); renderBulkLogoView();
             if (bulkReviewIndex >= 0 && bulkLogoImages[bulkReviewIndex]) openBulkReview(bulkReviewIndex);
         }
 
         function switchMainTab(tabId) {
             document.getElementById('btn-tab-grid').className = tabId === 'grid' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
             document.getElementById('btn-tab-logo').className = tabId === 'logo' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
-
             document.getElementById('tab-grid-settings').style.display = tabId === 'grid' ? 'flex' : 'none';
             document.getElementById('tab-grid-preview').style.display = tabId === 'grid' ? 'flex' : 'none';
-            
             document.getElementById('tab-logo-settings').style.display = tabId === 'logo' ? 'flex' : 'none';
             document.getElementById('tab-logo-preview').style.display = tabId === 'logo' ? 'flex' : 'none';
-            
             if(tabId === 'logo') renderBulkLogoView();
         }
 
         function hexToRgba(hex, alpha) {
             hex = hex.replace(/^#/, '');
-            let r = parseInt(hex.substring(0, 2), 16);
-            let g = parseInt(hex.substring(2, 4), 16);
-            let b = parseInt(hex.substring(4, 6), 16);
+            let r = parseInt(hex.substring(0, 2), 16); let g = parseInt(hex.substring(2, 4), 16); let b = parseInt(hex.substring(4, 6), 16);
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
         function selectMode(m) {
             currentMode = m;
             document.querySelectorAll('input[name="mode"]').forEach(r => {
-                const lbl = r.closest('label');
-                lbl.classList.remove('border-blue-500', 'bg-blue-50');
-                lbl.classList.add('border-gray-200');
-                const mini = lbl.querySelector('.mini-grid');
-                if(mini) mini.style.background = '#cbd5e1';
+                const lbl = r.closest('label'); lbl.classList.remove('border-blue-500', 'bg-blue-50'); lbl.classList.add('border-gray-200');
+                const mini = lbl.querySelector('.mini-grid'); if(mini) mini.style.background = '#cbd5e1';
                 lbl.querySelectorAll('.mg-box').forEach(b => b.style.background = '#94a3b8');
             });
             const act = document.getElementById(`lbl-${m}`);
             if(act) {
-                act.classList.add('border-blue-500', 'bg-blue-50');
-                act.classList.remove('border-gray-200');
-                const radio = act.querySelector('input');
-                if(radio) radio.checked = true;
-                const mini = act.querySelector('.mini-grid');
-                if(mini) mini.style.background = '#93c5fd';
+                act.classList.add('border-blue-500', 'bg-blue-50'); act.classList.remove('border-gray-200');
+                const radio = act.querySelector('input'); if(radio) radio.checked = true;
+                const mini = act.querySelector('.mini-grid'); if(mini) mini.style.background = '#93c5fd';
                 act.querySelectorAll('.mg-box').forEach(b => b.style.background = '#3b82f6');
             }
-
             const validZones = MODES[currentMode].zones.map(z => z.id);
-            if (!validZones.includes(activeZoneId)) {
-                closeDesignPanel();
-            }
-
-            renderView();
-            setTimeout(() => { Object.keys(state).forEach(id => calcCoverTransform(id)); }, 50);
+            if (!validZones.includes(activeZoneId)) closeDesignPanel();
+            renderView(); setTimeout(() => { Object.keys(state).forEach(id => calcCoverTransform(id)); }, 50);
         }
 
         function activateZone(id) {
             if (!state[id]) return; 
             activeZoneId = id;
-            
-            const panel = document.getElementById('design-panel');
-            if(panel) panel.classList.remove('hidden');
-            const lbl = document.getElementById('lbl-active-zone');
-            if(lbl) lbl.innerText = (parseInt(id) + 1);
+            const panel = document.getElementById('design-panel'); if(panel) panel.classList.remove('hidden');
+            const lbl = document.getElementById('lbl-active-zone'); if(lbl) lbl.innerText = (parseInt(id) + 1);
             
             const gradChecked = state[id].gradient || false;
-            const chkGrad = document.getElementById('check-gradient');
-            if(chkGrad) chkGrad.checked = gradChecked;
-            const gradOpts = document.getElementById('gradient-options');
-            if(gradOpts) gradOpts.style.display = gradChecked ? 'block' : 'none';
+            const chkGrad = document.getElementById('check-gradient'); if(chkGrad) chkGrad.checked = gradChecked;
+            const gradOpts = document.getElementById('gradient-options'); if(gradOpts) gradOpts.style.display = gradChecked ? 'block' : 'none';
             
-            const inGradCol = document.getElementById('input-grad-color');
-            if(inGradCol) inGradCol.value = state[id].gradColor || '#000000';
-            const inGradH = document.getElementById('input-grad-height');
-            if(inGradH) inGradH.value = state[id].gradHeight || 50;
-            const lblGradH = document.getElementById('grad-height-val');
-            if(lblGradH) lblGradH.innerText = (state[id].gradHeight || 50) + '%';
+            const inGradCol = document.getElementById('input-grad-color'); if(inGradCol) inGradCol.value = state[id].gradColor || '#000000';
+            const inGradH = document.getElementById('input-grad-height'); if(inGradH) inGradH.value = state[id].gradHeight || 50;
+            const lblGradH = document.getElementById('grad-height-val'); if(lblGradH) lblGradH.innerText = (state[id].gradHeight || 50) + '%';
             
-            const inTitle = document.getElementById('input-title');
-            if(inTitle) inTitle.value = state[id].title || '';
-            const inSub = document.getElementById('input-sub');
-            if(inSub) inSub.value = state[id].sub || '';
-            const inInfo = document.getElementById('input-info');
-            if(inInfo) inInfo.value = state[id].info || '';
+            const inTitle = document.getElementById('input-title'); if(inTitle) inTitle.value = state[id].title || '';
+            const inSub = document.getElementById('input-sub'); if(inSub) inSub.value = state[id].sub || '';
+            const inInfo = document.getElementById('input-info'); if(inInfo) inInfo.value = state[id].info || '';
             
-            const theme = state[id].theme || 'modern';
-            const themeRadio = document.getElementById(`theme-${theme}`);
-            if(themeRadio) themeRadio.checked = true;
-
-            const zoomSlider = document.getElementById('zoom-slider');
-            if(zoomSlider) zoomSlider.value = state[id].zoomScale || 1;
-            const zoomVal = document.getElementById('zoom-val');
-            if(zoomVal) zoomVal.innerText = Math.round((state[id].zoomScale || 1)*100) + '%';
-
+            const themeRadio = document.getElementById(`theme-${state[id].theme || 'modern'}`); if(themeRadio) themeRadio.checked = true;
+            const zoomSlider = document.getElementById('zoom-slider'); if(zoomSlider) zoomSlider.value = state[id].zoomScale || 1;
+            const zoomVal = document.getElementById('zoom-val'); if(zoomVal) zoomVal.innerText = Math.round((state[id].zoomScale || 1)*100) + '%';
             renderView();
         }
 
-        function closeDesignPanel() {
-            activeZoneId = null;
-            const panel = document.getElementById('design-panel');
-            if(panel) panel.classList.add('hidden');
-            renderView();
-        }
-
+        function closeDesignPanel() { activeZoneId = null; const p = document.getElementById('design-panel'); if(p) p.classList.add('hidden'); renderView(); }
         function updateDesignState(key, val) {
             if (activeZoneId === null || !state[activeZoneId]) return;
             state[activeZoneId][key] = val;
-            if(key === 'gradient') {
-                const opts = document.getElementById('gradient-options');
-                if(opts) opts.style.display = val ? 'block' : 'none';
-            }
+            if(key === 'gradient') { const o = document.getElementById('gradient-options'); if(o) o.style.display = val ? 'block' : 'none'; }
             renderView();
         }
 
         let uploadTargetZone = null;
-        function triggerUpload(zoneId) {
-            uploadTargetZone = zoneId;
-            document.getElementById('zone-file-input').click();
-        }
-        function handleZoneImageUpload(e) {
-            handleMultipleUpload(e.target.files, uploadTargetZone);
-            e.target.value = ''; 
-        }
-        function handleGlobalUpload(e) {
-            handleMultipleUpload(e.target.files, null);
-            e.target.value = '';
-        }
+        function triggerUpload(zoneId) { uploadTargetZone = zoneId; document.getElementById('zone-file-input').click(); }
+        function handleZoneImageUpload(e) { handleMultipleUpload(e.target.files, uploadTargetZone); e.target.value = ''; }
+        function handleGlobalUpload(e) { handleMultipleUpload(e.target.files, null); e.target.value = ''; }
 
         function readFileAsImage(file) {
             return new Promise((resolve) => {
                 const r = new FileReader();
-                r.onload = (e) => {
-                    const i = new Image();
-                    i.onload = () => resolve({img: i, name: file.name});
-                    i.src = e.target.result;
-                }
+                r.onload = (e) => { const i = new Image(); i.onload = () => resolve({img: i, name: file.name}); i.src = e.target.result; }
                 r.readAsDataURL(file);
             });
         }
@@ -1017,60 +854,36 @@
             
             Promise.all(loadPromises).then(results => {
                 let imgIdx = 0;
-                if (targetZoneId !== null && imgIdx < results.length) {
-                     initStateForZone(targetZoneId, results[imgIdx].img);
-                     imgIdx++;
-                }
+                if (targetZoneId !== null && imgIdx < results.length) { initStateForZone(targetZoneId, results[imgIdx].img); imgIdx++; }
                 for (const z of m.zones) {
                     if (imgIdx >= results.length) break;
-                    if (!state[z.id]) {
-                        initStateForZone(z.id, results[imgIdx].img);
-                        imgIdx++;
-                    }
+                    if (!state[z.id]) { initStateForZone(z.id, results[imgIdx].img); imgIdx++; }
                 }
                 let extraCount = 0;
                 while (imgIdx < results.length) {
-                    extraImages.push({
-                        id: Date.now() + Math.random(),
-                        img: results[imgIdx].img
-                    });
-                    imgIdx++;
-                    extraCount++;
+                    extraImages.push({ id: Date.now() + Math.random(), img: results[imgIdx].img });
+                    imgIdx++; extraCount++;
                 }
-                renderView();
-                renderExtraImages();
+                renderView(); renderExtraImages();
                 if (extraCount > 0) showToast(`Đã thêm ${extraCount} ảnh vào mục Ảnh Lẻ Đính Kèm.`);
             });
         }
 
         function initStateForZone(zoneId, img) {
-            state[zoneId] = { 
-                img: img, x: 0, y: 0, scale: 1, zoomScale: 1,
-                gradient: false, gradColor: '#000000', gradHeight: 50,
-                title: '', sub: '', info: '', theme: 'modern' 
-            };
+            state[zoneId] = { img: img, x: 0, y: 0, scale: 1, zoomScale: 1, gradient: false, gradColor: '#000000', gradHeight: 50, title: '', sub: '', info: '', theme: 'modern' };
             if (activeZoneId === zoneId) activateZone(zoneId); 
             setTimeout(() => calcCoverTransform(zoneId), 50);
         }
 
         function renderExtraImages() {
-            const container = document.getElementById('extra-images-container');
-            if(!container) return;
+            const container = document.getElementById('extra-images-container'); if(!container) return;
             document.getElementById('extra-count').innerText = extraImages.length;
-            if (extraImages.length === 0) {
-                container.innerHTML = '<div class="text-[11px] text-gray-400 italic py-4 w-full text-center">Chưa có ảnh lẻ nào. Khi bạn chọn dư số lượng ảnh, ảnh dư sẽ tự động vào đây.</div>';
-                return;
-            }
+            if (extraImages.length === 0) { container.innerHTML = '<div class="text-[11px] text-gray-400 italic py-4 w-full text-center">Chưa có ảnh lẻ nào.</div>'; return; }
             container.innerHTML = '';
             extraImages.forEach((ex, index) => {
-                const div = document.createElement('div');
-                div.className = 'relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-300 group shadow-sm';
-                const img = document.createElement('img');
-                img.src = ex.img.src;
-                img.className = 'w-full h-full object-cover';
-                const btn = document.createElement('button');
-                btn.innerHTML = '&times;';
-                btn.className = 'absolute top-0 right-0 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-bl-lg opacity-0 group-hover:opacity-100 transition text-xs font-bold';
+                const div = document.createElement('div'); div.className = 'relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-300 group shadow-sm';
+                const img = document.createElement('img'); img.src = ex.img.src; img.className = 'w-full h-full object-cover';
+                const btn = document.createElement('button'); btn.innerHTML = '&times;'; btn.className = 'absolute top-0 right-0 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-bl-lg opacity-0 group-hover:opacity-100 transition text-xs font-bold';
                 btn.onclick = () => { extraImages.splice(index, 1); renderExtraImages(); };
                 div.appendChild(img); div.appendChild(btn); container.appendChild(div);
             });
@@ -1078,17 +891,14 @@
 
         function handleZoomSlider(val) {
             if (activeZoneId === null || !state[activeZoneId]) return;
-            const zId = activeZoneId;
-            const num = parseFloat(val);
+            const zId = activeZoneId; const num = parseFloat(val);
             document.getElementById('zoom-val').innerText = Math.round(num*100) + '%';
             state[zId].zoomScale = num;
-            const zoneEl = document.getElementById(`zone-${zId}`);
-            if(!zoneEl) return;
+            const zoneEl = document.getElementById(`zone-${zId}`); if(!zoneEl) return;
             const zw = zoneEl.offsetWidth; const zh = zoneEl.offsetHeight;
             const iw = state[zId].img.width; const ih = state[zId].img.height;
             const baseCoverScale = Math.max(zw / iw, zh / ih);
-            const newFinalScale = baseCoverScale * num;
-            const oldFinalScale = state[zId].scale;
+            const newFinalScale = baseCoverScale * num; const oldFinalScale = state[zId].scale;
             state[zId].x = (zw/2) - ((zw/2) - state[zId].x) * (newFinalScale / oldFinalScale);
             state[zId].y = (zh/2) - ((zh/2) - state[zId].y) * (newFinalScale / oldFinalScale);
             state[zId].scale = newFinalScale;
@@ -1096,169 +906,201 @@
         }
 
         function calcCoverTransform(id) {
-            if (!state[id]) return;
-            const zEl = document.getElementById(`zone-${id}`);
-            if (!zEl) return;
-            const zw = zEl.offsetWidth, zh = zEl.offsetHeight;
-            const iw = state[id].img.width, ih = state[id].img.height;
-            const baseScale = Math.max(zw / iw, zh / ih);
-            const finalScale = baseScale * (state[id].zoomScale || 1);
-            state[id].scale = finalScale;
-            state[id].x = (zw - iw * finalScale) / 2;
-            state[id].y = (zh - ih * finalScale) / 2;
+            if (!state[id]) return; const zEl = document.getElementById(`zone-${id}`); if (!zEl) return;
+            const zw = zEl.offsetWidth, zh = zEl.offsetHeight; const iw = state[id].img.width, ih = state[id].img.height;
+            const baseScale = Math.max(zw / iw, zh / ih); const finalScale = baseScale * (state[id].zoomScale || 1);
+            state[id].scale = finalScale; state[id].x = (zw - iw * finalScale) / 2; state[id].y = (zh - ih * finalScale) / 2;
             applyTransformCSS(id);
         }
 
         function applyTransformCSS(id) {
             const el = document.getElementById(`img-${id}`);
-            if (el && state[id]) {
-                el.style.transformOrigin = '0 0';
-                el.style.transform = `translate(${state[id].x}px, ${state[id].y}px) scale(${state[id].scale})`;
-            }
+            if (el && state[id]) { el.style.transformOrigin = '0 0'; el.style.transform = `translate(${state[id].x}px, ${state[id].y}px) scale(${state[id].scale})`; }
         }
 
         let isDrag = false, startX, startY, dragId = null;
         function setupDragEvents() {
             window.addEventListener('mousemove', e => {
                 if (!isDrag || dragId === null) return;
-                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-                state[dragId].x += (clientX - startX);
-                state[dragId].y += (clientY - startY);
-                startX = clientX; startY = clientY;
-                applyTransformCSS(dragId);
+                const cx = e.clientX || (e.touches && e.touches[0].clientX); const cy = e.clientY || (e.touches && e.touches[0].clientY);
+                state[dragId].x += (cx - startX); state[dragId].y += (cy - startY);
+                startX = cx; startY = cy; applyTransformCSS(dragId);
             });
             const stop = () => { isDrag = false; document.body.style.cursor = 'default'; };
-            window.addEventListener('mouseup', stop);
-            window.addEventListener('touchend', stop);
+            window.addEventListener('mouseup', stop); window.addEventListener('touchend', stop);
         }
 
         function onMouseDown(e, id) {
             if (!state[id]) { triggerUpload(id); return; }
-            activateZone(id); 
-            isDrag = true; dragId = id;
-            startX = e.clientX || (e.touches && e.touches[0].clientX);
-            startY = e.clientY || (e.touches && e.touches[0].clientY);
+            activateZone(id); isDrag = true; dragId = id;
+            startX = e.clientX || (e.touches && e.touches[0].clientX); startY = e.clientY || (e.touches && e.touches[0].clientY);
             document.body.style.cursor = 'grabbing';
+        }
+
+        // --- THUẬT TOÁN LOGO UNIFIED (DÙNG CHUNG CHO CẢ PREVIEW DOM LẪN CANVAS RENDER) ---
+        function calculateUniversalLogoMetrics(bgW, bgH, logoW, logoH, confScale, position) {
+            const minSide = Math.min(bgW, bgH);
+            const logoRatio = logoW / logoH;
+            const currentScale = confScale * logoScale;
+            
+            let baseWidthPct;
+            if (position === 'center') {
+                baseWidthPct = logoRatio > 1.5 ? 0.45 : 0.35;
+            } else {
+                // Định hình độ rộng cơ bản dựa trên hình dáng logo
+                if (logoRatio >= 2.2) { // Siêu dài (Nhiều chữ ngang)
+                    baseWidthPct = 0.32;
+                } else if (logoRatio >= 1.4) { // Ngang vừa
+                    baseWidthPct = 0.24;
+                } else if (logoRatio >= 0.8) { // Vuông / Gần vuông
+                    baseWidthPct = 0.16;
+                } else { // Dọc (Cao)
+                    baseWidthPct = 0.12;
+                }
+            }
+
+            // Tính toán kích thước sơ bộ
+            let targetW = minSide * baseWidthPct * currentScale;
+            let targetH = targetW / logoRatio;
+
+            // --- KIỂM SOÁT GIỚI HẠN (BOUNDARIES) ---
+            
+            // 1. Giới hạn Nhỏ Nhất (Để logo dài không bị teo nhỏ mất chữ)
+            const minHeight = position === 'center' ? (minSide * 0.08) : (minSide * 0.045);
+            if (targetH < minHeight) {
+                targetH = minHeight;
+                targetW = targetH * logoRatio;
+            }
+
+            // 2. Giới hạn Lớn Nhất (Để logo không lấn át chủ thể ảnh gốc)
+            const maxW = bgW * (position === 'center' ? 0.90 : 0.70);
+            const maxH = bgH * (position === 'center' ? 0.40 : 0.25);
+            
+            if (targetW > maxW) {
+                targetW = maxW;
+                targetH = targetW / logoRatio;
+            }
+            if (targetH > maxH) {
+                targetH = maxH;
+                targetW = targetH * logoRatio;
+            }
+
+            // 3. Margin/Padding responsive
+            const padding = Math.max(12, minSide * 0.065);
+
+            return { targetW, targetH, padding };
+        }
+
+        function appendLogoOverlays(container, fw, fh) {
+            if (!container) return; container.innerHTML = '';
+            logosConfig.forEach(conf => {
+                if (!conf.enabled || !conf.img) return;
+                
+                // Lấy thông số toán học chuẩn
+                const metrics = calculateUniversalLogoMetrics(fw, fh, conf.img.width, conf.img.height, conf.scale, conf.x);
+                
+                // Chuyển đổi thông số Pixel sang % để gán vào CSS của thẻ <div> DOM
+                const widthPct = (metrics.targetW / fw) * 100;
+                const heightPct = (metrics.targetH / fh) * 100;
+                const padXPct = (metrics.padding / fw) * 100;
+                const padYPct = (metrics.padding / fh) * 100;
+
+                const logoWrap = document.createElement('div'); 
+                // Bỏ p-2 vì padding đã được tính bằng toán học tuyệt đối
+                logoWrap.className = 'absolute flex items-center justify-center pointer-events-none';
+                
+                logoWrap.style.width = `${widthPct}%`; 
+                logoWrap.style.height = `${heightPct}%`;
+                
+                if (conf.x === 'center') {
+                    logoWrap.style.left = '50%'; logoWrap.style.top = '50%'; 
+                    logoWrap.style.transform = 'translate(-50%, -50%)';
+                } else {
+                    if (conf.x === 'left') logoWrap.style.left = `${padXPct}%`; else logoWrap.style.right = `${padXPct}%`;
+                    if (conf.y === 'top') logoWrap.style.top = `${padYPct}%`; else logoWrap.style.bottom = `${padYPct}%`;
+                }
+                
+                const logo = document.createElement('img'); logo.src = conf.img.src; logo.className = 'w-full h-full object-contain pointer-events-none';
+                logo.style.filter = 'drop-shadow(0px 1px 3px rgba(0,0,0,0.26)) drop-shadow(0px 0px 2px rgba(255,255,255,0.34))';
+                logoWrap.appendChild(logo); container.appendChild(logoWrap);
+            });
         }
 
         function renderView() {
             const m = MODES[currentMode];
-            const layer = document.getElementById('zones-layer');
-            const grid = document.getElementById('grid-layer');
-            const logosLayer = document.getElementById('logos-layer');
+            const layer = document.getElementById('zones-layer'); const grid = document.getElementById('grid-layer'); const logosLayer = document.getElementById('logos-layer');
             if(!layer || !grid || !logosLayer) return;
 
             layer.innerHTML = ''; grid.innerHTML = ''; logosLayer.innerHTML = '';
 
             m.zones.forEach(z => {
-                const div = document.createElement('div');
-                div.id = `zone-${z.id}`;
+                const div = document.createElement('div'); div.id = `zone-${z.id}`;
                 div.className = `absolute zone-container overflow-hidden bg-white transition-colors ${state[z.id] ? 'cursor-grab' : 'cursor-pointer hover:bg-gray-50 border border-gray-200'}`;
                 if (activeZoneId == z.id) div.classList.add('zone-active');
-                div.style.left = `${z.x * 100}%`; div.style.top = `${z.y * 100}%`;
-                div.style.width = `${z.w * 100}%`; div.style.height = `${z.h * 100}%`;
+                div.style.left = `${z.x * 100}%`; div.style.top = `${z.y * 100}%`; div.style.width = `${z.w * 100}%`; div.style.height = `${z.h * 100}%`;
                 div.onmousedown = (e) => onMouseDown(e, z.id);
 
                 if (state[z.id]) {
-                    const st = state[z.id];
-                    const img = document.createElement('img');
-                    img.id = `img-${z.id}`; img.src = st.img.src; img.className = 'absolute max-w-none';
-                    div.appendChild(img);
+                    const st = state[z.id]; const img = document.createElement('img'); img.id = `img-${z.id}`; img.src = st.img.src; img.className = 'absolute max-w-none'; div.appendChild(img);
                     setTimeout(() => applyTransformCSS(z.id), 0);
                     if (st.gradient) {
-                        const h = st.gradHeight || 50;
-                        const c = st.gradColor || '#000000';
-                        const rgba85 = hexToRgba(c, 0.85);
-                        const rgba0 = hexToRgba(c, 0);
-                        const grad = document.createElement('div');
-                        grad.className = 'absolute inset-x-0 bottom-0 pointer-events-none z-10';
-                        grad.style.height = `${h}%`;
-                        grad.style.background = `linear-gradient(to top, ${rgba85} 0%, ${rgba0} 100%)`;
-                        div.appendChild(grad);
+                        const rgba85 = hexToRgba(st.gradColor || '#000000', 0.85); const rgba0 = hexToRgba(st.gradColor || '#000000', 0);
+                        const grad = document.createElement('div'); grad.className = 'absolute inset-x-0 bottom-0 pointer-events-none z-10';
+                        grad.style.height = `${st.gradHeight || 50}%`; grad.style.background = `linear-gradient(to top, ${rgba85} 0%, ${rgba0} 100%)`; div.appendChild(grad);
                     }
                     if (st.title || st.sub || st.info) {
-                        const txtBox = document.createElement('div');
-                        txtBox.className = 'absolute inset-x-0 bottom-[8cqw] px-[6cqw] flex flex-col items-center text-center pointer-events-none z-20 drop-shadow-md';
-                        const isLuxury = st.theme === 'luxury';
-                        const fontClass = isLuxury ? 'font-serif-luxury text-gold' : 'font-sans text-white';
-                        if (st.title) {
-                            const t = document.createElement('div');
-                            t.className = `font-bold uppercase tracking-wider ${fontClass} leading-tight mb-[2cqw]`;
-                            t.style.fontSize = isLuxury ? '8cqw' : '7cqw';
-                            t.innerText = st.title;
-                            txtBox.appendChild(t);
-                        }
-                        if (st.sub) {
-                            const s = document.createElement('div');
-                            s.className = `font-medium ${fontClass} leading-snug mb-[3cqw]`;
-                            s.style.fontSize = isLuxury ? '4cqw' : '3.5cqw';
-                            s.innerText = st.sub;
-                            txtBox.appendChild(s);
-                        }
+                        const txtBox = document.createElement('div'); txtBox.className = 'absolute inset-x-0 bottom-[8cqw] px-[6cqw] flex flex-col items-center text-center pointer-events-none z-20 drop-shadow-md';
+                        const isLuxury = st.theme === 'luxury'; const fontClass = isLuxury ? 'font-serif-luxury text-gold' : 'font-sans text-white';
+                        if (st.title) { const t = document.createElement('div'); t.className = `font-bold uppercase tracking-wider ${fontClass} leading-tight mb-[2cqw]`; t.style.fontSize = isLuxury ? '8cqw' : '7cqw'; t.innerText = st.title; txtBox.appendChild(t); }
+                        if (st.sub) { const s = document.createElement('div'); s.className = `font-medium ${fontClass} leading-snug mb-[3cqw]`; s.style.fontSize = isLuxury ? '4cqw' : '3.5cqw'; s.innerText = st.sub; txtBox.appendChild(s); }
                         if (st.info) {
                             const i = document.createElement('div');
-                            if (isLuxury) {
-                                i.className = `font-semibold text-gold font-serif-luxury tracking-widest`;
-                                i.style.fontSize = '3cqw'; i.innerText = st.info;
-                            } else {
-                                i.className = `inline-block border border-white/50 rounded-full text-white font-medium bg-black/30 backdrop-blur-sm`;
-                                i.style.padding = '1.5cqw 3.5cqw'; i.style.fontSize = '2.8cqw'; i.innerText = st.info;
-                            }
+                            if (isLuxury) { i.className = `font-semibold text-gold font-serif-luxury tracking-widest`; i.style.fontSize = '3cqw'; i.innerText = st.info; } 
+                            else { i.className = `inline-block border border-white/50 rounded-full text-white font-medium bg-black/30 backdrop-blur-sm`; i.style.padding = '1.5cqw 3.5cqw'; i.style.fontSize = '2.8cqw'; i.innerText = st.info; }
                             txtBox.appendChild(i);
                         }
                         div.appendChild(txtBox);
                     }
                 } else {
-                    div.innerHTML = `<div class="text-gray-400 text-center px-4 w-full pointer-events-none flex flex-col items-center">
-                        <svg class="w-8 h-8 opacity-40 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                        <span class="text-[11px] font-semibold">${z.label}</span>
-                    </div>`;
+                    div.innerHTML = `<div class="text-gray-400 text-center px-4 w-full pointer-events-none flex flex-col items-center"><svg class="w-8 h-8 opacity-40 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg><span class="text-[11px] font-semibold">${z.label}</span></div>`;
                 }
                 layer.appendChild(div);
             });
 
             m.gridLines.forEach(l => {
-                const d = document.createElement('div');
-                d.className = 'absolute border-[3px] border-white pointer-events-none z-30 shadow-sm';
-                d.style.left = `${l.x * 100}%`; d.style.top = `${l.y * 100}%`;
-                d.style.width = `${l.w * 100}%`; d.style.height = `${l.h * 100}%`;
-                grid.appendChild(d);
+                const d = document.createElement('div'); d.className = 'absolute border-[3px] border-white pointer-events-none z-30 shadow-sm';
+                d.style.left = `${l.x * 100}%`; d.style.top = `${l.y * 100}%`; d.style.width = `${l.w * 100}%`; d.style.height = `${l.h * 100}%`; grid.appendChild(d);
             });
             
             m.exports.forEach(exp => {
                 const z = m.zones.find(zone => zone.id === exp.src);
                 if (state[z.id]) { 
-                    const pieceX = z.x + exp.cut.x * z.w;
-                    const pieceY = z.y + exp.cut.y * z.h;
-                    const pieceW = exp.cut.w * z.w;
-                    const pieceH = exp.cut.h * z.h;
-                    const pieceDiv = document.createElement('div');
-                    pieceDiv.className = 'absolute pointer-events-none flex';
-                    pieceDiv.style.left = `${pieceX * 100}%`; pieceDiv.style.top = `${pieceY * 100}%`;
-                    pieceDiv.style.width = `${pieceW * 100}%`; pieceDiv.style.height = `${pieceH * 100}%`;
-                    const isVertical = pieceH > pieceW;
-                    // Giảm 15-20% cho logo trong Grid Preview
-                    const basePct = isVertical ? 50 : 34; 
+                    const pieceDiv = document.createElement('div'); pieceDiv.className = 'absolute pointer-events-none flex';
+                    pieceDiv.style.left = `${(z.x + exp.cut.x * z.w) * 100}%`; pieceDiv.style.top = `${(z.y + exp.cut.y * z.h) * 100}%`;
+                    pieceDiv.style.width = `${exp.cut.w * z.w * 100}%`; pieceDiv.style.height = `${exp.cut.h * z.h * 100}%`;
                     
                     logosConfig.forEach(conf => {
                         if (!conf.enabled || !conf.img) return;
-                        const currentScale = conf.scale * logoScale;
-                        const finalPct = basePct * currentScale;
+                        
+                        // Sử dụng chung thuật toán tính Metrics, giả lập Render Width là 1000px để tính tỷ lệ % DOM
+                        const metrics = calculateUniversalLogoMetrics(1000, 1000 * (exp.cut.h * z.h) / (exp.cut.w * z.w), conf.img.width, conf.img.height, conf.scale, conf.x);
+                        
+                        const logoWrap = document.createElement('div'); logoWrap.className = 'absolute flex items-center justify-center pointer-events-none';
+                        const widthPct = (metrics.targetW / 1000) * 100;
+                        const heightPct = (metrics.targetH / (1000 * (exp.cut.h * z.h) / (exp.cut.w * z.w))) * 100;
+                        const padXPct = (metrics.padding / 1000) * 100;
+                        const padYPct = (metrics.padding / (1000 * (exp.cut.h * z.h) / (exp.cut.w * z.w))) * 100;
 
-                        const logoWrap = document.createElement('div');
-                        logoWrap.className = 'absolute flex items-center justify-center p-2';
+                        logoWrap.style.width = `${widthPct}%`;
+                        logoWrap.style.height = `${heightPct}%`;
+                        
                         if (conf.x === 'center') {
-                            logoWrap.style.width = `${Math.min(98, 80 * currentScale)}%`; 
-                            logoWrap.style.left = '50%'; logoWrap.style.top = '50%';
-                            logoWrap.style.transform = 'translate(-50%, -50%)';
+                            logoWrap.style.left = '50%'; logoWrap.style.top = '50%'; logoWrap.style.transform = 'translate(-50%, -50%)';
                         } else {
-                            logoWrap.style.width = `${finalPct}%`; logoWrap.style.maxHeight = '40%';
-                            if (conf.x === 'left') logoWrap.style.left = '3%'; else logoWrap.style.right = '3%';
-                            if (conf.y === 'top') logoWrap.style.top = '3%'; else logoWrap.style.bottom = '3%';
+                            if (conf.x === 'left') logoWrap.style.left = `${padXPct}%`; else logoWrap.style.right = `${padXPct}%`;
+                            if (conf.y === 'top') logoWrap.style.top = `${padYPct}%`; else logoWrap.style.bottom = `${padYPct}%`;
                         }
-                        const logo = document.createElement('img');
-                        logo.src = conf.img.src; logo.className = 'w-full object-contain';
+                        const logo = document.createElement('img'); logo.src = conf.img.src; logo.className = 'w-full h-full object-contain';
                         logo.style.filter = 'drop-shadow(0px 1px 3px rgba(0,0,0,0.26)) drop-shadow(0px 0px 2px rgba(255,255,255,0.34))';
                         logoWrap.appendChild(logo); pieceDiv.appendChild(logoWrap);
                     });
@@ -1267,668 +1109,32 @@
             });
         }
 
-        // --- BULK MODE PRO: chỉ lưu File + thumbnail nhẹ, không giữ ảnh gốc đã decode trong RAM ---
-        function sleep(ms = 0) { return new Promise(resolve => setTimeout(resolve, ms)); }
-        // Dùng requestAnimationFrame để nhường Main Thread, giúp UI mượt hơn
-        function yieldToMain() { return new Promise(resolve => requestAnimationFrame(resolve)); }
-
-        function safeFileName(name, fallback = 'image') {
-            const base = (name || fallback).replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9_\-À-ỹ ]/g, '').trim() || fallback;
-            return base.substring(0, 70);
-        }
-
-        function setBulkProgress(text, percent) {
-            const panel = document.getElementById('bulk-progress-panel');
-            const label = document.getElementById('bulk-progress-text');
-            const pct = document.getElementById('bulk-progress-percent');
-            const fill = document.getElementById('bulk-progress-fill');
-            if (panel) panel.classList.remove('hidden');
-            if (label) label.innerText = text || '';
-            const val = Math.max(0, Math.min(100, Math.round(percent || 0)));
-            if (pct) pct.innerText = val + '%';
-            if (fill) fill.style.width = val + '%';
-        }
-
-        function hideBulkProgressSoon() {
-            setTimeout(() => {
-                const panel = document.getElementById('bulk-progress-panel');
-                if (panel) panel.classList.add('hidden');
-            }, 1800);
-        }
-
-        function downloadBlob(blob, filename) {
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 2000);
-        }
-
-        function canvasToBlobSafe(canvas, type = 'image/jpeg', quality = 0.96) {
-            return new Promise(resolve => canvas.toBlob(resolve, type, quality));
-        }
-
-        async function loadImageElementFromFile(file) {
-            const url = URL.createObjectURL(file);
-            try {
-                const img = await new Promise((resolve, reject) => {
-                    const el = new Image();
-                    el.onload = () => resolve(el);
-                    el.onerror = reject;
-                    el.src = url;
-                });
-                return { img, url };
-            } catch (err) {
-                URL.revokeObjectURL(url);
-                throw err;
-            }
-        }
-
-        async function createThumbFromFile(file, maxEdge = 420) {
-            const { img, url } = await loadImageElementFromFile(file);
-            const ratio = Math.min(1, maxEdge / Math.max(img.naturalWidth || img.width, img.naturalHeight || img.height));
-            const tw = Math.max(1, Math.round((img.naturalWidth || img.width) * ratio));
-            const th = Math.max(1, Math.round((img.naturalHeight || img.height) * ratio));
-            const canvas = document.createElement('canvas');
-            canvas.width = tw; canvas.height = th;
-            const ctx = canvas.getContext('2d', { alpha: false });
-            ctx.drawImage(img, 0, 0, tw, th);
-            const thumb = canvas.toDataURL('image/jpeg', 0.72);
-            const meta = { width: img.naturalWidth || img.width, height: img.naturalHeight || img.height };
-            // Dọn RAM
-            canvas.width = 0; canvas.height = 0;
-            URL.revokeObjectURL(url);
-            return { thumb, ...meta };
-        }
-
-        function isImageFile(file) {
-            if (!file) return false;
-            return (file.type && file.type.startsWith('image/')) || /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name || '');
-        }
-
-        function bulkFileKey(file) {
-            return `${file.webkitRelativePath || file.relativePath || file.name}|${file.size}|${file.lastModified}`;
-        }
-
-        async function handleBulkLogoUpload(e) {
-            const files = Array.from(e.target.files || []).filter(isImageFile);
-            await ingestBulkFiles(files, 'Đang nạp ảnh nhẹ để xem trước...');
-            e.target.value = '';
-        }
-
-        function handleBulkDragOver(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
-            document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.add('drag-over'));
-        }
-
-        function handleBulkDragLeave(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.remove('drag-over'));
-        }
-
-        async function handleBulkDrop(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.remove('drag-over'));
-            setBulkProgress('Đang quét file/folder được thả vào...', 1);
-            const files = await collectDroppedImageFiles(e.dataTransfer);
-            await ingestBulkFiles(files, `Đã nhận ${files.length} ảnh từ thao tác kéo thả.`);
-        }
-
-        function setupBulkDragAndDrop() {
-            const targets = ['bulk-drop-zone', 'bulk-preview-container', 'tab-logo-preview'];
-            targets.forEach(id => {
-                const el = document.getElementById(id);
-                if (!el) return;
-                el.addEventListener('dragover', handleBulkDragOver);
-                el.addEventListener('dragleave', handleBulkDragLeave);
-                el.addEventListener('drop', handleBulkDrop);
-            });
-        }
-
-        async function collectDroppedImageFiles(dataTransfer) {
-            const files = [];
-            const items = Array.from(dataTransfer?.items || []);
-            if (items.length && items[0].webkitGetAsEntry) {
-                for (const item of items) {
-                    const entry = item.webkitGetAsEntry();
-                    if (entry) await traverseFileEntry(entry, files);
-                }
-            } else {
-                files.push(...Array.from(dataTransfer?.files || []));
-            }
-            return files.filter(isImageFile);
-        }
-
-        function readAllDirectoryEntries(reader) {
-            return new Promise((resolve, reject) => {
-                const entries = [];
-                const readBatch = () => {
-                    reader.readEntries(batch => {
-                        if (!batch.length) return resolve(entries);
-                        entries.push(...batch);
-                        readBatch();
-                    }, reject);
-                };
-                readBatch();
-            });
-        }
-
-        async function traverseFileEntry(entry, files) {
-            if (entry.isFile) {
-                const file = await new Promise((resolve, reject) => entry.file(resolve, reject));
-                if (isImageFile(file)) {
-                    try { file.relativePath = entry.fullPath ? entry.fullPath.replace(/^\//, '') : file.name; } catch (_) {}
-                    files.push(file);
-                }
-                return;
-            }
-            if (entry.isDirectory) {
-                const reader = entry.createReader();
-                const entries = await readAllDirectoryEntries(reader);
-                for (const child of entries) await traverseFileEntry(child, files);
-            }
-        }
-
-        async function ingestBulkFiles(files, readyMessage = 'Đã nạp ảnh.') {
-            const imageFiles = Array.from(files || []).filter(isImageFile);
-            if (imageFiles.length === 0) {
-                setBulkProgress('Không tìm thấy file ảnh hợp lệ trong lựa chọn/kéo thả.', 100);
-                hideBulkProgressSoon();
-                showToast('Không có ảnh hợp lệ nào được chọn.', 'error');
-                return;
-            }
-            const existingKeys = new Set(bulkLogoImages.map(item => item.key).filter(Boolean));
-            const uniqueFiles = [];
-            for (const file of imageFiles) {
-                const key = bulkFileKey(file);
-                if (existingKeys.has(key)) continue;
-                existingKeys.add(key);
-                uniqueFiles.push(file);
-            }
-            if (uniqueFiles.length === 0) {
-                setBulkProgress('Các ảnh này đã có trong danh sách, web không thêm trùng.', 100);
-                hideBulkProgressSoon();
-                showToast('Ảnh này đã có trong danh sách rồi.');
-                return;
-            }
-
-            setBulkProgress(readyMessage || 'Đang nạp ảnh nhẹ để xem trước...', 1);
-            for (let i = 0; i < uniqueFiles.length; i++) {
-                const file = uniqueFiles[i];
-                try {
-                    const meta = await createThumbFromFile(file, 420);
-                    bulkLogoImages.push({
-                        id: Date.now() + Math.random(),
-                        key: bulkFileKey(file),
-                        file,
-                        name: file.name,
-                        displayPath: file.webkitRelativePath || file.relativePath || file.name,
-                        width: meta.width,
-                        height: meta.height,
-                        thumb: meta.thumb,
-                        selected: true
-                    });
-                } catch (err) {
-                    console.warn('Không đọc được ảnh:', file?.name, err);
-                }
-                setBulkProgress(`Đang nạp ảnh ${i + 1}/${uniqueFiles.length}...`, ((i + 1) / uniqueFiles.length) * 100);
-                // Giúp UI không bị giật lag
-                if (i % 3 === 0) await yieldToMain();
-            }
-            renderBulkLogoView();
-            setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới.`, 100);
-            hideBulkProgressSoon();
-            showToast(`Đã thêm ${uniqueFiles.length} ảnh thành công!`);
-        }
-
-        function clearBulkImages() {
-            closeBulkReview();
-            clearPreparedShareFiles();
-            bulkLogoImages = [];
-            renderBulkLogoView();
-            const panel = document.getElementById('bulk-progress-panel');
-            if (panel) panel.classList.add('hidden');
-            showToast('Đã xóa danh sách ảnh hàng loạt.');
-        }
-
-        function getSelectedBulkItems() {
-            return bulkLogoImages.filter(item => item.selected !== false);
-        }
-
-        function updateBulkSelectedCount() {
-            const el = document.getElementById('bulk-selected-count');
-            if (el) el.innerText = getSelectedBulkItems().length;
-        }
-
-        function selectAllBulk(checked) {
-            bulkLogoImages.forEach(item => item.selected = !!checked);
-            renderBulkLogoView();
-            if (bulkReviewIndex >= 0 && bulkLogoImages[bulkReviewIndex]) {
-                const chk = document.getElementById('bulk-review-check');
-                if (chk) chk.checked = bulkLogoImages[bulkReviewIndex].selected !== false;
-            }
-        }
-
-        function toggleBulkSelected(index, checked) {
-            if (!bulkLogoImages[index]) return;
-            bulkLogoImages[index].selected = !!checked;
-            updateBulkSelectedCount();
-            const chk = document.getElementById(`bulk-check-${index}`);
-            if (chk) chk.checked = !!checked;
-            const card = document.getElementById(`bulk-card-${index}`);
-            if (card) card.classList.toggle('unselected', !checked);
-            const reviewChk = document.getElementById('bulk-review-check');
-            if (reviewChk && bulkReviewIndex === index) reviewChk.checked = !!checked;
-        }
-
-        function setBulkPreviewMode(mode) {
-            bulkPreviewMode = mode === 'compact' ? 'compact' : 'comfortable';
-            renderBulkLogoView();
-        }
-
-        function getFirstReviewIndex() {
-            if (bulkLogoImages.length === 0) return 0;
-            const selectedIndex = bulkLogoImages.findIndex(item => item.selected !== false);
-            return selectedIndex >= 0 ? selectedIndex : 0;
-        }
-
-        function getLogoPreviewStyle(fw, fh, conf, currentScale) {
-            const ratio = fw / fh;
-            const minSide = Math.min(fw, fh);
-            const padPct = 4;
-            const logoType = conf.img?.dataset?.logoFrameType || '';
-            if (conf.x === 'center') {
-                // Giảm 15-20% độ phủ ngang cho logo trung tâm
-                let widthPct = ratio > 1.35 ? 44 : (ratio < 0.75 ? 60 : 52);
-                return { widthPct: Math.min(92, widthPct * currentScale), maxHeightPct: ratio > 1.35 ? 19 : 15, padPct };
-            }
-            if (logoType === 'ngang') {
-                // Giảm 15-20% độ phủ ngang cho logo dạng dài
-                let targetWide = ratio > 1.35 ? 25 : (ratio < 0.75 ? 30 : 28);
-                return { widthPct: Math.min(52, targetWide * currentScale * (minSide / fw) * 2.05), maxHeightPct: ratio < 0.75 ? 14 : 12, padPct: 3.2 };
-            }
-            // Giảm 15-20% độ phủ ngang cho logo vuông/dọc thông thường
-            let target = ratio > 1.35 ? 19 : (ratio < 0.75 ? 22 : 19);
-            return { widthPct: Math.min(38, target * currentScale * (minSide / fw) * 1.9), maxHeightPct: 15, padPct };
-        }
-
-        function appendLogoOverlays(container, fw, fh) {
-            if (!container) return;
-            container.innerHTML = '';
-            logosConfig.forEach(conf => {
-                if (!conf.enabled || !conf.img) return;
-                const currentScale = conf.scale * logoScale;
-                const style = getLogoPreviewStyle(fw || 1200, fh || 1200, conf, currentScale);
-
-                const logoWrap = document.createElement('div');
-                logoWrap.className = 'absolute flex items-center justify-center p-2 pointer-events-none';
-                logoWrap.style.width = `${style.widthPct}%`;
-                logoWrap.style.maxHeight = `${style.maxHeightPct}%`;
-                if (conf.x === 'center') {
-                    logoWrap.style.left = '50%'; logoWrap.style.top = '50%';
-                    logoWrap.style.transform = 'translate(-50%, -50%)';
-                } else {
-                    if (conf.x === 'left') logoWrap.style.left = `${style.padPct}%`; else logoWrap.style.right = `${style.padPct}%`;
-                    if (conf.y === 'top') logoWrap.style.top = `${style.padPct}%`; else logoWrap.style.bottom = `${style.padPct}%`;
-                }
-                const logo = document.createElement('img');
-                logo.src = conf.img.src;
-                logo.className = 'w-full h-full object-contain pointer-events-none';
-                logo.style.filter = 'drop-shadow(0px 1px 3px rgba(0,0,0,0.26)) drop-shadow(0px 0px 2px rgba(255,255,255,0.34))';
-                logoWrap.appendChild(logo);
-                container.appendChild(logoWrap);
-            });
-        }
-
-        function renderBulkLogoView() {
-            const container = document.getElementById('bulk-preview-container');
-            if(!container) return;
-            document.getElementById('bulk-count').innerText = bulkLogoImages.length;
-            updateBulkSelectedCount();
-
-            const btnComfort = document.getElementById('btn-preview-comfort');
-            const btnCompact = document.getElementById('btn-preview-compact');
-            if (btnComfort && btnCompact) {
-                btnComfort.classList.toggle('active', bulkPreviewMode === 'comfortable');
-                btnCompact.classList.toggle('active', bulkPreviewMode === 'compact');
-            }
-
-            container.className = `grid ${bulkPreviewMode === 'compact' ? 'bulk-preview-grid-compact gap-3' : 'bulk-preview-grid-comfort gap-4'} overflow-y-auto max-h-[680px] content-start p-1`;
-
-            if (bulkLogoImages.length === 0) {
-                container.innerHTML = '<div class="col-span-full empty-workbench p-8"><div><div class="workbench-icon"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg></div><h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3><p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên khung chuẩn, tối ưu logo dài cho iPhone và cho xem RV trước khi xuất.</p></div></div>';
-                return;
-            }
-            container.innerHTML = '';
-            const PREVIEW_LIMIT = bulkPreviewMode === 'compact' ? 120 : 80;
-            bulkLogoImages.slice(0, PREVIEW_LIMIT).forEach((item, index) => {
-                const selected = item.selected !== false;
-                const ratioTxt = item.width > item.height ? 'Ngang' : (item.height > item.width ? 'Dọc' : 'Vuông');
-
-                const card = document.createElement('div');
-                card.id = `bulk-card-${index}`;
-                card.className = `bulk-card group ${selected ? '' : 'unselected'}`;
-
-                const stage = document.createElement('div');
-                stage.className = 'bulk-stage';
-                stage.style.aspectRatio = `${item.width || 4} / ${item.height || 3}`;
-                stage.style.maxHeight = bulkPreviewMode === 'compact' ? '150px' : '260px';
-                stage.onclick = () => openBulkReview(index);
-
-                const img = document.createElement('img');
-                img.src = item.thumb || (item.img && item.img.src) || '';
-                img.alt = item.name || 'Preview';
-                stage.appendChild(img);
-
-                const overlay = document.createElement('div');
-                overlay.className = 'absolute inset-0 pointer-events-none';
-                appendLogoOverlays(overlay, item.width || 1200, item.height || 1200);
-                stage.appendChild(overlay);
-
-                const checkWrap = document.createElement('label');
-                checkWrap.className = 'absolute left-2 top-2 bg-white/90 border border-white rounded-full px-2 py-1 shadow-sm cursor-pointer flex items-center gap-1 text-[11px] font-black text-slate-700';
-                checkWrap.onclick = (ev) => ev.stopPropagation();
-                checkWrap.innerHTML = `<input id="bulk-check-${index}" type="checkbox" ${selected ? 'checked' : ''} class="accent-blue-600"> Xuất`;
-                checkWrap.querySelector('input').onchange = (ev) => toggleBulkSelected(index, ev.target.checked);
-                stage.appendChild(checkWrap);
-
-                const zoomBtn = document.createElement('button');
-                zoomBtn.className = 'absolute right-2 bottom-2 bg-slate-950/70 hover:bg-slate-950 text-white rounded-full px-2.5 py-1 text-[11px] font-black backdrop-blur-sm';
-                zoomBtn.innerText = 'Xem RV';
-                zoomBtn.onclick = (ev) => { ev.stopPropagation(); openBulkReview(index); };
-                stage.appendChild(zoomBtn);
-
-                const body = document.createElement('div');
-                body.className = 'p-3';
-                body.innerHTML = `
-                    <div class="flex items-center justify-between gap-2">
-                        <span class="text-[11px] font-black text-slate-700 truncate" title="${item.name || ''}">${item.name || 'Ảnh'}</span>
-                        <button class="text-red-500 hover:text-red-700 font-black text-sm flex-shrink-0" title="Xóa ảnh">×</button>
-                    </div>
-                    <div class="mt-1 text-[11px] text-slate-500">${ratioTxt} · ${item.width || '?'}×${item.height || '?'}</div>
-                `;
-                body.querySelector('button').onclick = (ev) => {
-                    ev.stopPropagation();
-                    if (bulkReviewIndex === index) closeBulkReview();
-                    bulkLogoImages.splice(index, 1);
-                    renderBulkLogoView();
-                };
-
-                card.appendChild(stage);
-                card.appendChild(body);
-                container.appendChild(card);
-            });
-            if (bulkLogoImages.length > PREVIEW_LIMIT) {
-                const more = document.createElement('div');
-                more.className = 'col-span-full text-center text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-xl p-3';
-                more.innerText = `Đang hiển thị ${PREVIEW_LIMIT}/${bulkLogoImages.length} ảnh để giữ web mượt. Khi xuất ZIP vẫn xử lý đầy đủ ảnh đã chọn.`;
-                container.appendChild(more);
-            }
-        }
-
-        function openBulkReview(index = 0) {
-            if (bulkLogoImages.length === 0) return showToast('Chưa có ảnh để xem RV.', 'error');
-            if (index < 0) index = 0;
-            if (index >= bulkLogoImages.length) index = bulkLogoImages.length - 1;
-            const item = bulkLogoImages[index];
-            if (!item) return;
-            bulkReviewIndex = index;
-
-            const modal = document.getElementById('bulk-review-modal');
-            const stage = document.getElementById('bulk-review-stage');
-            const img = document.getElementById('bulk-review-img');
-            const logoLayer = document.getElementById('bulk-review-logo-layer');
-            const title = document.getElementById('bulk-review-title');
-            const meta = document.getElementById('bulk-review-meta');
-            const chk = document.getElementById('bulk-review-check');
-
-            if (bulkReviewObjectUrl) URL.revokeObjectURL(bulkReviewObjectUrl);
-            bulkReviewObjectUrl = item.file ? URL.createObjectURL(item.file) : (item.thumb || '');
-            img.src = bulkReviewObjectUrl;
-            stage.style.aspectRatio = `${item.width || 4} / ${item.height || 3}`;
-            title.innerText = `RV ảnh ${index + 1}/${bulkLogoImages.length}`;
-            meta.innerText = `${item.name || 'Ảnh'} · ${item.width || '?'}×${item.height || '?'} · ${item.selected !== false ? 'Đang chọn xuất' : 'Đang bỏ chọn'}`;
-            if (chk) chk.checked = item.selected !== false;
-            appendLogoOverlays(logoLayer, item.width || 1200, item.height || 1200);
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeBulkReview() {
-            const modal = document.getElementById('bulk-review-modal');
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-            const img = document.getElementById('bulk-review-img');
-            if (img) img.removeAttribute('src');
-            if (bulkReviewObjectUrl) URL.revokeObjectURL(bulkReviewObjectUrl);
-            bulkReviewObjectUrl = null;
-            bulkReviewIndex = -1;
-        }
-
-        function navigateBulkReview(delta) {
-            if (bulkLogoImages.length === 0) return;
-            let next = bulkReviewIndex + delta;
-            if (next < 0) next = bulkLogoImages.length - 1;
-            if (next >= bulkLogoImages.length) next = 0;
-            openBulkReview(next);
-        }
-
-        function getSmartLogoMetrics(fw, fh, conf) {
-            const ratio = fw / fh;
-            const minSide = Math.min(fw, fh);
-            const padding = Math.max(18, minSide * 0.04);
-            const currentScale = conf.scale * logoScale;
-            const logoType = conf.img?.dataset?.logoFrameType || '';
-
-            if (conf.x === 'center') {
-                // Giảm kích thước render cho logo trung tâm
-                const pct = ratio > 1.35 ? 0.44 : (ratio < 0.75 ? 0.60 : 0.52);
-                const maxH = fh * (ratio > 1.35 ? 0.19 : 0.15);
-                return { targetW: fw * pct * currentScale, maxH, minH: 0, padding };
-            }
-
-            if (logoType === 'ngang') {
-                // Giảm kích thước render cho logo dài
-                const pctShortWide = ratio > 1.35 ? 0.25 : (ratio < 0.75 ? 0.30 : 0.28);
-                const maxHWide = fh * (ratio < 0.75 ? 0.12 : 0.10);
-                const minHWide = clampNumber(fh * 0.05, 45, 95);
-                return {
-                    targetW: minSide * pctShortWide * currentScale,
-                    maxH: maxHWide,
-                    minH: minHWide,
-                    padding: Math.max(16, minSide * 0.032)
-                };
-            }
-
-            // Giảm kích thước render cho logo vuông/dọc
-            let pctShort = ratio > 1.35 ? 0.20 : (ratio < 0.75 ? 0.23 : 0.20);
-            return {
-                targetW: minSide * pctShort * currentScale,
-                maxH: fh * 0.14,
-                minH: 0,
-                padding
-            };
-        }
-
-        function clampNumber(value, min, max) {
-            return Math.min(max, Math.max(min, value));
-        }
-
-        function getLogoBackgroundStats(ctx, x, y, w, h, fw, fh) {
-            const sx = Math.max(0, Math.floor(x));
-            const sy = Math.max(0, Math.floor(y));
-            const sw = Math.max(1, Math.min(fw - sx, Math.ceil(w)));
-            const sh = Math.max(1, Math.min(fh - sy, Math.ceil(h)));
-            if (sw <= 1 || sh <= 1) return { luma: 128, contrast: 0 };
-
-            try {
-                const data = ctx.getImageData(sx, sy, sw, sh).data;
-                const totalPixels = sw * sh;
-                const step = Math.max(4, Math.floor(Math.sqrt(totalPixels / 900)));
-                let sum = 0, sumSq = 0, count = 0;
-
-                for (let yy = 0; yy < sh; yy += step) {
-                    for (let xx = 0; xx < sw; xx += step) {
-                        const idx = (yy * sw + xx) * 4;
-                        const r = data[idx], g = data[idx + 1], b = data[idx + 2];
-                        const l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-                        sum += l;
-                        sumSq += l * l;
-                        count++;
-                    }
-                }
-
-                const luma = count ? sum / count : 128;
-                const variance = count ? (sumSq / count) - (luma * luma) : 0;
-                return { luma, contrast: Math.sqrt(Math.max(0, variance)) };
-            } catch (e) {
-                return { luma: 128, contrast: 35 };
-            }
-        }
-
-        function drawRoundRectPath(ctx, x, y, w, h, r) {
-            const radius = Math.min(r, w / 2, h / 2);
-            ctx.beginPath();
-            ctx.moveTo(x + radius, y);
-            ctx.lineTo(x + w - radius, y);
-            ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
-            ctx.lineTo(x + w, y + h - radius);
-            ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
-            ctx.lineTo(x + radius, y + h);
-            ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
-            ctx.lineTo(x, y + radius);
-            ctx.quadraticCurveTo(x, y, x + radius, y);
-            ctx.closePath();
-        }
-
-        function drawSmartLogoWithHalo(ctx, logoImg, x, y, dw, dh, fw, fh) {
-            const stats = getLogoBackgroundStats(ctx, x, y, dw, dh, fw, fh);
-            const minSide = Math.min(fw, fh);
-            const busy = stats.contrast > 48;
-            const veryBright = stats.luma > 205;
-            const bright = stats.luma > 165;
-            const dark = stats.luma < 92;
-            const veryDark = stats.luma < 58;
-            const blur = Math.max(3, Math.round(minSide * (busy ? 0.006 : 0.004)));
-
-            if (veryBright && !busy) {
-                const pad = Math.max(5, Math.round(minSide * 0.008));
-                ctx.save();
-                ctx.fillStyle = 'rgba(0,0,0,0.045)';
-                ctx.shadowColor = 'rgba(0,0,0,0.10)';
-                ctx.shadowBlur = Math.max(6, Math.round(minSide * 0.006));
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 0;
-                drawRoundRectPath(ctx, x - pad, y - pad, dw + pad * 2, dh + pad * 2, Math.max(10, pad * 1.8));
-                ctx.fill();
-                ctx.restore();
-            }
-
-            ctx.save();
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-
-            if (dark) {
-                ctx.shadowColor = veryDark ? 'rgba(255,255,255,0.30)' : 'rgba(255,255,255,0.22)';
-                ctx.shadowBlur = blur;
-            } else if (bright) {
-                ctx.shadowColor = busy ? 'rgba(0,0,0,0.24)' : 'rgba(0,0,0,0.18)';
-                ctx.shadowBlur = blur;
-            } else {
-                ctx.shadowColor = busy ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.12)';
-                ctx.shadowBlur = Math.max(2, Math.round(minSide * 0.003));
-            }
-
-            ctx.drawImage(logoImg, x, y, dw, dh);
-            ctx.restore();
-        }
-
-        function applyLogoToCanvas(ctx, fw, fh) {
-            logosConfig.forEach(conf => {
-                if (!conf.enabled || !conf.img) return;
-                const metric = getSmartLogoMetrics(fw, fh, conf);
-                let dw, dh, x, y;
-
-                let r = metric.targetW / conf.img.width;
-                dw = conf.img.width * r;
-                dh = conf.img.height * r;
-
-                if (dh > metric.maxH) {
-                    const r2 = metric.maxH / dh;
-                    dw *= r2; dh *= r2;
-                }
-                if (metric.minH && dh < metric.minH) {
-                    const rMin = metric.minH / Math.max(1, dh);
-                    dw *= rMin; dh *= rMin;
-                }
-                if (dw > fw * 0.82) {
-                    const r3 = (fw * 0.82) / dw;
-                    dw *= r3; dh *= r3;
-                }
-
-                if (conf.x === 'center') {
-                    x = (fw - dw) / 2;
-                    y = (fh - dh) / 2;
-                } else {
-                    x = conf.x === 'left' ? metric.padding : fw - dw - metric.padding;
-                    y = conf.y === 'top' ? metric.padding : fh - dh - metric.padding;
-                }
-
-                drawSmartLogoWithHalo(ctx, conf.img, x, y, dw, dh, fw, fh);
-            });
-        }
-
         async function processExport() {
             const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
-            if (!hasLogo) {
-                showToast("⚠️ Bạn chưa tick chọn Logo nào! Vui lòng chọn ít nhất 1 Logo trước khi tải.", "error");
-                return;
-            }
+            if (!hasLogo) { showToast("⚠️ Bạn chưa tick chọn Logo nào! Vui lòng chọn ít nhất 1 Logo trước khi tải.", "error"); return; }
             const m = MODES[currentMode];
-            for (const z of m.zones) {
-                if (!state[z.id]) return showToast(`Vui lòng tải đủ ảnh cho vị trí: "${z.label}"`, "error");
-            }
-            const btn = document.getElementById('btn-export-grid');
-            btn.innerHTML = 'ĐANG ĐÓNG GÓI & RENDER...'; btn.disabled = true;
+            for (const z of m.zones) { if (!state[z.id]) return showToast(`Vui lòng tải đủ ảnh cho vị trí: "${z.label}"`, "error"); }
+            
+            const btn = document.getElementById('btn-export-grid'); btn.innerHTML = 'ĐANG ĐÓNG GÓI & RENDER...'; btn.disabled = true;
             const zip = new JSZip();
             try {
                 const zoneCanvases = {};
                 for (const z of m.zones) {
                     const zw = z.w * EXPORT_SIZE; const zh = z.h * EXPORT_SIZE;
-                    const cvs = document.createElement('canvas');
-                    cvs.width = zw; cvs.height = zh;
-                    const ctx = cvs.getContext('2d');
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    
-                    const st = state[z.id];
-                    const domZ = document.getElementById(`zone-${z.id}`);
+                    const cvs = document.createElement('canvas'); cvs.width = zw; cvs.height = zh;
+                    const ctx = cvs.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+                    const st = state[z.id]; const domZ = document.getElementById(`zone-${z.id}`);
                     const renderRatio = zw / domZ.offsetWidth;
                     ctx.drawImage(st.img, st.x * renderRatio, st.y * renderRatio, st.img.width * st.scale * renderRatio, st.img.height * st.scale * renderRatio);
                     
                     if (st.gradient) {
-                        const h = st.gradHeight || 50;
-                        const c = st.gradColor || '#000000';
-                        const rgba85 = hexToRgba(c, 0.85);
-                        const rgba0 = hexToRgba(c, 0);
-                        const startY = zh * (1 - h/100);
-                        const grd = ctx.createLinearGradient(0, startY, 0, zh);
-                        grd.addColorStop(0, rgba0); grd.addColorStop(1, rgba85);
+                        const rgba85 = hexToRgba(st.gradColor || '#000000', 0.85); const rgba0 = hexToRgba(st.gradColor || '#000000', 0);
+                        const startY = zh * (1 - (st.gradHeight || 50)/100);
+                        const grd = ctx.createLinearGradient(0, startY, 0, zh); grd.addColorStop(0, rgba0); grd.addColorStop(1, rgba85);
                         ctx.fillStyle = grd; ctx.fillRect(0, startY, zw, zh - startY);
                     }
                     if (st.title || st.sub || st.info) {
-                        ctx.textAlign = "center";
-                        const isLux = st.theme === 'luxury';
-                        const fontFam = isLux ? "'Playfair Display', serif" : "'Inter', sans-serif";
+                        ctx.textAlign = "center"; const isLux = st.theme === 'luxury'; const fontFam = isLux ? "'Playfair Display', serif" : "'Inter', sans-serif";
                         ctx.shadowColor = "rgba(0,0,0,0.5)"; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
                         let currentY = zh - (0.08 * zw); 
                         if (st.info) {
@@ -1975,15 +1181,12 @@
                     if (sw > sh) { fw = EXPORT_SIZE; fh = Math.round(EXPORT_SIZE * (sh / sw)); } else { fh = EXPORT_SIZE; fw = Math.round(EXPORT_SIZE * (sw / sh)); }
                     
                     const fCvs = document.createElement('canvas'); fCvs.width = fw; fCvs.height = fh;
-                    const fCtx = fCvs.getContext('2d'); 
-                    fCtx.imageSmoothingEnabled = true; fCtx.imageSmoothingQuality = 'high';
+                    const fCtx = fCvs.getContext('2d'); fCtx.imageSmoothingEnabled = true; fCtx.imageSmoothingQuality = 'high';
                     fCtx.drawImage(zCvs, sx, sy, sw, sh, 0, 0, fw, fh);
                     
                     applyLogoToCanvas(fCtx, fw, fh);
                     const blob = await new Promise(r => fCvs.toBlob(r, 'image/jpeg', 0.95));
                     zip.file(exp.name, blob);
-                    
-                    // RAM clear
                     fCvs.width = 0; fCvs.height = 0;
                 }
                 for (let i = 0; i < extraImages.length; i++) {
@@ -1991,81 +1194,394 @@
                     if (fw > EXPORT_SIZE || fh > EXPORT_SIZE) { const r = Math.min(EXPORT_SIZE / fw, EXPORT_SIZE / fh); fw = Math.round(fw * r); fh = Math.round(fh * r); }
                     
                     const eCvs = document.createElement('canvas'); eCvs.width = fw; eCvs.height = fh;
-                    const eCtx = eCvs.getContext('2d'); 
-                    eCtx.imageSmoothingEnabled = true; eCtx.imageSmoothingQuality = 'high';
+                    const eCtx = eCvs.getContext('2d'); eCtx.imageSmoothingEnabled = true; eCtx.imageSmoothingQuality = 'high';
                     eCtx.drawImage(exImg, 0, 0, fw, fh);
                     
                     applyLogoToCanvas(eCtx, fw, fh);
                     const blob = await new Promise(r => eCvs.toBlob(r, 'image/jpeg', 0.95));
                     zip.file(`Anh_Le_Kem_Theo_${i + 1}.jpg`, blob);
-                    
-                    // RAM clear
                     eCvs.width = 0; eCvs.height = 0;
                 }
                 
-                // Cleanup initial canvases
-                for (const z of m.zones) {
-                    zoneCanvases[z.id].width = 0; zoneCanvases[z.id].height = 0;
-                }
+                for (const z of m.zones) { zoneCanvases[z.id].width = 0; zoneCanvases[z.id].height = 0; }
 
                 const zipBlob = await zip.generateAsync({type: "blob"});
                 const link = document.createElement('a'); link.href = URL.createObjectURL(zipBlob);
                 link.download = `UNITE_GROUP_Poster_${Date.now()}.zip`; link.click();
                 showToast('Xuất ảnh thành công!');
-            } catch (e) { 
-                showToast("Lỗi xử lý ảnh!", "error"); 
-                console.error(e); 
-            } 
+            } catch (e) { showToast("Lỗi xử lý ảnh!", "error"); console.error(e); } 
             finally {
                 btn.innerHTML = '<svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>XUẤT BỘ ẢNH LƯỚI (ZIP)'; 
                 btn.disabled = false;
             }
         }
 
-        function clearPreparedShareFiles(hidePanel = true) {
-            bulkPreparedShareUrls.forEach(url => {
-                try { URL.revokeObjectURL(url); } catch (_) {}
-            });
-            bulkPreparedShareFiles = [];
-            bulkPreparedShareUrls = [];
-            const list = document.getElementById('mobile-share-list');
-            if (list) list.innerHTML = '';
-            const meta = document.getElementById('mobile-share-meta');
-            if (meta) meta.innerText = 'Chưa tạo ảnh.';
-            const panel = document.getElementById('mobile-share-panel');
-            if (panel && hidePanel) panel.classList.add('hidden');
+        // --- BULK MODE PRO: Memory Management & Crash Prevention ---
+        function sleep(ms = 0) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+        function safeFileName(name, fallback = 'image') {
+            const base = (name || fallback).replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9_\-À-ỹ ]/g, '').trim() || fallback;
+            return base.substring(0, 70);
         }
 
-        async function renderBulkLogoFile(item, exportIndex = 0) {
-            const MAX_EDGE = 2400; // Đẩy lên 2400 max edge cho ảnh bulk chất lượng cao nhất
-            const JPG_QUALITY = 0.96;
+        function setBulkProgress(text, percent) {
+            const panel = document.getElementById('bulk-progress-panel');
+            const label = document.getElementById('bulk-progress-text');
+            const pct = document.getElementById('bulk-progress-percent');
+            const fill = document.getElementById('bulk-progress-fill');
+            if (panel) panel.classList.remove('hidden');
+            if (label) label.innerText = text || '';
+            const val = Math.max(0, Math.min(100, Math.round(percent || 0)));
+            if (pct) pct.innerText = val + '%';
+            if (fill) fill.style.width = val + '%';
+        }
+
+        function hideBulkProgressSoon() {
+            setTimeout(() => { const p = document.getElementById('bulk-progress-panel'); if (p) p.classList.add('hidden'); }, 1800);
+        }
+
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob); const link = document.createElement('a');
+            link.href = url; link.download = filename; document.body.appendChild(link);
+            link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+        }
+
+        function canvasToBlobSafe(canvas, type = 'image/jpeg', quality = 0.94) {
+            return new Promise(resolve => canvas.toBlob(resolve, type, quality));
+        }
+
+        async function loadImageElementFromFile(file) {
+            const url = URL.createObjectURL(file);
+            try {
+                const img = await new Promise((resolve, reject) => {
+                    const el = new Image(); el.onload = () => resolve(el); el.onerror = reject; el.src = url;
+                });
+                return { img, url };
+            } catch (err) {
+                URL.revokeObjectURL(url); throw err;
+            }
+        }
+
+        async function createThumbFromFile(file, maxEdge = 420) {
+            const { img, url } = await loadImageElementFromFile(file);
+            const ratio = Math.min(1, maxEdge / Math.max(img.naturalWidth || img.width, img.naturalHeight || img.height));
+            const tw = Math.max(1, Math.round((img.naturalWidth || img.width) * ratio));
+            const th = Math.max(1, Math.round((img.naturalHeight || img.height) * ratio));
+            const canvas = document.createElement('canvas'); canvas.width = tw; canvas.height = th;
+            const ctx = canvas.getContext('2d', { alpha: false }); ctx.drawImage(img, 0, 0, tw, th);
+            const thumb = canvas.toDataURL('image/jpeg', 0.65);
+            const meta = { width: img.naturalWidth || img.width, height: img.naturalHeight || img.height };
+            canvas.width = 0; canvas.height = 0;
+            URL.revokeObjectURL(url);
+            return { thumb, ...meta };
+        }
+
+        function isImageFile(file) {
+            if (!file) return false;
+            return (file.type && file.type.startsWith('image/')) || /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name || '');
+        }
+
+        function bulkFileKey(file) {
+            return `${file.webkitRelativePath || file.relativePath || file.name}|${file.size}|${file.lastModified}`;
+        }
+
+        async function handleBulkLogoUpload(e) {
+            const files = Array.from(e.target.files || []).filter(isImageFile);
+            await ingestBulkFiles(files, 'Đang nạp ảnh, vui lòng đợi...');
+            e.target.value = '';
+        }
+
+        function handleBulkDragOver(e) {
+            e.preventDefault(); e.stopPropagation();
+            if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+            document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.add('drag-over'));
+        }
+
+        function handleBulkDragLeave(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        async function handleBulkDrop(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.remove('drag-over'));
+            setBulkProgress('Đang quét file được thả vào...', 1);
+            const files = await collectDroppedImageFiles(e.dataTransfer);
+            await ingestBulkFiles(files, `Đã nhận ${files.length} ảnh từ thao tác kéo thả.`);
+        }
+
+        function setupBulkDragAndDrop() {
+            ['bulk-drop-zone', 'bulk-preview-container', 'tab-logo-preview'].forEach(id => {
+                const el = document.getElementById(id); if (!el) return;
+                el.addEventListener('dragover', handleBulkDragOver); el.addEventListener('dragleave', handleBulkDragLeave); el.addEventListener('drop', handleBulkDrop);
+            });
+        }
+
+        async function collectDroppedImageFiles(dataTransfer) {
+            const files = []; const items = Array.from(dataTransfer?.items || []);
+            if (items.length && items[0].webkitGetAsEntry) {
+                for (const item of items) { const entry = item.webkitGetAsEntry(); if (entry) await traverseFileEntry(entry, files); }
+            } else { files.push(...Array.from(dataTransfer?.files || [])); }
+            return files.filter(isImageFile);
+        }
+
+        function readAllDirectoryEntries(reader) {
+            return new Promise((resolve, reject) => {
+                const entries = [];
+                const readBatch = () => { reader.readEntries(batch => { if (!batch.length) return resolve(entries); entries.push(...batch); readBatch(); }, reject); };
+                readBatch();
+            });
+        }
+
+        async function traverseFileEntry(entry, files) {
+            if (entry.isFile) {
+                const file = await new Promise((resolve, reject) => entry.file(resolve, reject));
+                if (isImageFile(file)) { try { file.relativePath = entry.fullPath ? entry.fullPath.replace(/^\//, '') : file.name; } catch (_) {} files.push(file); }
+                return;
+            }
+            if (entry.isDirectory) {
+                const reader = entry.createReader(); const entries = await readAllDirectoryEntries(reader);
+                for (const child of entries) await traverseFileEntry(child, files);
+            }
+        }
+
+        async function ingestBulkFiles(files, readyMessage = 'Đã nạp ảnh.') {
+            const imageFiles = Array.from(files || []).filter(isImageFile);
+            if (imageFiles.length === 0) {
+                setBulkProgress('Không tìm thấy file ảnh hợp lệ.', 100); hideBulkProgressSoon(); showToast('Không có ảnh hợp lệ nào được chọn.', 'error'); return;
+            }
+            const existingKeys = new Set(bulkLogoImages.map(item => item.key).filter(Boolean));
+            const uniqueFiles = [];
+            for (const file of imageFiles) { const key = bulkFileKey(file); if (existingKeys.has(key)) continue; existingKeys.add(key); uniqueFiles.push(file); }
+            if (uniqueFiles.length === 0) {
+                setBulkProgress('Ảnh đã có trong danh sách.', 100); hideBulkProgressSoon(); showToast('Ảnh này đã có trong danh sách rồi.'); return;
+            }
+
+            setBulkProgress(readyMessage || 'Đang nạp ảnh nhẹ để xem trước...', 1);
+            for (let i = 0; i < uniqueFiles.length; i++) {
+                const file = uniqueFiles[i];
+                try {
+                    const meta = await createThumbFromFile(file, 420);
+                    bulkLogoImages.push({
+                        id: Date.now() + Math.random(), key: bulkFileKey(file), file, name: file.name,
+                        displayPath: file.webkitRelativePath || file.relativePath || file.name,
+                        width: meta.width, height: meta.height, thumb: meta.thumb, selected: true
+                    });
+                } catch (err) { console.warn('Không đọc được ảnh:', file?.name); }
+                setBulkProgress(`Đang nạp ảnh ${i + 1}/${uniqueFiles.length}...`, ((i + 1) / uniqueFiles.length) * 100);
+                await sleep(50);
+            }
+            renderBulkLogoView();
+            setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới.`, 100); hideBulkProgressSoon(); showToast(`Đã tải lên ${uniqueFiles.length} ảnh.`);
+        }
+
+        function clearBulkImages() {
+            closeBulkReview(); clearPreparedShareFiles(); bulkLogoImages = []; renderBulkLogoView();
+            const panel = document.getElementById('bulk-progress-panel'); if (panel) panel.classList.add('hidden');
+            showToast('Đã xóa danh sách ảnh hàng loạt.');
+        }
+
+        function getSelectedBulkItems() { return bulkLogoImages.filter(item => item.selected !== false); }
+        function updateBulkSelectedCount() { const el = document.getElementById('bulk-selected-count'); if (el) el.innerText = getSelectedBulkItems().length; }
+
+        function selectAllBulk(checked) {
+            bulkLogoImages.forEach(item => item.selected = !!checked); renderBulkLogoView();
+            if (bulkReviewIndex >= 0 && bulkLogoImages[bulkReviewIndex]) {
+                const chk = document.getElementById('bulk-review-check'); if (chk) chk.checked = bulkLogoImages[bulkReviewIndex].selected !== false;
+            }
+        }
+
+        function toggleBulkSelected(index, checked) {
+            if (!bulkLogoImages[index]) return; bulkLogoImages[index].selected = !!checked; updateBulkSelectedCount();
+            const chk = document.getElementById(`bulk-check-${index}`); if (chk) chk.checked = !!checked;
+            const card = document.getElementById(`bulk-card-${index}`); if (card) card.classList.toggle('unselected', !checked);
+            const reviewChk = document.getElementById('bulk-review-check'); if (reviewChk && bulkReviewIndex === index) reviewChk.checked = !!checked;
+        }
+
+        function setBulkPreviewMode(mode) { bulkPreviewMode = mode === 'compact' ? 'compact' : 'comfortable'; renderBulkLogoView(); }
+
+        function getFirstReviewIndex() {
+            if (bulkLogoImages.length === 0) return 0;
+            const selectedIndex = bulkLogoImages.findIndex(item => item.selected !== false); return selectedIndex >= 0 ? selectedIndex : 0;
+        }
+
+        function renderBulkLogoView() {
+            const container = document.getElementById('bulk-preview-container'); if(!container) return;
+            document.getElementById('bulk-count').innerText = bulkLogoImages.length; updateBulkSelectedCount();
+
+            const btnComfort = document.getElementById('btn-preview-comfort'); const btnCompact = document.getElementById('btn-preview-compact');
+            if (btnComfort && btnCompact) { btnComfort.classList.toggle('active', bulkPreviewMode === 'comfortable'); btnCompact.classList.toggle('active', bulkPreviewMode === 'compact'); }
+            container.className = `grid ${bulkPreviewMode === 'compact' ? 'bulk-preview-grid-compact gap-3' : 'bulk-preview-grid-comfort gap-4'} overflow-y-auto max-h-[680px] content-start p-1`;
+
+            if (bulkLogoImages.length === 0) {
+                container.innerHTML = '<div class="col-span-full empty-workbench p-8"><div><div class="workbench-icon"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg></div><h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3><p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Tự nhận diện ảnh, chỉnh logo thông minh và chống crash máy.</p></div></div>';
+                return;
+            }
+            container.innerHTML = '';
+            const PREVIEW_LIMIT = bulkPreviewMode === 'compact' ? 120 : 80;
+            bulkLogoImages.slice(0, PREVIEW_LIMIT).forEach((item, index) => {
+                const selected = item.selected !== false; const ratioTxt = item.width > item.height ? 'Ngang' : (item.height > item.width ? 'Dọc' : 'Vuông');
+                const card = document.createElement('div'); card.id = `bulk-card-${index}`; card.className = `bulk-card group ${selected ? '' : 'unselected'}`;
+                const stage = document.createElement('div'); stage.className = 'bulk-stage'; stage.style.aspectRatio = `${item.width || 4} / ${item.height || 3}`; stage.style.maxHeight = bulkPreviewMode === 'compact' ? '150px' : '260px';
+                stage.onclick = () => openBulkReview(index);
+
+                const img = document.createElement('img'); img.src = item.thumb || (item.img && item.img.src) || ''; img.alt = item.name || 'Preview'; stage.appendChild(img);
+                const overlay = document.createElement('div'); overlay.className = 'absolute inset-0 pointer-events-none';
+                appendLogoOverlays(overlay, item.width || 1200, item.height || 1200); stage.appendChild(overlay);
+
+                const checkWrap = document.createElement('label'); checkWrap.className = 'absolute left-2 top-2 bg-white/90 border border-white rounded-full px-2 py-1 shadow-sm cursor-pointer flex items-center gap-1 text-[11px] font-black text-slate-700'; checkWrap.onclick = (ev) => ev.stopPropagation();
+                checkWrap.innerHTML = `<input id="bulk-check-${index}" type="checkbox" ${selected ? 'checked' : ''} class="accent-blue-600"> Xuất`;
+                checkWrap.querySelector('input').onchange = (ev) => toggleBulkSelected(index, ev.target.checked); stage.appendChild(checkWrap);
+
+                const zoomBtn = document.createElement('button'); zoomBtn.className = 'absolute right-2 bottom-2 bg-slate-950/70 hover:bg-slate-950 text-white rounded-full px-2.5 py-1 text-[11px] font-black backdrop-blur-sm'; zoomBtn.innerText = 'Xem RV'; zoomBtn.onclick = (ev) => { ev.stopPropagation(); openBulkReview(index); }; stage.appendChild(zoomBtn);
+
+                const body = document.createElement('div'); body.className = 'p-3';
+                body.innerHTML = `<div class="flex items-center justify-between gap-2"><span class="text-[11px] font-black text-slate-700 truncate" title="${item.name || ''}">${item.name || 'Ảnh'}</span><button class="text-red-500 hover:text-red-700 font-black text-sm flex-shrink-0" title="Xóa ảnh">×</button></div><div class="mt-1 text-[11px] text-slate-500">${ratioTxt} · ${item.width || '?'}×${item.height || '?'}</div>`;
+                body.querySelector('button').onclick = (ev) => { ev.stopPropagation(); if (bulkReviewIndex === index) closeBulkReview(); bulkLogoImages.splice(index, 1); renderBulkLogoView(); };
+                card.appendChild(stage); card.appendChild(body); container.appendChild(card);
+            });
+            if (bulkLogoImages.length > PREVIEW_LIMIT) {
+                const more = document.createElement('div'); more.className = 'col-span-full text-center text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-xl p-3';
+                more.innerText = `Đang hiển thị ${PREVIEW_LIMIT}/${bulkLogoImages.length} ảnh để giữ web mượt. Khi xuất ZIP vẫn xử lý đầy đủ ảnh đã chọn.`;
+                container.appendChild(more);
+            }
+        }
+
+        function openBulkReview(index = 0) {
+            if (bulkLogoImages.length === 0) return showToast('Chưa có ảnh để xem RV.', 'error');
+            if (index < 0) index = 0; if (index >= bulkLogoImages.length) index = bulkLogoImages.length - 1;
+            const item = bulkLogoImages[index]; if (!item) return;
+            bulkReviewIndex = index;
+
+            const modal = document.getElementById('bulk-review-modal'); const stage = document.getElementById('bulk-review-stage'); const img = document.getElementById('bulk-review-img');
+            const logoLayer = document.getElementById('bulk-review-logo-layer'); const title = document.getElementById('bulk-review-title'); const meta = document.getElementById('bulk-review-meta'); const chk = document.getElementById('bulk-review-check');
+
+            if (bulkReviewObjectUrl) URL.revokeObjectURL(bulkReviewObjectUrl);
+            bulkReviewObjectUrl = item.file ? URL.createObjectURL(item.file) : (item.thumb || '');
+            
+            img.onload = () => { /* Success */ };
+            img.onerror = () => { 
+                if(img.src !== item.thumb) {
+                    img.src = item.thumb || ''; 
+                    showToast('Đang hiển thị bản nháp vì ảnh gốc quá lớn.', 'error');
+                }
+            };
+            img.src = bulkReviewObjectUrl;
+            
+            stage.style.aspectRatio = `${item.width || 4} / ${item.height || 3}`;
+            title.innerText = `RV ảnh ${index + 1}/${bulkLogoImages.length}`;
+            meta.innerText = `${item.name || 'Ảnh'} · ${item.width || '?'}×${item.height || '?'} · ${item.selected !== false ? 'Đang chọn xuất' : 'Đang bỏ chọn'}`;
+            if (chk) chk.checked = item.selected !== false;
+            appendLogoOverlays(logoLayer, item.width || 1200, item.height || 1200);
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        }
+
+        function closeBulkReview() {
+            const modal = document.getElementById('bulk-review-modal');
+            if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+            const img = document.getElementById('bulk-review-img'); if (img) { img.onload=null; img.onerror=null; img.removeAttribute('src'); }
+            if (bulkReviewObjectUrl) URL.revokeObjectURL(bulkReviewObjectUrl);
+            bulkReviewObjectUrl = null; bulkReviewIndex = -1;
+        }
+
+        function navigateBulkReview(delta) {
+            if (bulkLogoImages.length === 0) return;
+            let next = bulkReviewIndex + delta; if (next < 0) next = bulkLogoImages.length - 1; if (next >= bulkLogoImages.length) next = 0;
+            openBulkReview(next);
+        }
+
+        function drawRoundRectPath(ctx, x, y, w, h, r) {
+            const radius = Math.min(r, w / 2, h / 2);
+            ctx.beginPath(); ctx.moveTo(x + radius, y); ctx.lineTo(x + w - radius, y); ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+            ctx.lineTo(x + w, y + h - radius); ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h); ctx.lineTo(x + radius, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - radius); ctx.lineTo(x, y + radius); ctx.quadraticCurveTo(x, y, x + radius, y); ctx.closePath();
+        }
+
+        function drawSmartLogoWithHalo(ctx, logoImg, x, y, dw, dh, fw, fh) {
+            const stats = getLogoBackgroundStats(ctx, x, y, dw, dh, fw, fh);
+            const minSide = Math.min(fw, fh); const busy = stats.contrast > 48; const veryBright = stats.luma > 205; const bright = stats.luma > 165; const dark = stats.luma < 92; const veryDark = stats.luma < 58;
+            const blur = Math.max(3, Math.round(minSide * (busy ? 0.006 : 0.004)));
+
+            if (veryBright && !busy) {
+                const pad = Math.max(5, Math.round(minSide * 0.008));
+                ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.045)'; ctx.shadowColor = 'rgba(0,0,0,0.10)'; ctx.shadowBlur = Math.max(6, Math.round(minSide * 0.006)); ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+                drawRoundRectPath(ctx, x - pad, y - pad, dw + pad * 2, dh + pad * 2, Math.max(10, pad * 1.8)); ctx.fill(); ctx.restore();
+            }
+            ctx.save(); ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+            if (dark) { ctx.shadowColor = veryDark ? 'rgba(255,255,255,0.30)' : 'rgba(255,255,255,0.22)'; ctx.shadowBlur = blur; } 
+            else if (bright) { ctx.shadowColor = busy ? 'rgba(0,0,0,0.24)' : 'rgba(0,0,0,0.18)'; ctx.shadowBlur = blur; } 
+            else { ctx.shadowColor = busy ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.12)'; ctx.shadowBlur = Math.max(2, Math.round(minSide * 0.003)); }
+            ctx.drawImage(logoImg, x, y, dw, dh); ctx.restore();
+        }
+
+        function getLogoBackgroundStats(ctx, x, y, w, h, fw, fh) {
+            const sx = Math.max(0, Math.floor(x)); const sy = Math.max(0, Math.floor(y));
+            const sw = Math.max(1, Math.min(fw - sx, Math.ceil(w))); const sh = Math.max(1, Math.min(fh - sy, Math.ceil(h)));
+            if (sw <= 1 || sh <= 1) return { luma: 128, contrast: 0 };
+            try {
+                const data = ctx.getImageData(sx, sy, sw, sh).data; const totalPixels = sw * sh;
+                const step = Math.max(4, Math.floor(Math.sqrt(totalPixels / 600))); 
+                let sum = 0, sumSq = 0, count = 0;
+                for (let yy = 0; yy < sh; yy += step) {
+                    for (let xx = 0; xx < sw; xx += step) {
+                        const idx = (yy * sw + xx) * 4;
+                        const l = 0.2126 * data[idx] + 0.7152 * data[idx + 1] + 0.0722 * data[idx + 2];
+                        sum += l; sumSq += l * l; count++;
+                    }
+                }
+                const luma = count ? sum / count : 128; const variance = count ? (sumSq / count) - (luma * luma) : 0;
+                return { luma, contrast: Math.sqrt(Math.max(0, variance)) };
+            } catch (e) { return { luma: 128, contrast: 35 }; }
+        }
+
+        function applyLogoToCanvas(ctx, fw, fh) {
+            logosConfig.forEach(conf => {
+                if (!conf.enabled || !conf.img) return;
+                
+                const metrics = calculateUniversalLogoMetrics(fw, fh, conf.img.width, conf.img.height, conf.scale, conf.x);
+                
+                let x, y;
+                if (conf.x === 'center') { 
+                    x = (fw - metrics.targetW) / 2; 
+                    y = (fh - metrics.targetH) / 2; 
+                } 
+                else { 
+                    x = conf.x === 'left' ? metrics.padding : fw - metrics.targetW - metrics.padding; 
+                    y = conf.y === 'top' ? metrics.padding : fh - metrics.targetH - metrics.padding; 
+                }
+                
+                drawSmartLogoWithHalo(ctx, conf.img, x, y, metrics.targetW, metrics.targetH, fw, fh);
+            });
+        }
+
+        function clearPreparedShareFiles(hidePanel = true) {
+            bulkPreparedShareUrls.forEach(url => { try { URL.revokeObjectURL(url); } catch (_) {} });
+            bulkPreparedShareFiles = []; bulkPreparedShareUrls = [];
+            const list = document.getElementById('mobile-share-list'); if (list) list.innerHTML = '';
+            const meta = document.getElementById('mobile-share-meta'); if (meta) meta.innerText = 'Chưa tạo ảnh.';
+            const panel = document.getElementById('mobile-share-panel'); if (panel && hidePanel) panel.classList.add('hidden');
+        }
+
+        async function renderBulkLogoFile(item, exportIndex = 0, isMobileShare = false) {
+            const MAX_EDGE = 1600; 
+            const JPG_QUALITY = 0.94;
             const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
             try {
-                let fw = img.naturalWidth || img.width;
-                let fh = img.naturalHeight || img.height;
+                let fw = img.naturalWidth || img.width; let fh = img.naturalHeight || img.height;
                 const ratio = Math.min(1, MAX_EDGE / Math.max(fw, fh));
-                fw = Math.max(1, Math.round(fw * ratio));
-                fh = Math.max(1, Math.round(fh * ratio));
+                fw = Math.max(1, Math.round(fw * ratio)); fh = Math.max(1, Math.round(fh * ratio));
 
-                const cvs = document.createElement('canvas');
-                cvs.width = fw;
-                cvs.height = fh;
+                const cvs = document.createElement('canvas'); cvs.width = fw; cvs.height = fh;
                 const ctx = cvs.getContext('2d', { alpha: false });
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
+                ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+                ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, fw, fh); ctx.drawImage(img, 0, 0, fw, fh);
                 
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, fw, fh);
-                ctx.drawImage(img, 0, 0, fw, fh);
                 applyLogoToCanvas(ctx, fw, fh);
 
                 const blob = await canvasToBlobSafe(cvs, 'image/jpeg', JPG_QUALITY);
                 const fileName = `${String(exportIndex + 1).padStart(3, '0')}_${safeFileName(item.name, 'UNITE_Logo')}.jpg`;
                 
-                // Giải phóng RAM NGAY LẬP TỨC rất quan trọng trên iPhone
-                cvs.width = 0;
-                cvs.height = 0;
-                
+                cvs.width = 0; cvs.height = 0;
                 return new File([blob], fileName, { type: 'image/jpeg', lastModified: Date.now() });
             } finally {
                 URL.revokeObjectURL(url);
@@ -2073,28 +1589,26 @@
         }
 
         function renderPreparedSharePanel() {
-            const panel = document.getElementById('mobile-share-panel');
-            const meta = document.getElementById('mobile-share-meta');
-            const list = document.getElementById('mobile-share-list');
+            const panel = document.getElementById('mobile-share-panel'); const meta = document.getElementById('mobile-share-meta'); const list = document.getElementById('mobile-share-list');
             if (!panel || !list) return;
 
             panel.classList.remove('hidden');
-            if (meta) meta.innerText = `Đã tạo ${bulkPreparedShareFiles.length} ảnh JPG. Có thể chia sẻ qua tin nhắn hoặc lưu vào Album.`;
+            if (meta) meta.innerText = `Đã tạo xong. Nhấn "MỞ ẢNH GỐC" để bung ảnh ra Copy nhé.`;
             list.innerHTML = '';
 
             bulkPreparedShareFiles.forEach((file, index) => {
-                const url = URL.createObjectURL(file);
-                bulkPreparedShareUrls.push(url);
-                const card = document.createElement('div');
-                card.className = 'mobile-share-card';
+                const url = URL.createObjectURL(file); bulkPreparedShareUrls.push(url);
+                const card = document.createElement('div'); card.className = 'mobile-share-card';
                 card.innerHTML = `
                     <img src="${url}" alt="Ảnh đã gắn logo ${index + 1}">
-                    <div class="min-w-0">
-                        <div class="text-xs font-black text-slate-800 truncate">${file.name}</div>
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            <button class="text-[11px] font-black text-blue-700 bg-blue-50 border border-blue-100 rounded-full px-3 py-1" onclick="sharePreparedOne(${index})">Chia sẻ</button>
-                            <a class="text-[11px] font-black text-slate-700 bg-white border border-slate-200 rounded-full px-3 py-1" href="${url}" target="_blank" rel="noopener">Mở ảnh</a>
-                            <a class="text-[11px] font-black text-slate-700 bg-white border border-slate-200 rounded-full px-3 py-1" href="${url}" download="${file.name}">Tải</a>
+                    <div class="min-w-0 flex-1 flex flex-col justify-center">
+                        <div class="text-[13px] font-black text-slate-800 truncate mb-2">${file.name}</div>
+                        <div class="flex flex-wrap gap-2">
+                            <a class="mobile-share-action highlight flex-1" href="${url}" target="_blank" rel="noopener">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                                MỞ ẢNH GỐC ĐỂ COPY
+                            </a>
+                            <button class="mobile-share-action secondary" onclick="sharePreparedOne(${index})">Chia sẻ</button>
                         </div>
                     </div>`;
                 list.appendChild(card);
@@ -2110,12 +1624,8 @@
             const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
             if (!hasLogo) return showToast("⚠️ Bạn chưa tick chọn Logo nào!", 'error');
 
-            const btn = document.getElementById('btn-prepare-share');
-            const oldBtn = btn ? btn.innerHTML : '';
-            if (btn) {
-                btn.disabled = true;
-                btn.innerText = 'ĐANG TẠO ẢNH ĐỂ CHIA SẺ...';
-            }
+            const btn = document.getElementById('btn-prepare-share'); const oldBtn = btn ? btn.innerHTML : '';
+            if (btn) { btn.disabled = true; btn.innerText = 'ĐANG TẠO ẢNH ĐỂ CHIA SẺ...'; }
             clearPreparedShareFiles(false);
 
             try {
@@ -2123,138 +1633,58 @@
                     setBulkProgress(`Đang tạo ảnh chia sẻ ${i + 1}/${selectedBulkImages.length}...`, (i / selectedBulkImages.length) * 100);
                     const file = await renderBulkLogoFile(selectedBulkImages[i], i);
                     bulkPreparedShareFiles.push(file);
-                    // Nhường frame cho UI mượt
-                    await yieldToMain();
+                    await sleep(80); 
                 }
-                setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh. Bấm Chia sẻ để gửi đi.`, 100);
+                setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh. Bấm Chia sẻ hoặc Mở ảnh gốc để dán đi.`, 100);
                 renderPreparedSharePanel();
             } catch (e) {
                 console.error(e);
-                showToast('Có lỗi khi tạo ảnh. Vui lòng chọn ít ảnh hơn hoặc giảm tải trang.', 'error');
+                showToast('Lỗi quá tải RAM. Vui lòng chọn ít ảnh hơn (khoảng 3-5 ảnh/lần) nhé.', 'error');
             } finally {
-                if (btn) {
-                    btn.disabled = false;
-                    btn.innerHTML = oldBtn;
-                }
-                hideBulkProgressSoon();
-            }
-        }
-
-        async function sharePreparedBulkFiles() {
-            if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
-            const files = bulkPreparedShareFiles;
-            try {
-                if (navigator.canShare && navigator.canShare({ files })) {
-                    await navigator.share({ files });
-                    return;
-                }
-                if (navigator.canShare && navigator.canShare({ files: [files[0]] })) {
-                    await navigator.share({ files: [files[0]] });
-                    showToast('Trình duyệt chỉ hỗ trợ gửi 1 ảnh mỗi lần. Vui lòng gửi từng ảnh.', 'error');
-                    return;
-                }
-                showToast('Thiết bị không hỗ trợ gửi đa ảnh trực tiếp. Vui lòng tải về máy.', 'error');
-            } catch (e) {
-                if (e && e.name === 'AbortError') return;
-                console.warn(e);
-                showToast('Hủy gửi hoặc ứng dụng không nhận diện được file.', 'error');
+                if (btn) { btn.disabled = false; btn.innerHTML = oldBtn; } hideBulkProgressSoon();
             }
         }
 
         async function sharePreparedOne(index) {
-            const file = bulkPreparedShareFiles[index];
-            if (!file) return;
+            const file = bulkPreparedShareFiles[index]; if (!file) return;
             try {
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    await navigator.share({ files: [file] });
-                    return;
-                }
-                showToast('Chưa hỗ trợ chia sẻ trực tiếp. Hãy bấm "Tải" về máy.', 'error');
+                if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file] }); return; }
+                showToast('Máy chưa hỗ trợ chia sẻ trực tiếp. Hãy bấm "MỞ ẢNH GỐC" rồi lưu.', 'error');
             } catch (e) {
                 if (e && e.name !== 'AbortError') showToast('Không chia sẻ được ảnh này.', 'error');
             }
         }
 
-        async function downloadPreparedBulkFilesIndividually() {
-            if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
-            for (let i = 0; i < bulkPreparedShareFiles.length; i++) {
-                downloadBlob(bulkPreparedShareFiles[i], bulkPreparedShareFiles[i].name);
-                await sleep(250);
-            }
-            showToast('Đang tải toàn bộ ảnh xuống...');
-        }
-
         async function processBulkLogoExportToFolder() {
-            if (!('showDirectoryPicker' in window)) {
-                showToast('Trình duyệt chưa hỗ trợ lưu thẳng vào thư mục. Dùng nút xuất ZIP nhé.', 'error');
-                return;
-            }
+            if (!('showDirectoryPicker' in window)) { showToast('Máy này chưa hỗ trợ lưu thẳng vào thư mục. Dùng nút xuất ZIP nhé.', 'error'); return; }
             if (bulkLogoImages.length === 0) return showToast('Vui lòng tải ảnh lên trước!', 'error');
             const selectedBulkImages = getSelectedBulkItems();
             if (selectedBulkImages.length === 0) return showToast("Bạn chưa chọn ảnh nào để xuất.", 'error');
             const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
             if (!hasLogo) return showToast("⚠️ Bạn chưa chọn Logo nào!", 'error');
 
-            let dirHandle;
-            try {
-                dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
-            } catch (_) {
-                return; // User cancelled
-            }
+            let dirHandle; try { dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); } catch (_) { return; }
 
-            const btn = document.getElementById('btn-export-folder');
-            const oldBtn = btn.innerHTML;
-            btn.disabled = true;
-            const MAX_EDGE = 2400; // Tăng chất lượng ảnh xuất folder
-            const JPG_QUALITY = 0.96;
+            const btn = document.getElementById('btn-export-folder'); const oldBtn = btn.innerHTML; btn.disabled = true;
             let done = 0;
 
             try {
                 for (const item of selectedBulkImages) {
                     setBulkProgress(`Đang lưu ảnh ${done + 1}/${selectedBulkImages.length} vào thư mục...`, (done / selectedBulkImages.length) * 100);
                     btn.innerText = `ĐANG LƯU ${done + 1}/${selectedBulkImages.length}...`;
-                    
-                    const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
-                    let fw = img.naturalWidth || img.width;
-                    let fh = img.naturalHeight || img.height;
-                    const ratio = Math.min(1, MAX_EDGE / Math.max(fw, fh));
-                    fw = Math.max(1, Math.round(fw * ratio));
-                    fh = Math.max(1, Math.round(fh * ratio));
-
-                    const cvs = document.createElement('canvas');
-                    cvs.width = fw; cvs.height = fh;
-                    const ctx = cvs.getContext('2d', { alpha: false });
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(0, 0, fw, fh);
-                    ctx.drawImage(img, 0, 0, fw, fh);
-                    applyLogoToCanvas(ctx, fw, fh);
-
-                    const blob = await canvasToBlobSafe(cvs, 'image/jpeg', JPG_QUALITY);
-                    const fileName = `${String(done + 1).padStart(3, '0')}_${safeFileName(item.name, 'UNITE_Logo')}.jpg`;
-                    const fileHandle = await dirHandle.getFileHandle(fileName, { create: true });
+                    const file = await renderBulkLogoFile(item, done, false);
+                    const fileHandle = await dirHandle.getFileHandle(file.name, { create: true });
                     const writable = await fileHandle.createWritable();
-                    await writable.write(blob);
-                    await writable.close();
-
-                    // Cleanup RAM
-                    cvs.width = 0; cvs.height = 0;
-                    URL.revokeObjectURL(url);
-                    
+                    await writable.write(file); await writable.close();
                     done++;
-                    await yieldToMain();
+                    await sleep(50);
                 }
                 setBulkProgress(`Hoàn tất ${selectedBulkImages.length} ảnh.`, 100);
                 showToast(`Đã xuất ${selectedBulkImages.length} ảnh vào thư mục thành công!`);
             } catch (e) {
-                console.error(e);
-                showToast('Có lỗi khi lưu vào thư mục. Vui lòng thử xuất bằng ZIP.', 'error');
+                console.error(e); showToast('Có lỗi khi lưu vào thư mục. Vui lòng thử xuất bằng ZIP.', 'error');
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = oldBtn;
-                hideBulkProgressSoon();
+                btn.disabled = false; btn.innerHTML = oldBtn; hideBulkProgressSoon();
             }
         }
 
@@ -2265,75 +1695,38 @@
             const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
             if (!hasLogo) return showToast("⚠️ Bạn chưa tick chọn Logo nào!", "error");
             
-            const btn = document.getElementById('btn-export-bulk');
-            btn.disabled = true;
-            const oldBtn = btn.innerHTML;
-
-            const MAX_EDGE = 2400;      
+            const btn = document.getElementById('btn-export-bulk'); btn.disabled = true; const oldBtn = btn.innerHTML;
             const ZIP_BATCH = 25;       
-            const JPG_QUALITY = 0.96;
-            const total = selectedBulkImages.length;
-            const totalBatches = Math.ceil(total / ZIP_BATCH);
+            const total = selectedBulkImages.length; const totalBatches = Math.ceil(total / ZIP_BATCH);
             let done = 0;
 
             try {
                 for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
                     const zip = new JSZip();
                     const batch = selectedBulkImages.slice(batchIndex * ZIP_BATCH, (batchIndex + 1) * ZIP_BATCH);
-
                     for (let i = 0; i < batch.length; i++) {
                         const item = batch[i];
                         setBulkProgress(`Đang đóng logo ảnh ${done + 1}/${total} · ZIP ${batchIndex + 1}/${totalBatches}`, (done / total) * 100);
                         btn.innerText = `ĐANG XỬ LÝ ${done + 1}/${total}...`;
-
-                        const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
-                        let fw = img.naturalWidth || img.width;
-                        let fh = img.naturalHeight || img.height;
-                        const ratio = Math.min(1, MAX_EDGE / Math.max(fw, fh));
-                        fw = Math.max(1, Math.round(fw * ratio));
-                        fh = Math.max(1, Math.round(fh * ratio));
-
-                        const cvs = document.createElement('canvas');
-                        cvs.width = fw; cvs.height = fh;
-                        const ctx = cvs.getContext('2d', { alpha: false });
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.imageSmoothingQuality = 'high';
-                        
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fillRect(0, 0, fw, fh);
-                        ctx.drawImage(img, 0, 0, fw, fh);
-                        applyLogoToCanvas(ctx, fw, fh);
-
-                        const blob = await canvasToBlobSafe(cvs, 'image/jpeg', JPG_QUALITY);
-                        zip.file(`${String(done + 1).padStart(3, '0')}_${safeFileName(item.name, 'UNITE_Logo')}.jpg`, blob);
-
-                        // Cleanup RAM immediately
-                        cvs.width = 0; cvs.height = 0;
-                        URL.revokeObjectURL(url);
-                        
+                        const file = await renderBulkLogoFile(item, done, false);
+                        zip.file(file.name, file);
                         done++;
-                        await yieldToMain();
+                        await sleep(80);
                     }
-
                     setBulkProgress(`Đang nén ZIP ${batchIndex + 1}/${totalBatches}...`, (done / total) * 100);
                     const zipBlob = await zip.generateAsync({type: "blob"}, meta => {
-                        const base = ((done - batch.length) / total) * 100;
-                        const span = (batch.length / total) * 100;
+                        const base = ((done - batch.length) / total) * 100; const span = (batch.length / total) * 100;
                         setBulkProgress(`Đang nén ZIP ${batchIndex + 1}/${totalBatches}: ${Math.round(meta.percent)}%`, base + span * (meta.percent / 100));
                     });
                     const suffix = totalBatches > 1 ? `_Part_${batchIndex + 1}_of_${totalBatches}` : '';
                     downloadBlob(zipBlob, `UNITE_Logo_Batch${suffix}_${Date.now()}.zip`);
-                    await sleep(400); // Give browser time to save file
+                    await sleep(500); 
                 }
-                setBulkProgress(`Hoàn tất ${total} ảnh. File ZIP đã được tải xuống.`, 100);
-                showToast('Đã tải bộ ảnh ZIP thành công!');
+                setBulkProgress(`Hoàn tất ${total} ảnh. File ZIP đã được tải xuống.`, 100); showToast('Đã tải bộ ảnh ZIP thành công!');
             } catch (e) {
-                showToast("Lỗi xử lý! Hãy thử chọn ít ảnh hơn.", "error");
-                console.error(e);
+                showToast("Lỗi xử lý! Máy bị thiếu RAM, hãy thử chọn ít ảnh hơn (5-10 tấm/lần).", "error"); console.error(e);
             } finally {
-                btn.innerHTML = oldBtn;
-                btn.disabled = false;
-                hideBulkProgressSoon();
+                btn.innerHTML = oldBtn; btn.disabled = false; hideBulkProgressSoon();
             }
         }
     </script>
