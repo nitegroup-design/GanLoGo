@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNITE GROUP - Brand Image Studio V5</title>
+    <title>UNITE GROUP - Brand Image Studio V7 iPhone</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
@@ -367,7 +367,7 @@
             <!-- CẤU HÌNH LOGO (Dùng chung cho cả 2 tab) -->
             <div class="panel-card p-5">
                 <label class="block text-sm font-bold text-gray-700 mb-3">Brand Kit Logo & Watermark</label>
-                <p class="text-xs text-gray-500 mb-3">Logo mặc định đang bật ở Góc Phải Trên, kích thước riêng 80%. Có thể tick thêm vị trí khác khi cần.</p>
+                <p class="text-xs text-gray-500 mb-3">Logo mặc định đang bật ở Góc Phải Trên. Có thể tick thêm vị trí khác khi cần.</p>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="logo-slots-container">
                     <!-- Được render bằng JS -->
@@ -536,7 +536,7 @@
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                     </div>
                     <h2 class="text-lg font-bold text-gray-800 mb-2">Đóng Dấu Hàng Loạt Ảnh</h2>
-                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh (không bị cắt vuông), tự động gắn các Logo bạn đã cấu hình phía trên và xuất ra hàng loạt.</p>
+                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh (không bị cắt vuông), tự động gắn các Logo bạn đã cấu hình phía trên, chuẩn hóa logo từ link/upload về cùng một khung và xuất ra hàng loạt.</p>
                     
                     <div id="bulk-drop-zone" class="bulk-drop-zone text-left" ondragover="handleBulkDragOver(event)" ondragleave="handleBulkDragLeave(event)" ondrop="handleBulkDrop(event)">
                         <div class="relative z-[2] flex flex-col items-center text-center gap-3">
@@ -677,7 +677,7 @@
                                 <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
                             </div>
                             <h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3>
-                            <p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên 80% và cho xem RV trước khi xuất.</p>
+                            <p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên khung chuẩn và cho xem RV trước khi xuất.</p>
                         </div>
                     </div>
                 </div>
@@ -880,7 +880,7 @@
                 const div = document.createElement('div');
                 const colSpan = conf.x === 'center' ? 'sm:col-span-2' : '';
                 div.className = `logo-slot-card ${conf.enabled ? 'active' : ''} ${colSpan} flex items-center gap-2 px-3 py-2`;
-                const statusText = conf.enabled ? (conf.id === 'tr' ? 'Mặc định · 80%' : 'Đang bật') : 'Đang tắt';
+                const statusText = conf.enabled ? (conf.id === 'tr' ? 'Mặc định · Chuẩn khung' : 'Đang bật') : 'Đang tắt';
                 div.innerHTML = `
                     <label class="flex items-center gap-2 flex-1 cursor-pointer min-w-0">
                         <input type="checkbox" id="logo-enable-${index}" ${conf.enabled ? 'checked' : ''} onchange="toggleLogo(${index})" class="w-4 h-4 text-blue-600 rounded cursor-pointer flex-shrink-0">
@@ -899,15 +899,115 @@
             });
         }
 
+        function getLogoContentBounds(img) {
+            const maxScanSide = 900;
+            const ratio = img.width / img.height;
+            const sw = ratio >= 1 ? maxScanSide : Math.max(1, Math.round(maxScanSide * ratio));
+            const sh = ratio >= 1 ? Math.max(1, Math.round(maxScanSide / ratio)) : maxScanSide;
+            const scanCanvas = document.createElement('canvas');
+            scanCanvas.width = sw;
+            scanCanvas.height = sh;
+            const scanCtx = scanCanvas.getContext('2d', { willReadFrequently: true });
+            scanCtx.clearRect(0, 0, sw, sh);
+            scanCtx.drawImage(img, 0, 0, sw, sh);
+
+            const data = scanCtx.getImageData(0, 0, sw, sh).data;
+            let minX = sw, minY = sh, maxX = -1, maxY = -1;
+            for (let y = 0; y < sh; y++) {
+                for (let x = 0; x < sw; x++) {
+                    const idx = (y * sw + x) * 4;
+                    const alpha = data[idx + 3];
+                    // Dò phần logo thật, bỏ các khoảng trong suốt/viền thừa của file lấy từ link.
+                    if (alpha > 12) {
+                        if (x < minX) minX = x;
+                        if (y < minY) minY = y;
+                        if (x > maxX) maxX = x;
+                        if (y > maxY) maxY = y;
+                    }
+                }
+            }
+
+            if (maxX < 0 || maxY < 0) {
+                return { x: 0, y: 0, w: img.width, h: img.height };
+            }
+
+            const sx = img.width / sw;
+            const sy = img.height / sh;
+            return {
+                x: Math.max(0, Math.floor(minX * sx)),
+                y: Math.max(0, Math.floor(minY * sy)),
+                w: Math.min(img.width, Math.ceil((maxX - minX + 1) * sx)),
+                h: Math.min(img.height, Math.ceil((maxY - minY + 1) * sy))
+            };
+        }
+
+        function getLogoNormalizeFrame(bounds) {
+            const ratio = bounds.w / bounds.h;
+            if (ratio >= 1.35) {
+                // Logo ngang: cho khung rộng hơn một chút để sang ảnh ngang/dọc/vuông đều không bị nhỏ.
+                return { w: 1200, h: 390, pad: 0.065, type: 'ngang' };
+            }
+            if (ratio <= 0.82) {
+                // Logo dọc: cho khung cao hơn một chút để không bị ép thấp khi xuất trên iPhone/app nhắn tin.
+                return { w: 760, h: 940, pad: 0.075, type: 'doc' };
+            }
+            // Logo vuông/gần vuông: cân bằng nhưng vẫn ưu tiên chiều cao rõ hơn.
+            return { w: 840, h: 900, pad: 0.085, type: 'vuong' };
+        }
+
+        function loadImageFromDataUrl(src) {
+            return new Promise(resolve => {
+                const out = new Image();
+                out.onload = () => resolve(out);
+                out.onerror = () => resolve(null);
+                out.src = src;
+            });
+        }
+
+        async function normalizeLogoImageForAllPlatforms(img) {
+            try {
+                const bounds = getLogoContentBounds(img);
+                const frame = getLogoNormalizeFrame(bounds);
+                const outCanvas = document.createElement('canvas');
+                outCanvas.width = frame.w;
+                outCanvas.height = frame.h;
+                const outCtx = outCanvas.getContext('2d');
+                outCtx.clearRect(0, 0, frame.w, frame.h);
+
+                const maxW = frame.w * (1 - frame.pad * 2);
+                const maxH = frame.h * (1 - frame.pad * 2);
+                // To thì thu lại, nhỏ thì phóng lên: mọi logo link/upload đều vào chung một khung chuẩn.
+                const scale = Math.min(maxW / bounds.w, maxH / bounds.h);
+                const dw = bounds.w * scale;
+                const dh = bounds.h * scale;
+                const dx = (frame.w - dw) / 2;
+                const dy = (frame.h - dh) / 2;
+                outCtx.drawImage(img, bounds.x, bounds.y, bounds.w, bounds.h, dx, dy, dw, dh);
+
+                const normalized = await loadImageFromDataUrl(outCanvas.toDataURL('image/png'));
+                if (normalized) {
+                    normalized.dataset.logoFrameType = frame.type;
+                    normalized.dataset.originalW = String(img.width || '');
+                    normalized.dataset.originalH = String(img.height || '');
+                    return normalized;
+                }
+            } catch (err) {
+                // Nếu browser/app chặn canvas do CORS, vẫn dùng ảnh gốc để không làm gián đoạn quy trình.
+                console.warn('Không chuẩn hóa được logo, dùng ảnh gốc:', err);
+            }
+            return img;
+        }
+
         function loadLogoForSlot(index, url, retryLevel = 0) {
             if(!url) return;
             const img = new Image();
             img.crossOrigin = "anonymous";
-            img.onload = () => {
-                logosConfig[index].img = img;
+            img.onload = async () => {
+                const normalizedLogo = await normalizeLogoImageForAllPlatforms(img);
+                logosConfig[index].img = normalizedLogo;
                 const previewEl = document.getElementById(`preview-logo-${index}`);
                 if(previewEl) {
-                    previewEl.src = img.src;
+                    previewEl.src = normalizedLogo.src;
                     previewEl.classList.remove('hidden');
                 }
                 renderView();
@@ -939,8 +1039,9 @@
             const r = new FileReader();
             r.onload = (evt) => {
                 const i = new Image();
-                i.onload = () => {
-                    logosConfig[index].img = i;
+                i.onload = async () => {
+                    const normalizedLogo = await normalizeLogoImageForAllPlatforms(i);
+                    logosConfig[index].img = normalizedLogo;
                     logosConfig[index].enabled = true;
                     renderLogoConfigUI();
                     renderView();
@@ -1669,7 +1770,7 @@
             container.className = `grid ${bulkPreviewMode === 'compact' ? 'bulk-preview-grid-compact gap-3' : 'bulk-preview-grid-comfort gap-4'} overflow-y-auto max-h-[680px] content-start p-1`;
 
             if (bulkLogoImages.length === 0) {
-                container.innerHTML = '<div class="col-span-full empty-workbench p-8"><div><div class="workbench-icon"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg></div><h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3><p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên 80% và cho xem RV trước khi xuất.</p></div></div>';
+                container.innerHTML = '<div class="col-span-full empty-workbench p-8"><div><div class="workbench-icon"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg></div><h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3><p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên khung chuẩn và cho xem RV trước khi xuất.</p></div></div>';
                 return;
             }
             container.innerHTML = '';
