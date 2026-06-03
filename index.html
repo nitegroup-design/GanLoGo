@@ -134,6 +134,50 @@
         .folder-output-btn { background: linear-gradient(135deg, #0f172a, #334155); }
 
 
+        /* Mobile share: tối ưu cho iPhone, Zalo/Messenger/AirDrop */
+        .mobile-share-btn {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+        }
+        .mobile-share-panel {
+            background: linear-gradient(135deg, #eff6ff, #ffffff);
+            border: 1px solid #bfdbfe;
+            border-radius: 22px;
+            padding: 16px;
+            box-shadow: 0 18px 42px -34px rgba(37,99,235,.86);
+        }
+        .mobile-share-action {
+            border-radius: 16px;
+            padding: 12px 14px;
+            font-weight: 900;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all .18s ease;
+        }
+        .mobile-share-action.primary { color: white; background: linear-gradient(135deg, #2563eb, #0f172a); }
+        .mobile-share-action.secondary { color: #0f172a; background: white; border: 1px solid #dbe4f0; }
+        .mobile-share-card {
+            display: grid;
+            grid-template-columns: 58px 1fr;
+            gap: 10px;
+            align-items: center;
+            background: rgba(255,255,255,.88);
+            border: 1px solid #dbeafe;
+            border-radius: 16px;
+            padding: 9px;
+        }
+        .mobile-share-card img {
+            width: 58px;
+            height: 58px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+
+
         /* V5 polish: chỉnh lại tổng thể cho gọn, sang và ít cảm giác dang dở */
         :root {
             --ug-ink: #0f172a;
@@ -528,6 +572,30 @@
                         <p class="text-[11px] text-slate-500 mt-2">Web tự chia ZIP theo lô để máy nhân sự không bị đứng khi xử lý nhiều ảnh.</p>
                     </div>
                 </div>
+
+                <button onclick="prepareBulkLogoShareFiles()" id="btn-prepare-share" class="w-full mobile-share-btn hover:brightness-95 text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
+                    <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" /></svg>
+                    TẠO ẢNH ĐỂ CHIA SẺ / LƯU ALBUM
+                </button>
+                <p class="text-[11px] text-slate-500 text-center -mt-1">Dành cho iPhone: tạo xong bấm “Chia sẻ” để gửi qua Zalo/Messenger/AirDrop hoặc chọn Lưu hình ảnh.</p>
+
+                <div id="mobile-share-panel" class="mobile-share-panel hidden mt-2">
+                    <div class="flex items-start gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l-3 3m3-3l3 3M12 3v9" /></svg>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="text-sm font-black text-slate-900">Ảnh đã sẵn sàng để chia sẻ</h3>
+                            <p id="mobile-share-meta" class="text-xs text-slate-500 mt-1">Chưa tạo ảnh.</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
+                        <button onclick="sharePreparedBulkFiles()" id="btn-share-prepared" class="mobile-share-action primary">Chia sẻ tất cả ảnh</button>
+                        <button onclick="downloadPreparedBulkFilesIndividually()" id="btn-download-prepared" class="mobile-share-action secondary">Tải từng ảnh JPG</button>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-3 leading-relaxed">Nếu app không nhận nhiều ảnh cùng lúc, Hạnh bấm “Chia sẻ” từng ảnh bên dưới hoặc chọn ít ảnh hơn rồi tạo lại.</p>
+                    <div id="mobile-share-list" class="mt-3 flex flex-col gap-2 max-h-64 overflow-y-auto pr-1"></div>
+                </div>
                 
                 <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
                     <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
@@ -768,6 +836,8 @@
         let state = {}; 
         let extraImages = []; 
         let bulkLogoImages = []; 
+        let bulkPreparedShareFiles = [];
+        let bulkPreparedShareUrls = [];
         let bulkPreviewMode = 'comfortable';
         let bulkReviewIndex = -1;
         let bulkReviewObjectUrl = null;
@@ -1488,12 +1558,13 @@
                 if (i % 4 === 0) await sleep(0);
             }
             renderBulkLogoView();
-            setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới. Có thể xuất ZIP hoặc lưu thẳng ra thư mục.`, 100);
+            setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới. Có thể tạo ảnh chia sẻ, xuất ZIP hoặc lưu thẳng ra thư mục.`, 100);
             hideBulkProgressSoon();
         }
 
         function clearBulkImages() {
             closeBulkReview();
+            clearPreparedShareFiles();
             bulkLogoImages = [];
             renderBulkLogoView();
             const panel = document.getElementById('bulk-progress-panel');
@@ -1974,6 +2045,160 @@
             finally {
                 btn.innerHTML = '<svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>XUẤT BỘ ẢNH LƯỚI (ZIP)'; 
                 btn.disabled = false;
+            }
+        }
+
+        function clearPreparedShareFiles(hidePanel = true) {
+            bulkPreparedShareUrls.forEach(url => {
+                try { URL.revokeObjectURL(url); } catch (_) {}
+            });
+            bulkPreparedShareFiles = [];
+            bulkPreparedShareUrls = [];
+            const list = document.getElementById('mobile-share-list');
+            if (list) list.innerHTML = '';
+            const meta = document.getElementById('mobile-share-meta');
+            if (meta) meta.innerText = 'Chưa tạo ảnh.';
+            const panel = document.getElementById('mobile-share-panel');
+            if (panel && hidePanel) panel.classList.add('hidden');
+        }
+
+        async function renderBulkLogoFile(item, exportIndex = 0) {
+            const MAX_EDGE = 2000;
+            const JPG_QUALITY = 0.92;
+            const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
+            try {
+                let fw = img.naturalWidth || img.width;
+                let fh = img.naturalHeight || img.height;
+                const ratio = Math.min(1, MAX_EDGE / Math.max(fw, fh));
+                fw = Math.max(1, Math.round(fw * ratio));
+                fh = Math.max(1, Math.round(fh * ratio));
+
+                const cvs = document.createElement('canvas');
+                cvs.width = fw;
+                cvs.height = fh;
+                const ctx = cvs.getContext('2d', { alpha: false });
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, fw, fh);
+                ctx.drawImage(img, 0, 0, fw, fh);
+                applyLogoToCanvas(ctx, fw, fh);
+
+                const blob = await canvasToBlobSafe(cvs, 'image/jpeg', JPG_QUALITY);
+                const fileName = `${String(exportIndex + 1).padStart(3, '0')}_${safeFileName(item.name, 'UNITE_Logo')}.jpg`;
+                cvs.width = 1;
+                cvs.height = 1;
+                return new File([blob], fileName, { type: 'image/jpeg', lastModified: Date.now() });
+            } finally {
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        function renderPreparedSharePanel() {
+            const panel = document.getElementById('mobile-share-panel');
+            const meta = document.getElementById('mobile-share-meta');
+            const list = document.getElementById('mobile-share-list');
+            if (!panel || !list) return;
+
+            panel.classList.remove('hidden');
+            if (meta) meta.innerText = `Đã tạo ${bulkPreparedShareFiles.length} ảnh JPG. Có thể chia sẻ qua tin nhắn hoặc mở từng ảnh để lưu vào Album.`;
+            list.innerHTML = '';
+
+            bulkPreparedShareFiles.forEach((file, index) => {
+                const url = URL.createObjectURL(file);
+                bulkPreparedShareUrls.push(url);
+                const card = document.createElement('div');
+                card.className = 'mobile-share-card';
+                card.innerHTML = `
+                    <img src="${url}" alt="Ảnh đã gắn logo ${index + 1}">
+                    <div class="min-w-0">
+                        <div class="text-xs font-black text-slate-800 truncate">${file.name}</div>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <button class="text-[11px] font-black text-blue-700 bg-blue-50 border border-blue-100 rounded-full px-3 py-1" onclick="sharePreparedOne(${index})">Chia sẻ</button>
+                            <a class="text-[11px] font-black text-slate-700 bg-white border border-slate-200 rounded-full px-3 py-1" href="${url}" target="_blank" rel="noopener">Mở ảnh</a>
+                            <a class="text-[11px] font-black text-slate-700 bg-white border border-slate-200 rounded-full px-3 py-1" href="${url}" download="${file.name}">Tải</a>
+                        </div>
+                    </div>`;
+                list.appendChild(card);
+            });
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        async function prepareBulkLogoShareFiles() {
+            if (bulkLogoImages.length === 0) return alert('Vui lòng tải ảnh lên trước!');
+            const selectedBulkImages = getSelectedBulkItems();
+            if (selectedBulkImages.length === 0) return alert("Bạn chưa chọn ảnh nào để tạo. Hãy bấm 'Chọn tất cả' hoặc tick từng ảnh cần xuất.");
+            const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
+            if (!hasLogo) return alert("⚠️ Bạn chưa tick chọn Logo nào! Vui lòng chọn ít nhất 1 Logo trước khi tạo ảnh.");
+
+            const btn = document.getElementById('btn-prepare-share');
+            const oldBtn = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = 'ĐANG TẠO ẢNH ĐỂ CHIA SẺ...';
+            }
+            clearPreparedShareFiles(false);
+
+            try {
+                for (let i = 0; i < selectedBulkImages.length; i++) {
+                    setBulkProgress(`Đang tạo ảnh chia sẻ ${i + 1}/${selectedBulkImages.length}...`, (i / selectedBulkImages.length) * 100);
+                    const file = await renderBulkLogoFile(selectedBulkImages[i], i);
+                    bulkPreparedShareFiles.push(file);
+                    if (i % 2 === 0) await sleep(0);
+                }
+                setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh. Bấm Chia sẻ để gửi qua Zalo/Messenger/AirDrop.`, 100);
+                renderPreparedSharePanel();
+            } catch (e) {
+                console.error(e);
+                alert('Có lỗi khi tạo ảnh chia sẻ. Hạnh thử chọn ít ảnh hơn hoặc giảm kích thước ảnh gốc nhé.');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = oldBtn;
+                }
+                hideBulkProgressSoon();
+            }
+        }
+
+        async function sharePreparedBulkFiles() {
+            if (!bulkPreparedShareFiles.length) return alert('Hạnh bấm “Tạo ảnh để chia sẻ / lưu album” trước nha.');
+            const files = bulkPreparedShareFiles;
+            try {
+                // iPhone/Safari thường ổn định hơn khi chỉ truyền files, không kèm title/text.
+                if (navigator.canShare && navigator.canShare({ files })) {
+                    await navigator.share({ files });
+                    return;
+                }
+                if (navigator.canShare && navigator.canShare({ files: [files[0]] })) {
+                    await navigator.share({ files: [files[0]] });
+                    alert('Trình duyệt/app chỉ nhận 1 ảnh mỗi lần. Hạnh dùng nút “Chia sẻ” ở từng ảnh bên dưới để gửi tiếp nha.');
+                    return;
+                }
+                alert('Trình duyệt này chưa hỗ trợ chia sẻ file ảnh trực tiếp. Hạnh bấm “Mở ảnh” rồi giữ vào ảnh để Lưu hình ảnh hoặc gửi qua app khác.');
+            } catch (e) {
+                if (e && e.name === 'AbortError') return;
+                console.warn(e);
+                alert('App nhận chia sẻ không nhận bộ ảnh này. Hạnh thử chọn ít ảnh hơn, hoặc bấm “Chia sẻ” từng ảnh bên dưới nhé.');
+            }
+        }
+
+        async function sharePreparedOne(index) {
+            const file = bulkPreparedShareFiles[index];
+            if (!file) return;
+            try {
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ files: [file] });
+                    return;
+                }
+                alert('Trình duyệt này chưa hỗ trợ chia sẻ file ảnh trực tiếp. Hạnh bấm “Mở ảnh” rồi lưu/gửi thủ công nha.');
+            } catch (e) {
+                if (e && e.name !== 'AbortError') alert('Không chia sẻ được ảnh này. Hạnh thử bấm “Mở ảnh” rồi lưu/gửi thủ công nha.');
+            }
+        }
+
+        async function downloadPreparedBulkFilesIndividually() {
+            if (!bulkPreparedShareFiles.length) return alert('Hạnh bấm “Tạo ảnh để chia sẻ / lưu album” trước nha.');
+            for (let i = 0; i < bulkPreparedShareFiles.length; i++) {
+                downloadBlob(bulkPreparedShareFiles[i], bulkPreparedShareFiles[i].name);
+                await sleep(250);
             }
         }
 
