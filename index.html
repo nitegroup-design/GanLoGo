@@ -344,19 +344,23 @@
                 <p class="text-[11px] text-slate-500 text-center -mt-1">Nhanh gọn cho iPhone/Android để bung ảnh nét ra copy qua Zalo.</p>
 
                 <div id="mobile-share-panel" class="mobile-share-panel hidden mt-2">
-                    <div class="flex items-start gap-3">
-                        <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l-3 3m3-3l3 3M12 3v9" /></svg>
-                        </div>
-                        <div class="min-w-0">
-                            <h3 class="text-sm font-black text-slate-900">Ảnh đã sẵn sàng!</h3>
-                            <p id="mobile-share-meta" class="text-xs text-slate-500 mt-1">Nhấn "MỞ ẢNH GỐC" để hiện ảnh to, rồi Copy mới nét nhé.</p>
-                        </div>
+                <div class="flex items-start gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l-3 3m3-3l3 3M12 3v9" /></svg>
                     </div>
-                    <div id="mobile-share-list" class="mt-4 flex flex-col gap-3 max-h-80 overflow-y-auto pr-1"></div>
+                    <div class="min-w-0">
+                        <h3 class="text-sm font-black text-slate-900">Ảnh đã sẵn sàng!</h3>
+                        <p id="mobile-share-meta" class="text-xs text-slate-500 mt-1">Nhấn "MỞ ẢNH GỐC" để hiện ảnh to, rồi Copy mới nét nhé.</p>
+                    </div>
                 </div>
-                
-                <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
+                    <button onclick="sharePreparedBulkFiles()" class="mobile-share-action primary">Chia sẻ tất cả ảnh</button>
+                    <button onclick="downloadPreparedBulkFilesIndividually()" class="mobile-share-action secondary">Tải toàn bộ về máy</button>
+                </div>
+                <div id="mobile-share-list" class="mt-4 flex flex-col gap-3 max-h-80 overflow-y-auto pr-1"></div>
+            </div>
+            
+            <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
                     <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     XUẤT ẢNH ĐÃ GẮN LOGO (ZIP)
                 </button>
@@ -1286,17 +1290,20 @@
                 const canvas = document.createElement('canvas'); canvas.width = tw; canvas.height = th;
                 const ctx = canvas.getContext('2d', { alpha: false }); ctx.drawImage(img, 0, 0, tw, th);
                 
-                const thumb = canvas.toDataURL('image/jpeg', 0.65);
-                const meta = { width: img.naturalWidth || img.width, height: img.naturalHeight || img.height };
-                canvas.width = 0; canvas.height = 0;
+                // DỌN RÁC NGAY LẬP TỨC: Xóa trắng ảnh gốc khỏi RAM
+                img.onload = null; img.onerror = null; img.src = '';
                 URL.revokeObjectURL(url);
+
+                const thumb = canvas.toDataURL('image/jpeg', 0.65);
+                const meta = { width: Math.round(tw/ratio), height: Math.round(th/ratio) };
+                canvas.width = 0; canvas.height = 0;
                 
                 // Nếu Android RAM cạn kiệt, toDataURL trả về string rỗng hoặc cực ngắn
                 if (thumb === 'data:,' || thumb.length < 50) return { thumb: null, ...meta };
                 return { thumb, ...meta };
             } catch (e) {
-                URL.revokeObjectURL(url);
-                return { thumb: null, width: img.naturalWidth || img.width, height: img.naturalHeight || img.height };
+                img.onload = null; img.onerror = null; img.src = ''; URL.revokeObjectURL(url);
+                return { thumb: null, width: 1000, height: 1000 };
             }
         }
 
@@ -1388,9 +1395,10 @@
                     let meta = await createThumbFromFile(file, 420);
                     let safeThumb = meta.thumb;
                     
-                    // FALLBACK ANDROID: Nếu tạo thumbnail thất bại (do máy yếu), móc thẳng ảnh gốc ra làm thumb luôn
+                    // FALLBACK OOM AN TOÀN: Nếu tạo thumbnail thất bại (do máy yếu), KHÔNG ĐƯỢC móc ảnh gốc ra
+                    // Dùng một ảnh placeholder base64 cực nhẹ (chữ "Ảnh quá nặng") để không làm sập máy
                     if (!safeThumb) {
-                        safeThumb = URL.createObjectURL(file);
+                        safeThumb = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmNWY5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTRhM2I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iPkFuaCBxdWEgbmFuZzwvdGV4dD48L3N2Zz4=';
                     }
 
                     bulkLogoImages.push({
@@ -1400,7 +1408,7 @@
                     });
                 } catch (err) { console.warn('Không đọc được ảnh:', file?.name); }
                 setBulkProgress(`Đang nạp ảnh ${i + 1}/${uniqueFiles.length}...`, ((i + 1) / uniqueFiles.length) * 100);
-                await sleep(40);
+                await sleep(50);
             }
             renderBulkLogoView();
             setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới.`, 100); hideBulkProgressSoon(); showToast(`Đã tải lên ${uniqueFiles.length} ảnh.`);
@@ -1594,9 +1602,9 @@
         }
 
         async function renderBulkLogoFile(item, exportIndex = 0, isMobileShare = false) {
-            // FIX CHO ANDROID OOM: Tối đa 1280px cho Mobile Share. Đủ nét lên Zalo/Facebook mà rất nhẹ máy.
-            const MAX_EDGE = isMobileShare ? 1280 : 2000; 
-            const JPG_QUALITY = 0.94;
+            // Hạ giới hạn xuống 1200px cho Mobile Share. Đảm bảo an toàn 100% không tràn RAM.
+            const MAX_EDGE = isMobileShare ? 1200 : 2000; 
+            const JPG_QUALITY = isMobileShare ? 0.92 : 0.96;
             const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
             try {
                 let fw = img.naturalWidth || img.width; let fh = img.naturalHeight || img.height;
@@ -1608,6 +1616,10 @@
                 ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
                 ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, fw, fh); ctx.drawImage(img, 0, 0, fw, fh);
                 
+                // DỌN RÁC NGAY LẬP TỨC TRƯỚC KHI VẼ LOGO VÀ XUẤT ẢNH
+                img.onload = null; img.onerror = null; img.src = '';
+                URL.revokeObjectURL(url);
+
                 applyLogoToCanvas(ctx, fw, fh);
 
                 const blob = await canvasToBlobSafe(cvs, 'image/jpeg', JPG_QUALITY);
@@ -1615,8 +1627,10 @@
                 
                 cvs.width = 0; cvs.height = 0;
                 return new File([blob], fileName, { type: 'image/jpeg', lastModified: Date.now() });
-            } finally {
+            } catch (err) {
+                img.onload = null; img.onerror = null; img.src = '';
                 URL.revokeObjectURL(url);
+                throw err;
             }
         }
 
@@ -1663,16 +1677,16 @@
             try {
                 for (let i = 0; i < selectedBulkImages.length; i++) {
                     setBulkProgress(`Đang tạo ảnh chia sẻ ${i + 1}/${selectedBulkImages.length}...`, (i / selectedBulkImages.length) * 100);
-                    // Truyền cờ isMobileShare = true để kích hoạt bảo vệ RAM (1280px)
+                    // Truyền cờ isMobileShare = true để kích hoạt bảo vệ RAM (1200px)
                     const file = await renderBulkLogoFile(selectedBulkImages[i], i, true);
                     bulkPreparedShareFiles.push(file);
-                    await sleep(150); // Cho hệ thống Android có đủ thời gian xóa rác RAM giữa các lần tạo ảnh
+                    await sleep(300); // Tạm dừng 300 mili-giây để điện thoại (Android) dọn sạch rác RAM
                 }
                 setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh. Bấm Chia sẻ hoặc Mở ảnh gốc để dán đi.`, 100);
                 renderPreparedSharePanel();
             } catch (e) {
                 console.error(e);
-                showToast('Lỗi quá tải RAM. Vui lòng thử tải lại trang và chọn ít ảnh hơn.', 'error');
+                showToast('Lỗi quá tải RAM. Điện thoại đang cạn kiệt bộ nhớ, hãy thử chọn 2-3 tấm/lần nhé.', 'error');
             } finally {
                 if (btn) { btn.disabled = false; btn.innerHTML = oldBtn; } hideBulkProgressSoon();
             }
@@ -1685,6 +1699,36 @@
                 showToast('Máy chưa hỗ trợ chia sẻ trực tiếp. Hãy bấm "MỞ ẢNH GỐC" rồi lưu.', 'error');
             } catch (e) {
                 if (e && e.name !== 'AbortError') showToast('Không chia sẻ được ảnh này.', 'error');
+            }
+        }
+
+        async function sharePreparedBulkFiles() {
+            if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
+            const files = bulkPreparedShareFiles;
+            try {
+                if (navigator.canShare && navigator.canShare({ files })) {
+                    await navigator.share({ files });
+                    return;
+                }
+                if (navigator.canShare && navigator.canShare({ files: [files[0]] })) {
+                    await navigator.share({ files: [files[0]] });
+                    showToast('Trình duyệt chỉ hỗ trợ gửi 1 ảnh mỗi lần. Vui lòng gửi từng ảnh.', 'error');
+                    return;
+                }
+                showToast('Thiết bị không hỗ trợ gửi đa ảnh trực tiếp. Vui lòng tải về máy.', 'error');
+            } catch (e) {
+                if (e && e.name === 'AbortError') return;
+                console.warn(e);
+                showToast('Hủy gửi hoặc ứng dụng không nhận diện được file.', 'error');
+            }
+        }
+
+        async function downloadPreparedBulkFilesIndividually() {
+            if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
+            showToast('Đang tải toàn bộ ảnh xuống...');
+            for (let i = 0; i < bulkPreparedShareFiles.length; i++) {
+                downloadBlob(bulkPreparedShareFiles[i], bulkPreparedShareFiles[i].name);
+                await sleep(300);
             }
         }
 
