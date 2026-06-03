@@ -698,7 +698,6 @@
 
         async function normalizeLogoImageForAllPlatforms(img) {
             try {
-                // Tối ưu hóa: Chỉ cắt bỏ phần thừa trong suốt (Trim), giữ nguyên tỷ lệ gốc của Logo
                 const bounds = getLogoContentBounds(img);
                 if (bounds.w <= 0 || bounds.h <= 0) return img;
 
@@ -708,7 +707,12 @@
                 outCtx.imageSmoothingEnabled = true; outCtx.imageSmoothingQuality = 'high';
                 
                 outCtx.drawImage(img, bounds.x, bounds.y, bounds.w, bounds.h, 0, 0, bounds.w, bounds.h);
-                const normalized = await loadImageFromDataUrl(outCanvas.toDataURL('image/png'));
+                
+                // NGHIÊM NGẶT: Nếu logo bị lỗi CORS, lệnh toDataURL này sẽ quăng lỗi (Throw Error) ngay lập tức.
+                // Giúp hệ thống biết logo bị hỏng để chuyển sang link Proxy dự phòng, thay vì ôm logo hỏng đi dán làm sập web.
+                const dataUrl = outCanvas.toDataURL('image/png'); 
+                const normalized = await loadImageFromDataUrl(dataUrl);
+                
                 outCanvas.width = 0; outCanvas.height = 0;
                 
                 if (normalized) {
@@ -716,25 +720,36 @@
                     normalized.dataset.originalH = String(img.height || '');
                     return normalized;
                 }
-            } catch (err) { console.warn('Lỗi chuẩn hóa logo:', err); }
-            return img;
+            } catch (err) { 
+                console.warn('Logo vi phạm bảo mật CORS hoặc lỗi xử lý:', err); 
+                throw new Error("Tainted"); // Ép quăng lỗi để loadLogoForSlot bắt được
+            }
+            throw new Error("Failed");
         }
 
         function loadLogoForSlot(index, url, retryLevel = 0) {
             if(!url) return;
             const img = new Image(); img.crossOrigin = "anonymous";
+            
+            const handleError = () => {
+                if (retryLevel === 0) loadLogoForSlot(index, `https://wsrv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&output=png`, 1);
+                else if (retryLevel === 1) loadLogoForSlot(index, `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, 2);
+            };
+
             img.onload = async () => {
-                const normalizedLogo = await normalizeLogoImageForAllPlatforms(img);
-                logosConfig[index].img = normalizedLogo;
-                const previewEl = document.getElementById(`preview-logo-${index}`);
-                if(previewEl) { previewEl.src = normalizedLogo.src; previewEl.classList.remove('hidden'); }
-                renderView();
-                if (document.getElementById('tab-logo-settings')?.style.display !== 'none') renderBulkLogoView();
+                try {
+                    const normalizedLogo = await normalizeLogoImageForAllPlatforms(img);
+                    logosConfig[index].img = normalizedLogo;
+                    const previewEl = document.getElementById(`preview-logo-${index}`);
+                    if(previewEl) { previewEl.src = normalizedLogo.src; previewEl.classList.remove('hidden'); }
+                    renderView();
+                    if (document.getElementById('tab-logo-settings')?.style.display !== 'none') renderBulkLogoView();
+                } catch (e) {
+                    // Nếu normalize thất bại (thường do Tainted Canvas), gọi handleError để đổi link
+                    handleError();
+                }
             };
-            img.onerror = () => {
-                if (retryLevel === 0) loadLogoForSlot(index, `https://wsrv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&v=${Date.now()}`, 1);
-                else if (retryLevel === 1) loadLogoForSlot(index, `https://corsproxy.io/?${encodeURIComponent(url)}`, 2);
-            };
+            img.onerror = handleError;
             img.src = retryLevel === 0 ? `${url}?v=${Date.now()}` : url;
         }
 
@@ -985,8 +1000,8 @@
                 targetW = targetH * logoRatio;
             }
 
-            // 3. Margin/Padding responsive
-            const padding = Math.max(12, minSide * 0.065);
+            // 3. Margin/Padding responsive (Đã tăng thêm lề 20-25% theo yêu cầu)
+            const padding = Math.max(16, minSide * 0.045);
 
             return { targetW, targetH, padding };
         }
@@ -1264,16 +1279,25 @@
 
         async function createThumbFromFile(file, maxEdge = 420) {
             const { img, url } = await loadImageElementFromFile(file);
-            const ratio = Math.min(1, maxEdge / Math.max(img.naturalWidth || img.width, img.naturalHeight || img.height));
-            const tw = Math.max(1, Math.round((img.naturalWidth || img.width) * ratio));
-            const th = Math.max(1, Math.round((img.naturalHeight || img.height) * ratio));
-            const canvas = document.createElement('canvas'); canvas.width = tw; canvas.height = th;
-            const ctx = canvas.getContext('2d', { alpha: false }); ctx.drawImage(img, 0, 0, tw, th);
-            const thumb = canvas.toDataURL('image/jpeg', 0.65);
-            const meta = { width: img.naturalWidth || img.width, height: img.naturalHeight || img.height };
-            canvas.width = 0; canvas.height = 0;
-            URL.revokeObjectURL(url);
-            return { thumb, ...meta };
+            try {
+                const ratio = Math.min(1, maxEdge / Math.max(img.naturalWidth || img.width, img.naturalHeight || img.height));
+                const tw = Math.max(1, Math.round((img.naturalWidth || img.width) * ratio));
+                const th = Math.max(1, Math.round((img.naturalHeight || img.height) * ratio));
+                const canvas = document.createElement('canvas'); canvas.width = tw; canvas.height = th;
+                const ctx = canvas.getContext('2d', { alpha: false }); ctx.drawImage(img, 0, 0, tw, th);
+                
+                const thumb = canvas.toDataURL('image/jpeg', 0.65);
+                const meta = { width: img.naturalWidth || img.width, height: img.naturalHeight || img.height };
+                canvas.width = 0; canvas.height = 0;
+                URL.revokeObjectURL(url);
+                
+                // Nếu Android RAM cạn kiệt, toDataURL trả về string rỗng hoặc cực ngắn
+                if (thumb === 'data:,' || thumb.length < 50) return { thumb: null, ...meta };
+                return { thumb, ...meta };
+            } catch (e) {
+                URL.revokeObjectURL(url);
+                return { thumb: null, width: img.naturalWidth || img.width, height: img.naturalHeight || img.height };
+            }
         }
 
         function isImageFile(file) {
@@ -1361,15 +1385,22 @@
             for (let i = 0; i < uniqueFiles.length; i++) {
                 const file = uniqueFiles[i];
                 try {
-                    const meta = await createThumbFromFile(file, 420);
+                    let meta = await createThumbFromFile(file, 420);
+                    let safeThumb = meta.thumb;
+                    
+                    // FALLBACK ANDROID: Nếu tạo thumbnail thất bại (do máy yếu), móc thẳng ảnh gốc ra làm thumb luôn
+                    if (!safeThumb) {
+                        safeThumb = URL.createObjectURL(file);
+                    }
+
                     bulkLogoImages.push({
                         id: Date.now() + Math.random(), key: bulkFileKey(file), file, name: file.name,
                         displayPath: file.webkitRelativePath || file.relativePath || file.name,
-                        width: meta.width, height: meta.height, thumb: meta.thumb, selected: true
+                        width: meta.width, height: meta.height, thumb: safeThumb, selected: true
                     });
                 } catch (err) { console.warn('Không đọc được ảnh:', file?.name); }
                 setBulkProgress(`Đang nạp ảnh ${i + 1}/${uniqueFiles.length}...`, ((i + 1) / uniqueFiles.length) * 100);
-                await sleep(50);
+                await sleep(40);
             }
             renderBulkLogoView();
             setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới.`, 100); hideBulkProgressSoon(); showToast(`Đã tải lên ${uniqueFiles.length} ảnh.`);
@@ -1563,7 +1594,8 @@
         }
 
         async function renderBulkLogoFile(item, exportIndex = 0, isMobileShare = false) {
-            const MAX_EDGE = 1600; 
+            // FIX CHO ANDROID OOM: Tối đa 1280px cho Mobile Share. Đủ nét lên Zalo/Facebook mà rất nhẹ máy.
+            const MAX_EDGE = isMobileShare ? 1280 : 2000; 
             const JPG_QUALITY = 0.94;
             const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
             try {
@@ -1631,15 +1663,16 @@
             try {
                 for (let i = 0; i < selectedBulkImages.length; i++) {
                     setBulkProgress(`Đang tạo ảnh chia sẻ ${i + 1}/${selectedBulkImages.length}...`, (i / selectedBulkImages.length) * 100);
-                    const file = await renderBulkLogoFile(selectedBulkImages[i], i);
+                    // Truyền cờ isMobileShare = true để kích hoạt bảo vệ RAM (1280px)
+                    const file = await renderBulkLogoFile(selectedBulkImages[i], i, true);
                     bulkPreparedShareFiles.push(file);
-                    await sleep(80); 
+                    await sleep(150); // Cho hệ thống Android có đủ thời gian xóa rác RAM giữa các lần tạo ảnh
                 }
                 setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh. Bấm Chia sẻ hoặc Mở ảnh gốc để dán đi.`, 100);
                 renderPreparedSharePanel();
             } catch (e) {
                 console.error(e);
-                showToast('Lỗi quá tải RAM. Vui lòng chọn ít ảnh hơn (khoảng 3-5 ảnh/lần) nhé.', 'error');
+                showToast('Lỗi quá tải RAM. Vui lòng thử tải lại trang và chọn ít ảnh hơn.', 'error');
             } finally {
                 if (btn) { btn.disabled = false; btn.innerHTML = oldBtn; } hideBulkProgressSoon();
             }
