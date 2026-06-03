@@ -536,7 +536,7 @@
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                     </div>
                     <h2 class="text-lg font-bold text-gray-800 mb-2">Đóng Dấu Hàng Loạt Ảnh</h2>
-                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh (không bị cắt vuông), tự động gắn các Logo bạn đã cấu hình phía trên, chuẩn hóa logo từ link/upload về cùng một khung và xuất ra hàng loạt.</p>
+                    <p class="text-sm text-gray-500 mb-5">Tính năng này giữ nguyên tỷ lệ gốc của hình ảnh (không bị cắt vuông), tự động gắn các Logo bạn đã cấu hình phía trên, chuẩn hóa logo từ link/upload về cùng một khung, riêng logo dài sẽ được ưu tiên chiều cao để đỡ nhỏ/bể trên iPhone, rồi xuất ra hàng loạt.</p>
                     
                     <div id="bulk-drop-zone" class="bulk-drop-zone text-left" ondragover="handleBulkDragOver(event)" ondragleave="handleBulkDragLeave(event)" ondrop="handleBulkDrop(event)">
                         <div class="relative z-[2] flex flex-col items-center text-center gap-3">
@@ -677,7 +677,7 @@
                                 <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
                             </div>
                             <h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3>
-                            <p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên khung chuẩn và cho xem RV trước khi xuất.</p>
+                            <p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên khung chuẩn, tối ưu logo dài cho iPhone và cho xem RV trước khi xuất.</p>
                         </div>
                     </div>
                 </div>
@@ -842,7 +842,7 @@
         let bulkReviewIndex = -1;
         let bulkReviewObjectUrl = null;
         let activeZoneId = null; 
-        const EXPORT_SIZE = 1200;
+        const EXPORT_SIZE = 1800;
         
         let logosConfig = [
             { id: 'tl', title: 'Góc Trái Trên', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2025/11/logo-ucr.png', img: null, enabled: false, x: 'left', y: 'top', scale: 0.6 },
@@ -945,7 +945,7 @@
             const ratio = bounds.w / bounds.h;
             if (ratio >= 1.35) {
                 // Logo ngang: cho khung rộng hơn một chút để sang ảnh ngang/dọc/vuông đều không bị nhỏ.
-                return { w: 1200, h: 390, pad: 0.065, type: 'ngang' };
+                return { w: 1600, h: 560, pad: 0.055, type: 'ngang' };
             }
             if (ratio <= 0.82) {
                 // Logo dọc: cho khung cao hơn một chút để không bị ép thấp khi xuất trên iPhone/app nhắn tin.
@@ -1717,9 +1717,14 @@
             const ratio = fw / fh;
             const minSide = Math.min(fw, fh);
             const padPct = 4;
+            const logoType = conf.img?.dataset?.logoFrameType || '';
             if (conf.x === 'center') {
                 let widthPct = ratio > 1.35 ? 52 : (ratio < 0.75 ? 72 : 62);
                 return { widthPct: Math.min(92, widthPct * currentScale), maxHeightPct: ratio > 1.35 ? 22 : 18, padPct };
+            }
+            if (logoType === 'ngang') {
+                let targetWide = ratio > 1.35 ? 29 : (ratio < 0.75 ? 36 : 33);
+                return { widthPct: Math.min(52, targetWide * currentScale * (minSide / fw) * 2.05), maxHeightPct: ratio < 0.75 ? 16 : 14, padPct: 3.2 };
             }
             let target = ratio > 1.35 ? 22 : (ratio < 0.75 ? 26 : 23);
             // Logo quá ngang sẽ tự giảm chiều rộng để không che ảnh.
@@ -1770,7 +1775,7 @@
             container.className = `grid ${bulkPreviewMode === 'compact' ? 'bulk-preview-grid-compact gap-3' : 'bulk-preview-grid-comfort gap-4'} overflow-y-auto max-h-[680px] content-start p-1`;
 
             if (bulkLogoImages.length === 0) {
-                container.innerHTML = '<div class="col-span-full empty-workbench p-8"><div><div class="workbench-icon"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg></div><h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3><p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên khung chuẩn và cho xem RV trước khi xuất.</p></div></div>';
+                container.innerHTML = '<div class="col-span-full empty-workbench p-8"><div><div class="workbench-icon"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg></div><h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3><p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Kéo folder từ laptop vào đây, hoặc dùng nút bên trái. Web sẽ tự lọc ảnh, gắn logo góc phải trên khung chuẩn, tối ưu logo dài cho iPhone và cho xem RV trước khi xuất.</p></div></div>';
                 return;
             }
             container.innerHTML = '';
@@ -1895,11 +1900,25 @@
             const minSide = Math.min(fw, fh);
             const padding = Math.max(18, minSide * 0.04);
             const currentScale = conf.scale * logoScale;
+            const logoType = conf.img?.dataset?.logoFrameType || '';
 
             if (conf.x === 'center') {
                 const pct = ratio > 1.35 ? 0.52 : (ratio < 0.75 ? 0.72 : 0.62);
                 const maxH = fh * (ratio > 1.35 ? 0.22 : 0.18);
-                return { targetW: fw * pct * currentScale, maxH, padding };
+                return { targetW: fw * pct * currentScale, maxH, minH: 0, padding };
+            }
+
+            // Logo siêu ngang/thân dài: ưu tiên chiều cao tối thiểu để chữ không bị teo và bể trên iPhone/app nhắn tin.
+            if (logoType === 'ngang') {
+                const pctShortWide = ratio > 1.35 ? 0.31 : (ratio < 0.75 ? 0.36 : 0.34);
+                const maxHWide = fh * (ratio < 0.75 ? 0.14 : 0.12);
+                const minHWide = clampNumber(fh * 0.058, 54, 112);
+                return {
+                    targetW: minSide * pctShortWide * currentScale,
+                    maxH: maxHWide,
+                    minH: minHWide,
+                    padding: Math.max(16, minSide * 0.032)
+                };
             }
 
             // Tự nhận diện tỷ lệ ảnh: ngang/dọc/vuông để logo vừa mắt hơn.
@@ -1908,6 +1927,7 @@
             return {
                 targetW: minSide * pctShort * currentScale,
                 maxH: fh * 0.16,
+                minH: 0,
                 padding
             };
         }
@@ -2024,6 +2044,10 @@
                 if (dh > metric.maxH) {
                     const r2 = metric.maxH / dh;
                     dw *= r2; dh *= r2;
+                }
+                if (metric.minH && dh < metric.minH) {
+                    const rMin = metric.minH / Math.max(1, dh);
+                    dw *= rMin; dh *= rMin;
                 }
                 if (dw > fw * 0.82) {
                     const r3 = (fw * 0.82) / dw;
@@ -2165,7 +2189,7 @@
 
         async function renderBulkLogoFile(item, exportIndex = 0) {
             const MAX_EDGE = 2000;
-            const JPG_QUALITY = 0.92;
+            const JPG_QUALITY = 0.96;
             const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
             try {
                 let fw = img.naturalWidth || img.width;
@@ -2325,7 +2349,7 @@
             const oldBtn = btn.innerHTML;
             btn.disabled = true;
             const MAX_EDGE = 2000;
-            const JPG_QUALITY = 0.9;
+            const JPG_QUALITY = 0.96;
             let done = 0;
 
             try {
@@ -2385,7 +2409,7 @@
 
             const MAX_EDGE = 2000;      // Đủ sắc nét cho Facebook/Zalo, nhẹ hơn ảnh gốc 4K/8K rất nhiều.
             const ZIP_BATCH = 25;       // Tự chia lô để tránh phình RAM khi nhân sự chọn 50-200 ảnh.
-            const JPG_QUALITY = 0.9;
+            const JPG_QUALITY = 0.96;
             const total = selectedBulkImages.length;
             const totalBatches = Math.ceil(total / ZIP_BATCH);
             let done = 0;
