@@ -3,305 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNITE GROUP - Brand Image Studio V8</title>
+    <title>Brand Image Studio V8 - UNITE GROUP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
         
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        
+        :root {
+            --bg-color: #f4f4f5;
+            --surface: #ffffff;
+            --border: #e4e4e7;
+            --accent: #18181b;
+            --accent-hover: #27272a;
+            --primary: #2563eb;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-color); 
+            color: #27272a;
+            background-image: radial-gradient(#d4d4d8 1px, transparent 1px);
+            background-size: 24px 24px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        body { background: linear-gradient(135deg, #f8fafc 0%, #eef4ff 45%, #fff7ed 100%); }
-        .pro-card { border: 1px solid rgba(226,232,240,.9); box-shadow: 0 18px 45px -35px rgba(15, 23, 42, .55); }
-        .progress-track { width: 100%; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #2563eb, #0f172a); border-radius: 999px; transition: width .2s ease; }
-
-        .bulk-toolbar-btn { border: 1px solid #dbe4f0; background: white; color: #334155; border-radius: 999px; padding: 8px 12px; font-size: 12px; font-weight: 800; transition: all .18s ease; }
-        .bulk-toolbar-btn:hover { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
-        .bulk-toolbar-btn.active { background: #0f172a; border-color: #0f172a; color: white; }
-        .bulk-preview-grid-comfort { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
-        .bulk-preview-grid-compact { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-        .bulk-card { background: white; border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 22px -18px rgba(15, 23, 42, .55); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, opacity .18s ease; }
-        .bulk-card:hover { transform: translateY(-2px); box-shadow: 0 16px 28px -22px rgba(15, 23, 42, .7); border-color: #93c5fd; }
-        .bulk-card.unselected { opacity: .48; filter: grayscale(.15); }
-        .bulk-stage { position: relative; background: linear-gradient(135deg, #f8fafc, #e2e8f0); overflow: hidden; cursor: zoom-in; }
-        .bulk-stage img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
         
-        .bulk-review-backdrop { background: rgba(2, 6, 23, .82); backdrop-filter: blur(10px); }
-        .bulk-review-stage { max-width: min(92vw, 1080px); max-height: 72vh; box-shadow: 0 30px 80px -20px rgba(0,0,0,.65); }
-
-        .bulk-drop-zone {
-            position: relative; border: 2px dashed #cbd5e1; background: linear-gradient(135deg, #f8fafc, #eef6ff);
-            border-radius: 22px; padding: 22px; transition: border-color .18s ease, background .18s ease, transform .18s ease, box-shadow .18s ease;
-        }
-        .bulk-drop-zone.drag-over {
-            border-color: #2563eb; background: linear-gradient(135deg, #eff6ff, #dbeafe);
-            transform: translateY(-1px); box-shadow: 0 18px 35px -28px rgba(37, 99, 235, .9);
-        }
-        .drop-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; padding: 12px 14px; font-weight: 900; font-size: 13px; transition: all .18s ease; cursor: pointer; position: relative; z-index: 2; }
-        .drop-action-btn.primary { background: #2563eb; color: white; box-shadow: 0 14px 25px -18px rgba(37,99,235,.8); }
-        .drop-action-btn.primary:hover { background: #1d4ed8; }
-        .drop-action-btn.secondary { background: white; color: #0f172a; border: 1px solid #dbe4f0; }
-        .drop-action-btn.secondary:hover { background: #f8fafc; border-color: #93c5fd; color: #1d4ed8; }
-        .folder-output-btn { background: linear-gradient(135deg, #0f172a, #334155); }
-
-        .mobile-share-btn { background: linear-gradient(135deg, #0ea5e9, #2563eb); }
-        .mobile-share-panel { background: linear-gradient(135deg, #eff6ff, #ffffff); border: 1px solid #bfdbfe; border-radius: 22px; padding: 16px; box-shadow: 0 18px 42px -34px rgba(37,99,235,.86); }
-        .mobile-share-action { border-radius: 12px; padding: 10px 12px; font-weight: 800; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all .18s ease; text-align: center; }
-        .mobile-share-action.primary { color: white; background: linear-gradient(135deg, #2563eb, #0f172a); }
-        .mobile-share-action.secondary { color: #0f172a; background: white; border: 1px solid #dbe4f0; }
-        .mobile-share-action.highlight { color: white; background: linear-gradient(135deg, #10b981, #047857); box-shadow: 0 4px 12px -2px rgba(16,185,129,0.4); }
-        
-        .mobile-share-card { display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,.88); border: 1px solid #dbeafe; border-radius: 16px; padding: 12px; }
-        .mobile-share-card img { width: 100%; max-height: 180px; object-fit: contain; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; }
-        @media (min-width: 640px) {
-            .mobile-share-card { flex-direction: row; align-items: center; }
-            .mobile-share-card img { width: 120px; max-height: 120px; }
+        /* Cards & Surfaces */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border-radius: 24px;
         }
 
-        :root { --ug-ink: #0f172a; --ug-muted: #64748b; --ug-card: rgba(255,255,255,.92); }
-        html { scroll-behavior: smooth; }
-        body { color: var(--ug-ink); background: radial-gradient(circle at 6% 0%, rgba(37, 99, 235, .14), transparent 34rem), radial-gradient(circle at 92% 8%, rgba(242, 184, 75, .18), transparent 32rem), linear-gradient(180deg, #f3f7ff 0%, #f8fafc 48%, #ffffff 100%) !important; }
-        .app-hero { overflow: hidden; border-radius: 28px; border: 1px solid rgba(255,255,255,.72); background: linear-gradient(135deg, rgba(15, 23, 42, .98), rgba(15, 23, 42, .91) 50%, rgba(48, 35, 26, .96)); color: white; box-shadow: 0 24px 60px -42px rgba(15, 23, 42, .9); position: relative; }
-        .hero-badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.16); padding: 7px 12px; font-size: 11px; font-weight: 900; letter-spacing: .18em; color: #dbeafe; }
-        .hero-chip { border-radius: 18px; background: rgba(255,255,255,.105); border: 1px solid rgba(255,255,255,.14); padding: 12px 14px; min-width: 90px; box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
-        .side-column { scrollbar-width: thin; }
-        .panel-card { background: var(--ug-card); border: 1px solid rgba(226,232,240,.82); border-radius: 24px; box-shadow: 0 20px 55px -46px rgba(15, 23, 42, .78); backdrop-filter: blur(10px); }
-        .preview-shell { background: rgba(255,255,255,.94) !important; border: 1px solid rgba(226,232,240,.82) !important; border-radius: 26px !important; box-shadow: 0 24px 70px -55px rgba(15, 23, 42, .82) !important; min-height: min(780px, calc(100vh - 190px)); }
-        
-        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .ug-toast { background: white; border-radius: 16px; padding: 16px 20px; box-shadow: 0 10px 40px -10px rgba(15,23,42,0.2); border-left: 4px solid #2563eb; font-size: 14px; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 12px; transform: translateX(120%); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; }
-        .ug-toast.show { transform: translateX(0); opacity: 1; }
-        .ug-toast.error { border-left-color: #ef4444; }
-        .ug-toast.success { border-left-color: #10b981; }
+        .premium-shadow { box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05); }
 
-        @media (min-width: 1024px) {
-            .side-column { position: sticky; top: 18px; align-self: start; max-height: calc(100vh - 36px); overflow-y: auto; padding-right: 4px; }
-            .preview-shell { position: sticky; top: 18px; align-self: start; }
+        /* Dropzone */
+        .drop-zone-premium {
+            border: 2px dashed #d4d4d8;
+            background: linear-gradient(145deg, #ffffff, #fafafa);
+            transition: all 0.2s ease;
         }
-        @media (max-width: 1023px) {
-            .preview-shell { min-height: auto; }
+        .drop-zone-premium.drag-over {
+            border-color: var(--primary);
+            background: #eff6ff;
+            transform: scale(1.01);
+            box-shadow: 0 10px 30px -10px rgba(37,99,235,0.2);
         }
+
+        /* Buttons */
+        .btn-pro {
+            background: var(--accent); color: white; border-radius: 16px;
+            font-weight: 700; transition: all 0.2s; box-shadow: 0 4px 14px -4px rgba(24,24,27,0.4);
+        }
+        .btn-pro:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 20px -4px rgba(24,24,27,0.5); }
+        .btn-pro:active { transform: translateY(1px); }
         
-        /* New Logo Selection Styles */
-        .logo-slot-card {
-            min-height: 52px; background: linear-gradient(135deg, #ffffff, #f8fafc); border: 1px solid rgba(203,213,225,.8); border-radius: 16px; transition: all .18s ease;
-        }
-        .logo-slot-card.active {
-            border-color: rgba(37,99,235,.36); background: linear-gradient(135deg, #eff6ff, #ffffff); box-shadow: inset 0 0 0 1px rgba(37,99,235,.10);
-        }
-        .logo-preview-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 4px; }
+        .btn-secondary { background: white; color: var(--accent); border: 1px solid #d4d4d8; border-radius: 16px; font-weight: 600; transition: all 0.2s; }
+        .btn-secondary:hover { background: #f4f4f5; border-color: #a1a1aa; }
+
+        /* Image Cards */
+        .gallery-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+        .gallery-grid-compact { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
         
-        .empty-workbench {
-            min-height: 330px; border: 1.8px dashed #cbd5e1; border-radius: 26px;
-            background: linear-gradient(135deg, rgba(248,250,252,.92), rgba(239,246,255,.88)), repeating-linear-gradient(45deg, rgba(148,163,184,.08) 0 10px, transparent 10px 20px);
-            display: flex; align-items: center; justify-content: center; text-align: center;
+        .photo-card {
+            background: #fff; padding: 6px; border-radius: 16px;
+            box-shadow: 0 2px 8px -2px rgba(0,0,0,0.05), 0 1px 3px -1px rgba(0,0,0,0.02);
+            border: 1px solid #f4f4f5; transition: all 0.25s ease; cursor: zoom-in;
         }
-        .workbench-icon {
-            width: 58px; height: 58px; border-radius: 22px; display: inline-flex; align-items: center; justify-content: center;
-            margin: 0 auto 14px; background: linear-gradient(135deg, #dbeafe, #ffffff); color: #2563eb; border: 1px solid #bfdbfe;
-        }
+        .photo-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.12); z-index: 10; border-color: #e4e4e7; }
+        .photo-card.unselected { opacity: 0.4; filter: grayscale(0.8); }
+        
+        .photo-stage { position: relative; border-radius: 12px; overflow: hidden; background: #f4f4f5; }
+        .photo-stage img { width: 100%; height: 100%; object-fit: contain; }
+
+        /* Checkbox custom */
+        .custom-checkbox { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #d4d4d8; appearance: none; outline: none; cursor: pointer; position: relative; background: white; transition: all 0.2s; }
+        .custom-checkbox:checked { background: var(--accent); border-color: var(--accent); }
+        .custom-checkbox:checked::after { content: '✓'; position: absolute; color: white; font-size: 14px; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; }
+
+        /* Progress Bar */
+        .progress-bar-bg { width: 100%; height: 6px; background: #e4e4e7; border-radius: 99px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.3s ease; }
+
+        /* Toast */
+        #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
+        .toast-item { background: white; border-radius: 16px; padding: 14px 20px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.15); border: 1px solid #e4e4e7; font-size: 14px; font-weight: 600; color: #18181b; display: flex; align-items: center; gap: 12px; transform: translateX(120%); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; }
+        .toast-item.show { transform: translateX(0); opacity: 1; }
+
+        header { border-bottom: 1px solid rgba(228, 228, 231, 0.6); }
     </style>
 </head>
-<body class="min-h-screen p-3 md:p-5 lg:p-6">
+<body class="min-h-screen flex flex-col">
 
     <div id="toast-container"></div>
 
-    <header class="max-w-[1500px] mx-auto mb-6 app-hero">
-        <div class="relative p-5 md:p-7 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5">
-            <div class="max-w-3xl">
-                <div class="hero-badge">UNITE GROUP · INTERNAL BRAND TOOL</div>
-                <h1 class="mt-4 text-2xl md:text-4xl font-black tracking-tight leading-tight">Brand Image Studio V8</h1>
-                <p class="mt-2 text-sm md:text-base text-slate-300 leading-relaxed">Gắn logo hàng loạt, kéo thả folder và lưu thẳng ra thư mục — tự động tối ưu tỷ lệ và độ nét để nhân sự dùng hằng ngày mà không cần biết thiết kế.</p>
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 glass-panel rounded-none border-t-0 border-l-0 border-r-0 shadow-sm">
+        <div class="max-w-[1600px] mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://techbytruong.wordpress.com/wp-content/uploads/2026/01/unite-group-2.png" alt="UNITE GROUP" class="h-7 md:h-9 object-contain drop-shadow-sm">
+                <div class="hidden sm:block border-l border-zinc-300 pl-3">
+                    <h1 class="font-display font-bold text-zinc-900 leading-tight text-sm">Brand Studio</h1>
+                    <p class="text-[9px] font-semibold text-zinc-500 uppercase tracking-widest leading-none mt-0.5">Internal Tool V8</p>
+                </div>
             </div>
-            <div class="grid grid-cols-3 gap-2 text-center text-xs md:text-sm xl:min-w-[330px]">
-                <div class="hero-chip"><b class="block text-lg text-white">Auto</b><span class="text-slate-300">Tự fit logo</span></div>
-                <div class="hero-chip"><b class="block text-lg text-white">Folder</b><span class="text-slate-300">Kéo thả</span></div>
-                <div class="hero-chip"><b class="block text-lg text-white">Smart</b><span class="text-slate-300">Halo nhẹ</span></div>
+            <div class="flex items-center gap-3">
+                <span class="hidden sm:inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full border border-blue-100">Smart Halo Active</span>
             </div>
         </div>
     </header>
 
-    <div class="max-w-[1500px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5">
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 md:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
         
-        <div class="lg:col-span-4 flex flex-col gap-5 side-column">
+        <!-- CỘT TRÁI: ĐIỀU KHIỂN -->
+        <div class="lg:col-span-4 xl:col-span-3 flex flex-col gap-6">
             
-            <div class="flex gap-2 p-1.5 rounded-2xl sticky top-0 z-50 bg-blue-600 border border-blue-700 shadow-md">
-                <div class="flex-1 py-3 px-2 font-black rounded-xl text-white text-center text-sm tracking-wider">
-                    GẮN LOGO HÀNG LOẠT
+            <!-- 1. DROPZONE -->
+            <div class="glass-panel p-5 premium-shadow">
+                <h2 class="font-display font-bold text-base mb-3 text-zinc-900 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                    Nạp hình ảnh
+                </h2>
+                
+                <div id="bulk-drop-zone" class="drop-zone-premium rounded-2xl p-6 text-center cursor-pointer relative overflow-hidden group">
+                    <input type="file" accept="image/*" multiple class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleBulkLogoUpload(event)" title="Chọn file ảnh">
+                    <div class="w-12 h-12 bg-white rounded-full shadow-sm border border-zinc-100 flex items-center justify-center mx-auto mb-3 text-zinc-600 group-hover:text-blue-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    </div>
+                    <p class="text-sm font-bold text-zinc-800">Kéo thả ảnh vào đây</p>
+                    <p class="text-[11px] text-zinc-500 mt-1">Hoặc click để chọn nhiều file</p>
+                </div>
+
+                <div class="mt-3">
+                    <label class="w-full btn-secondary py-2.5 px-4 flex justify-center items-center gap-2 cursor-pointer text-sm">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
+                        Chọn cả thư mục (Laptop)
+                        <input type="file" accept="image/*" multiple webkitdirectory directory class="hidden" onchange="handleBulkLogoUpload(event)">
+                    </label>
+                </div>
+
+                <div id="bulk-progress-panel" class="hidden mt-4 bg-zinc-50 rounded-xl p-3 border border-zinc-200">
+                    <div class="flex justify-between items-center mb-2">
+                        <span id="bulk-progress-text" class="text-[11px] font-semibold text-zinc-600">Đang xử lý...</span>
+                        <span id="bulk-progress-percent" class="text-xs font-bold text-zinc-900">0%</span>
+                    </div>
+                    <div class="progress-bar-bg"><div id="bulk-progress-fill" class="progress-bar-fill"></div></div>
                 </div>
             </div>
 
-            <!-- CẤU HÌNH LOGO -->
-            <div class="panel-card p-5">
-                <label class="block text-sm font-bold text-gray-700 mb-3">Brand Kit Logo & Watermark</label>
-                <p class="text-xs text-gray-500 mb-3">Logo mặc định đang bật ở Góc Phải Trên. Có thể tick thêm vị trí khác khi cần.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="logo-slots-container"></div>
-                <div class="mt-4 flex items-center gap-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
-                    <span class="text-xs text-gray-600 font-semibold whitespace-nowrap">Scale tổng:</span>
-                    <input type="range" id="logo-scale-slider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-blue-600 cursor-pointer" oninput="updateLogoScale(this.value)">
-                    <span id="logo-scale-val" class="text-xs text-blue-700 font-bold w-12 text-right">100%</span>
+            <!-- 2. CẤU HÌNH LOGO -->
+            <div class="glass-panel p-5 premium-shadow">
+                <h2 class="font-display font-bold text-base mb-1 text-zinc-900">Cấu hình Watermark</h2>
+                <p class="text-xs text-zinc-500 mb-4">Tự động resize giữ nguyên hình dáng logo.</p>
+                
+                <div class="flex flex-col gap-3" id="logo-slots-container">
+                    <!-- Sẽ được render bằng JS -->
+                </div>
+
+                <div class="mt-5">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-semibold text-zinc-700">Độ lớn Logo (Scale)</label>
+                        <span id="logo-scale-val" class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">100%</span>
+                    </div>
+                    <input type="range" id="logo-scale-slider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-zinc-900 cursor-pointer h-1 bg-zinc-200 rounded-lg appearance-none" oninput="updateLogoScale(this.value)">
                 </div>
             </div>
 
-            <!-- TAB LOGO SETTINGS -->
-            <div id="tab-logo-settings" class="flex flex-col gap-4">
-                <div class="panel-card p-5 text-center">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-600 rounded-full mb-3">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                    </div>
-                    <h2 class="text-lg font-bold text-gray-800 mb-2">Đóng Dấu Hàng Loạt Ảnh</h2>
-                    <p class="text-sm text-gray-500 mb-5">Giữ nguyên tỷ lệ gốc, tự động thu nhỏ logo chuẩn và tối ưu bộ nhớ để không crash máy.</p>
-                    
-                    <div id="bulk-drop-zone" class="bulk-drop-zone text-left">
-                        <div class="relative z-[2] flex flex-col items-center text-center gap-3">
-                            <div class="w-14 h-14 rounded-2xl bg-white shadow-sm border border-blue-100 flex items-center justify-center text-blue-700">
-                                <!-- Đã thay icon hình ảnh xịn xò -->
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="text-base font-black text-slate-900">Kéo thả ảnh hoặc cả folder vào đây</h3>
-                                <p class="text-xs text-slate-500 mt-1">Hỗ trợ nhận diện file trên cả Laptop và Điện Thoại.</p>
-                            </div>
-                            <div class="flex flex-col sm:flex-row gap-2 w-full">
-                                <label class="drop-action-btn primary flex-1">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                                    Chọn file ảnh
-                                    <input type="file" accept="image/*" multiple class="hidden" onchange="handleBulkLogoUpload(event)">
-                                </label>
-                                <label class="drop-action-btn secondary flex-1">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
-                                    Chọn cả thư mục
-                                    <input type="file" accept="image/*" multiple webkitdirectory directory class="hidden" onchange="handleBulkLogoUpload(event)">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="bulk-progress-panel" class="hidden mt-5 text-left bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <span id="bulk-progress-text" class="text-xs font-bold text-slate-700">Đang xử lý...</span>
-                            <span id="bulk-progress-percent" class="text-xs font-black text-blue-700">0%</span>
-                        </div>
-                        <div class="progress-track"><div id="bulk-progress-fill" class="progress-fill"></div></div>
-                    </div>
-                </div>
-
-                <button onclick="prepareBulkLogoShareFiles()" id="btn-prepare-share" class="w-full mobile-share-btn hover:brightness-95 text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
-                    <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" /></svg>
+            <!-- 3. ACTIONS -->
+            <div class="glass-panel p-5 premium-shadow flex flex-col gap-3">
+                <button onclick="prepareBulkLogoShareFiles()" id="btn-prepare-share" class="w-full btn-pro py-3.5 px-4 flex justify-center items-center gap-2 text-[13px]">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" /></svg>
                     TẠO ẢNH ĐỂ CHIA SẺ / COPY
                 </button>
-                <p class="text-[11px] text-slate-500 text-center -mt-1">Nhanh gọn cho iPhone/Android để bung ảnh nét ra copy qua Zalo.</p>
-
-                <div id="mobile-share-panel" class="mobile-share-panel hidden mt-2">
-                    <div class="flex items-start gap-3">
-                        <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l-3 3m3-3l3 3M12 3v9" /></svg>
-                        </div>
-                        <div class="min-w-0">
-                            <h3 class="text-sm font-black text-slate-900">Ảnh đã sẵn sàng!</h3>
-                            <p id="mobile-share-meta" class="text-xs text-slate-500 mt-1">Nhấn "MỞ ẢNH GỐC" để hiện ảnh to, rồi Copy mới nét nhé.</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-                        <button onclick="sharePreparedBulkFiles()" class="mobile-share-action primary">Chia sẻ tất cả ảnh</button>
-                        <button onclick="downloadPreparedBulkFilesIndividually()" class="mobile-share-action secondary">Tải toàn bộ về máy</button>
-                    </div>
-                    <div id="mobile-share-list" class="mt-4 flex flex-col gap-3 max-h-80 overflow-y-auto pr-1"></div>
-                </div>
+                <p class="text-[10px] text-zinc-500 text-center leading-tight -mt-1 mb-1">Mở ảnh to để Copy -> Dán qua Zalo cực nét.</p>
                 
-                <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
-                    <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                    XUẤT ẢNH ĐÃ GẮN LOGO (ZIP)
-                </button>
+                <hr class="border-zinc-200/60 my-1">
 
-                <button onclick="processBulkLogoExportToFolder()" id="btn-export-folder" class="w-full folder-output-btn hover:bg-slate-950 text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
-                    <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
+                <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full btn-secondary py-3 px-4 flex justify-center items-center gap-2 text-[13px]">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    XUẤT ẢNH ZIP
+                </button>
+                <button onclick="processBulkLogoExportToFolder()" id="btn-export-folder" class="w-full btn-secondary py-3 px-4 flex justify-center items-center gap-2 text-[13px]">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
                     LƯU THẲNG RA THƯ MỤC
                 </button>
             </div>
         </div>
 
-        <div class="lg:col-span-8 p-4 lg:p-6 flex flex-col preview-shell">
-            <div id="tab-logo-preview" class="flex flex-col flex-1 h-full">
-                <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3 mb-4">
-                    <div>
-                        <h3 class="text-sm font-bold text-gray-700">Hình ảnh đã tải lên (<span id="bulk-count">0</span>)</h3>
-                        <p class="text-xs text-slate-500 mt-1">Đã chọn xuất: <b id="bulk-selected-count" class="text-blue-700">0</b> ảnh · Click ảnh để xem RV.</p>
+        <!-- CỘT PHẢI: PREVIEW GALLERY -->
+        <div class="lg:col-span-8 xl:col-span-9 flex flex-col h-[calc(100vh-120px)]">
+            
+            <div id="mobile-share-panel" class="hidden mb-4 p-4 glass-panel border-blue-100 bg-blue-50/50 premium-shadow">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-zinc-900">Đã chuẩn bị xong ảnh!</h3>
+                            <p id="mobile-share-meta" class="text-xs text-zinc-500">Mở ảnh để copy hoặc chia sẻ.</p>
+                        </div>
                     </div>
-                    <button onclick="clearBulkImages()" class="text-xs text-red-500 font-semibold hover:bg-red-50 px-2 py-1 rounded self-start transition">Xóa Tất Cả</button>
+                    <div class="flex gap-2">
+                        <button onclick="sharePreparedBulkFiles()" class="btn-pro py-2 px-4 text-xs">Chia sẻ tất cả</button>
+                        <button onclick="downloadPreparedBulkFilesIndividually()" class="btn-secondary py-2 px-4 text-xs">Tải toàn bộ</button>
+                    </div>
+                </div>
+                <div id="mobile-share-list" class="mt-4 flex gap-3 overflow-x-auto pb-2 custom-scrollbar"></div>
+            </div>
+
+            <div class="glass-panel flex-1 flex flex-col overflow-hidden premium-shadow relative">
+                <!-- Toolbar Header -->
+                <div class="h-14 border-b border-zinc-200/80 px-5 flex items-center justify-between bg-white/50">
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-sm text-zinc-900">Thư viện ảnh</span>
+                        <span id="bulk-count-badge" class="bg-zinc-200 text-zinc-700 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="selectAllBulk(true)" class="text-xs font-semibold text-zinc-600 hover:text-zinc-900 px-2 py-1">Chọn hết</button>
+                        <span class="text-zinc-300">|</span>
+                        <button onclick="selectAllBulk(false)" class="text-xs font-semibold text-zinc-600 hover:text-zinc-900 px-2 py-1">Bỏ chọn</button>
+                        <div class="w-px h-4 bg-zinc-300 mx-1"></div>
+                        <button onclick="smartSortBulkImages()" class="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-100 rounded-md px-2.5 py-1 hover:bg-blue-100 transition flex items-center gap-1.5 shadow-sm" title="Gom ảnh ngang/dọc lại với nhau để lưới đẹp hơn">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" /></svg>
+                            Xếp gọn
+                        </button>
+                        <div class="w-px h-4 bg-zinc-300 mx-1"></div>
+                        <button id="btn-preview-comfort" onclick="setBulkPreviewMode('comfortable')" class="p-1.5 rounded-md text-zinc-400 hover:bg-zinc-100 hover:text-zinc-900 transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg></button>
+                        <button id="btn-preview-compact" onclick="setBulkPreviewMode('compact')" class="p-1.5 rounded-md text-zinc-400 hover:bg-zinc-100 hover:text-zinc-900 transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg></button>
+                        <button onclick="clearBulkImages()" class="ml-2 text-xs font-bold text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition">Xóa sạch</button>
+                    </div>
                 </div>
 
-                <div class="mb-4 rounded-2xl bg-slate-50 border border-slate-200 p-3">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button onclick="selectAllBulk(true)" class="bulk-toolbar-btn">Chọn tất cả</button>
-                        <button onclick="selectAllBulk(false)" class="bulk-toolbar-btn">Bỏ chọn tất cả</button>
-                        <button onclick="openBulkReview(getFirstReviewIndex())" class="bulk-toolbar-btn active">Xem RV toàn ảnh</button>
+                <!-- Gallery Area -->
+                <div id="bulk-preview-container" class="flex-1 overflow-y-auto p-5 gallery-grid content-start">
+                    <!-- Empty State -->
+                    <div class="col-span-full h-full min-h-[400px] flex flex-col items-center justify-center text-center">
+                        <div class="w-24 h-24 mb-4 text-zinc-300">
+                            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-9 12.36l-2.657-3.414a.498.498 0 00-.785-.01l-2.39 3.072a.5.5 0 00.395.805h10.873c.365 0 .567-.428.337-.714L12.553 12.3a.5.5 0 00-.796.012L10 15.36z"/></svg>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-zinc-800">Chưa có ảnh nào</h3>
+                        <p class="text-sm text-zinc-500 mt-2 max-w-sm">Hãy kéo thả ảnh từ máy tính vào khu vực bên trái để bắt đầu đóng dấu hàng loạt nhé.</p>
                     </div>
                 </div>
                 
-                <div id="bulk-preview-container" class="grid bulk-preview-grid-comfort gap-4 overflow-y-auto max-h-[680px] content-start p-1">
-                    <div class="col-span-full empty-workbench p-8">
-                        <div>
-                            <div class="workbench-icon">
-                                <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
-                            </div>
-                            <h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3>
-                            <p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Tự nhận diện ảnh, chỉnh logo thông minh và chống crash.</p>
-                        </div>
-                    </div>
+                <!-- Status Bar -->
+                <div class="h-10 border-t border-zinc-200/80 bg-zinc-50/50 px-4 flex items-center justify-between text-[11px] text-zinc-500 font-medium">
+                    <span>Trạng thái: <span id="status-text">Sẵn sàng</span></span>
+                    <span>Đang chọn: <span id="bulk-selected-count" class="font-bold text-zinc-900">0</span> ảnh</span>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- MODAL XEM RV / TOÀN ẢNH CHO BULK LOGO -->
-    <div id="bulk-review-modal" class="hidden fixed inset-0 z-[999] bulk-review-backdrop items-center justify-center p-4">
+    <!-- MODAL XEM RV -->
+    <div id="bulk-review-modal" class="hidden fixed inset-0 z-[999] bg-zinc-950/90 backdrop-blur-xl items-center justify-center p-4 lg:p-10">
         <div class="absolute inset-0" onclick="closeBulkReview()"></div>
-        <div class="relative w-full max-w-6xl text-white">
-            <div class="flex items-center justify-between gap-3 mb-3">
-                <div>
-                    <h3 id="bulk-review-title" class="font-black text-lg md:text-xl">Xem RV ảnh</h3>
-                    <p id="bulk-review-meta" class="text-xs text-slate-300 mt-1"></p>
+        <div class="relative w-full max-w-6xl h-full flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between gap-3 mb-4 flex-shrink-0">
+                <div class="text-white">
+                    <h3 id="bulk-review-title" class="font-display font-bold text-lg md:text-2xl">Xem trước</h3>
+                    <p id="bulk-review-meta" class="text-xs text-zinc-400 mt-1"></p>
                 </div>
-                <button onclick="closeBulkReview()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-2xl leading-none transition">×</button>
+                <button onclick="closeBulkReview()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
             </div>
 
-            <div class="flex items-center justify-center gap-3">
-                <button onclick="navigateBulkReview(-1)" class="hidden md:flex w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 items-center justify-center text-2xl transition">‹</button>
-                <div id="bulk-review-stage" class="bulk-review-stage relative rounded-2xl bg-white overflow-hidden mx-auto flex items-center justify-center">
-                    <img id="bulk-review-img" class="w-full h-full object-contain block" alt="Preview">
+            <!-- Modal Stage -->
+            <div class="flex-1 flex items-center justify-center gap-4 min-h-0 relative">
+                <button onclick="navigateBulkReview(-1)" class="absolute left-0 z-10 hidden md:flex w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white items-center justify-center transition backdrop-blur-sm -ml-6">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                
+                <div id="bulk-review-stage" class="relative max-h-full max-w-full rounded-lg shadow-2xl overflow-hidden bg-zinc-900 flex items-center justify-center">
+                    <img id="bulk-review-img" class="max-w-full max-h-full object-contain block" alt="Preview">
                     <div id="bulk-review-logo-layer" class="absolute inset-0 pointer-events-none"></div>
                 </div>
-                <button onclick="navigateBulkReview(1)" class="hidden md:flex w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 items-center justify-center text-2xl transition">›</button>
+
+                <button onclick="navigateBulkReview(1)" class="absolute right-0 z-10 hidden md:flex w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white items-center justify-center transition backdrop-blur-sm -mr-6">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
 
-            <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
-                <button onclick="navigateBulkReview(-1)" class="bulk-toolbar-btn">Ảnh trước</button>
-                <label class="bulk-toolbar-btn cursor-pointer inline-flex items-center gap-2">
-                    <input id="bulk-review-check" type="checkbox" class="accent-blue-600" onchange="toggleBulkSelected(bulkReviewIndex, this.checked)">
-                    Chọn xuất
+            <!-- Modal Footer -->
+            <div class="mt-6 flex items-center justify-center gap-4 flex-shrink-0">
+                <button onclick="navigateBulkReview(-1)" class="md:hidden px-4 py-2 bg-white/10 text-white rounded-xl text-sm font-semibold">Trở lại</button>
+                <label class="px-5 py-2.5 bg-white text-zinc-900 rounded-xl cursor-pointer inline-flex items-center gap-3 shadow-lg hover:bg-zinc-100 transition">
+                    <input id="bulk-review-check" type="checkbox" class="custom-checkbox" onchange="toggleBulkSelected(bulkReviewIndex, this.checked)">
+                    <span class="font-bold text-sm">Đưa vào danh sách xuất</span>
                 </label>
-                <button onclick="navigateBulkReview(1)" class="bulk-toolbar-btn">Ảnh sau</button>
+                <button onclick="navigateBulkReview(1)" class="md:hidden px-4 py-2 bg-white/10 text-white rounded-xl text-sm font-semibold">Tiếp theo</button>
             </div>
         </div>
     </div>
 
     <script>
+        // --- TOAST NOTIFICATION ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = `ug-toast ${type}`;
+            toast.className = `toast-item ${type}`;
             const icon = type === 'success' 
-                ? `<svg class="w-6 h-6 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`
-                : `<svg class="w-6 h-6 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                ? `<svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`
+                : `<svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
             toast.innerHTML = `${icon} <span>${message}</span>`;
             container.appendChild(toast);
             setTimeout(() => toast.classList.add('show'), 10);
@@ -315,6 +331,7 @@
         let bulkPreviewMode = 'comfortable';
         let bulkReviewIndex = -1;
         let bulkReviewObjectUrl = null;
+        let isIngestingFiles = false;
         
         let logosConfig = [
             { id: 'tl', title: 'Góc Trái Trên', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2025/11/logo-ucr.png', img: null, enabled: false, x: 'left', y: 'top', scale: 0.6 },
@@ -328,9 +345,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             setupBulkDragAndDrop();
             renderLogoConfigUI();
-            logosConfig.forEach((conf, index) => {
-                if(conf.defaultUrl) loadLogoForSlot(index, conf.defaultUrl);
-            });
+            logosConfig.forEach((conf, index) => { if(conf.defaultUrl) loadLogoForSlot(index, conf.defaultUrl); });
             window.addEventListener('keydown', (e) => {
                 const modal = document.getElementById('bulk-review-modal');
                 if (!modal || modal.classList.contains('hidden')) return;
@@ -338,33 +353,37 @@
                 if (e.key === 'ArrowLeft') navigateBulkReview(-1);
                 if (e.key === 'ArrowRight') navigateBulkReview(1);
             });
-            
-            renderBulkLogoView();
+            // Update initial UI state
+            setBulkPreviewMode('comfortable');
         });
 
-        // --- STREAMING_CHUNK: Logo Functions ---
+        // --- HỆ THỐNG LOGOS UI ---
         function renderLogoConfigUI() {
             const container = document.getElementById('logo-slots-container');
             if(!container) return;
             container.innerHTML = '';
             logosConfig.forEach((conf, index) => {
                 const div = document.createElement('div');
-                const colSpan = conf.x === 'center' ? 'sm:col-span-2' : '';
-                div.className = `logo-slot-card ${conf.enabled ? 'active' : ''} ${colSpan} flex items-center gap-2 px-3 py-2`;
-                const statusText = conf.enabled ? (conf.id === 'tr' ? 'Mặc định' : 'Đang bật') : 'Đang tắt';
+                div.className = `p-3 rounded-xl border transition-all duration-200 flex items-center justify-between ${conf.enabled ? 'bg-white border-blue-200 shadow-sm ring-1 ring-blue-100' : 'bg-zinc-50 border-zinc-200'}`;
+                
+                // Toggle Switch Design (Tailwind Native)
                 div.innerHTML = `
-                    <label class="flex items-center gap-2 flex-1 cursor-pointer min-w-0">
-                        <input type="checkbox" id="logo-enable-${index}" ${conf.enabled ? 'checked' : ''} onchange="toggleLogo(${index})" class="w-4 h-4 text-blue-600 rounded cursor-pointer flex-shrink-0">
-                        <span class="min-w-0">
-                            <span class="block text-[12px] font-black ${conf.enabled ? 'text-slate-900' : 'text-slate-500'} truncate">${conf.title}</span>
-                            <span class="block text-[10px] ${conf.enabled ? 'text-blue-700' : 'text-slate-400'} font-bold">${statusText}</span>
-                        </span>
-                    </label>
-                    <label class="cursor-pointer text-slate-400 hover:text-blue-600 p-1.5 rounded-lg hover:bg-blue-50 flex-shrink-0 transition" title="Đổi Logo Khác">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                        <input type="file" accept="image/png, image/jpeg, image/webp" class="hidden" onchange="uploadLogoForSlot(event, ${index})">
-                    </label>
-                    <img id="preview-logo-${index}" src="${conf.img ? conf.img.src : ''}" class="h-8 w-10 object-contain ${conf.img ? '' : 'hidden'} logo-preview-box flex-shrink-0">
+                    <div class="flex items-center gap-3">
+                        <label class="relative inline-flex items-center cursor-pointer mr-1">
+                            <input type="checkbox" id="logo-enable-${index}" ${conf.enabled ? 'checked' : ''} onchange="toggleLogo(${index})" class="sr-only peer">
+                            <div class="w-9 h-5 bg-zinc-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600 shadow-inner transition-colors duration-200"></div>
+                        </label>
+                        <div>
+                            <span class="block text-[13px] font-bold transition-colors duration-200 ${conf.enabled ? 'text-zinc-900' : 'text-zinc-400'}">${conf.title}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <img id="preview-logo-${index}" src="${conf.img ? conf.img.src : ''}" class="h-6 w-12 object-contain ${conf.img ? '' : 'hidden'} transition-opacity duration-200 opacity-${conf.enabled ? '100' : '40'}">
+                        <label class="cursor-pointer text-zinc-400 hover:text-blue-600 bg-zinc-100 hover:bg-blue-50 p-1.5 rounded-lg transition-colors" title="Đổi Logo Khác">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                            <input type="file" accept="image/png, image/jpeg, image/webp" class="hidden" onchange="uploadLogoForSlot(event, ${index})">
+                        </label>
+                    </div>
                 `;
                 container.appendChild(div);
             });
@@ -411,7 +430,6 @@
 
         async function normalizeLogoImageForAllPlatforms(img) {
             try {
-                // Tối ưu hóa: Chỉ cắt bỏ phần thừa trong suốt (Trim), giữ nguyên tỷ lệ gốc của Logo
                 const bounds = getLogoContentBounds(img);
                 if (bounds.w <= 0 || bounds.h <= 0) return img;
 
@@ -452,9 +470,7 @@
                 try {
                     const normalizedLogo = await normalizeLogoImageForAllPlatforms(img);
                     logosConfig[index].img = normalizedLogo;
-                    const previewEl = document.getElementById(`preview-logo-${index}`);
-                    if(previewEl) { previewEl.src = normalizedLogo.src; previewEl.classList.remove('hidden'); }
-                    renderBulkLogoView();
+                    renderLogoConfigUI(); renderBulkLogoView();
                 } catch (e) {
                     handleError();
                 }
@@ -492,7 +508,269 @@
             if (bulkReviewIndex >= 0 && bulkLogoImages[bulkReviewIndex]) openBulkReview(bulkReviewIndex);
         }
 
-        // --- STREAMING_CHUNK: Universal Math & Drawing ---
+        function sleep(ms = 0) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+        function setBulkProgress(text, percent) {
+            const panel = document.getElementById('bulk-progress-panel');
+            const label = document.getElementById('bulk-progress-text');
+            const pct = document.getElementById('bulk-progress-percent');
+            const fill = document.getElementById('bulk-progress-fill');
+            const statusText = document.getElementById('status-text');
+            if (panel) panel.classList.remove('hidden');
+            if (label) label.innerText = text || '';
+            if (statusText) statusText.innerText = text || '';
+            const val = Math.max(0, Math.min(100, Math.round(percent || 0)));
+            if (pct) pct.innerText = val + '%';
+            if (fill) fill.style.width = val + '%';
+        }
+
+        function hideBulkProgressSoon() {
+            setTimeout(() => { 
+                const p = document.getElementById('bulk-progress-panel'); if (p) p.classList.add('hidden'); 
+                const statusText = document.getElementById('status-text'); if(statusText) statusText.innerText = 'Hoàn tất';
+            }, 1800);
+        }
+
+        async function loadImageElementFromFile(file) {
+            const url = URL.createObjectURL(file);
+            try {
+                const img = await new Promise((resolve, reject) => {
+                    const el = new Image(); el.onload = () => resolve(el); el.onerror = reject; el.src = url;
+                });
+                return { img, url };
+            } catch (err) {
+                URL.revokeObjectURL(url); throw err;
+            }
+        }
+
+        async function createThumbFromFile(file, maxEdge = 420) {
+            const { img, url } = await loadImageElementFromFile(file);
+            try {
+                const ratio = Math.min(1, maxEdge / Math.max(img.naturalWidth || img.width, img.naturalHeight || img.height));
+                const tw = Math.max(1, Math.round((img.naturalWidth || img.width) * ratio));
+                const th = Math.max(1, Math.round((img.naturalHeight || img.height) * ratio));
+                const canvas = document.createElement('canvas'); canvas.width = tw; canvas.height = th;
+                const ctx = canvas.getContext('2d', { alpha: false }); ctx.drawImage(img, 0, 0, tw, th);
+                
+                img.onload = null; img.onerror = null; img.src = '';
+                URL.revokeObjectURL(url);
+
+                const thumb = canvas.toDataURL('image/jpeg', 0.65);
+                const meta = { width: Math.round(tw/ratio), height: Math.round(th/ratio) };
+                canvas.width = 0; canvas.height = 0;
+                
+                if (thumb === 'data:,' || thumb.length < 50) return { thumb: null, ...meta };
+                return { thumb, ...meta };
+            } catch (e) {
+                img.onload = null; img.onerror = null; img.src = ''; URL.revokeObjectURL(url);
+                return { thumb: null, width: 1000, height: 1000 };
+            }
+        }
+
+        function isImageFile(file) {
+            if (!file) return false;
+            return (file.type && file.type.startsWith('image/')) || /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name || '');
+        }
+
+        function bulkFileKey(file) {
+            return `${file.webkitRelativePath || file.relativePath || file.name}|${file.size}|${file.lastModified}`;
+        }
+
+        async function handleBulkLogoUpload(e) {
+            const files = Array.from(e.target.files || []).filter(isImageFile);
+            await ingestBulkFiles(files, 'Đang nạp ảnh, vui lòng đợi...');
+            e.target.value = '';
+        }
+
+        function handleBulkDragOver(e) {
+            e.preventDefault(); e.stopPropagation();
+            if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+            document.querySelectorAll('#bulk-drop-zone').forEach(el => el.classList.add('drag-over'));
+        }
+
+        function handleBulkDragLeave(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('#bulk-drop-zone').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        async function handleBulkDrop(e) {
+            e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+            document.querySelectorAll('#bulk-drop-zone').forEach(el => el.classList.remove('drag-over'));
+            setBulkProgress('Đang quét file được thả vào...', 1);
+            
+            // Dùng await đồng bộ để lấy TẤT CẢ các file tránh bị trình duyệt dọn rác mất
+            const files = await collectDroppedImageFiles(e.dataTransfer);
+            await ingestBulkFiles(files, `Đã nhận ${files.length} ảnh từ thao tác kéo thả.`);
+        }
+
+        function setupBulkDragAndDrop() {
+            const el = document.getElementById('bulk-drop-zone'); if (!el) return;
+            el.addEventListener('dragover', handleBulkDragOver); 
+            el.addEventListener('dragleave', handleBulkDragLeave); 
+            el.addEventListener('drop', handleBulkDrop);
+        }
+
+        async function collectDroppedImageFiles(dataTransfer) {
+            const files = []; 
+            const items = Array.from(dataTransfer?.items || []);
+            
+            if (items.length && items[0].webkitGetAsEntry) {
+                // Lấy toàn bộ entries ĐỒNG BỘ ngay lập tức
+                const entries = items.map(item => item.webkitGetAsEntry()).filter(Boolean);
+                
+                // Hàm đệ quy duyệt entry
+                async function readEntry(entry) {
+                    if (entry.isFile) {
+                        const file = await new Promise((resolve, reject) => entry.file(resolve, reject));
+                        if (isImageFile(file)) { 
+                            try { file.relativePath = entry.fullPath ? entry.fullPath.replace(/^\//, '') : file.name; } catch (_) {} 
+                            files.push(file); 
+                        }
+                    } else if (entry.isDirectory) {
+                        const reader = entry.createReader();
+                        let allEntries = [];
+                        let batch;
+                        do {
+                            batch = await new Promise((resolve, reject) => reader.readEntries(resolve, reject));
+                            allEntries = allEntries.concat(batch);
+                        } while (batch.length > 0);
+                        
+                        for (let child of allEntries) {
+                            await readEntry(child);
+                        }
+                    }
+                }
+                
+                for (let entry of entries) {
+                    await readEntry(entry);
+                }
+            } else { 
+                files.push(...Array.from(dataTransfer?.files || []).filter(isImageFile)); 
+            }
+            return files;
+        }
+
+        async function ingestBulkFiles(files, readyMessage = 'Đã nạp ảnh.') {
+            if (isIngestingFiles) return;
+            isIngestingFiles = true;
+
+            try {
+                const imageFiles = Array.from(files || []).filter(isImageFile);
+                if (imageFiles.length === 0) {
+                    setBulkProgress('Không tìm thấy file ảnh hợp lệ.', 100); hideBulkProgressSoon(); showToast('Không có ảnh hợp lệ nào được chọn.', 'error'); return;
+                }
+                const existingKeys = new Set(bulkLogoImages.map(item => item.key).filter(Boolean));
+                const uniqueFiles = [];
+                for (const file of imageFiles) { const key = bulkFileKey(file); if (existingKeys.has(key)) continue; existingKeys.add(key); uniqueFiles.push(file); }
+                if (uniqueFiles.length === 0) {
+                    setBulkProgress('Ảnh đã có trong danh sách.', 100); hideBulkProgressSoon(); showToast('Ảnh này đã có trong danh sách rồi.'); return;
+                }
+
+                setBulkProgress(readyMessage || 'Đang nạp ảnh nhẹ để xem trước...', 1);
+                for (let i = 0; i < uniqueFiles.length; i++) {
+                    const file = uniqueFiles[i];
+                    try {
+                        let meta = await createThumbFromFile(file, 420);
+                        let safeThumb = meta.thumb;
+                        
+                        if (!safeThumb) {
+                            safeThumb = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmNWY5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTRhM2I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iPkFuaCBxdWEgbmFuZzwvdGV4dD48L3N2Zz4=';
+                        }
+
+                        bulkLogoImages.push({
+                            id: Date.now() + Math.random(), key: bulkFileKey(file), file, name: file.name,
+                            displayPath: file.webkitRelativePath || file.relativePath || file.name,
+                            width: meta.width, height: meta.height, thumb: safeThumb, selected: true
+                        });
+                    } catch (err) { console.warn('Không đọc được ảnh:', file?.name); }
+                    setBulkProgress(`Đang nạp ảnh ${i + 1}/${uniqueFiles.length}...`, ((i + 1) / uniqueFiles.length) * 100);
+                    await sleep(20);
+                }
+                
+                // Gọi hàm sắp xếp thông minh ngay khi load xong ảnh
+                smartSortBulkImages(false);
+                
+                setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới.`, 100); hideBulkProgressSoon(); 
+                showToast(`Đã tải lên ${uniqueFiles.length} ảnh. Lưới đã được tự động xếp gọn.`);
+            } finally {
+                isIngestingFiles = false;
+            }
+        }
+
+        // THUẬT TOÁN SẮP XẾP THÔNG MINH (SMART SORT)
+        function smartSortBulkImages(showNotification = true) {
+            if (bulkLogoImages.length === 0) return;
+            
+            bulkLogoImages.sort((a, b) => {
+                const ratioA = (a.width || 1) / (a.height || 1);
+                const ratioB = (b.width || 1) / (b.height || 1);
+                
+                // 1. Phân loại hình dáng: Ngang (1), Vuông (2), Dọc (3)
+                const catA = ratioA >= 1.15 ? 1 : (ratioA <= 0.85 ? 3 : 2);
+                const catB = ratioB >= 1.15 ? 1 : (ratioB <= 0.85 ? 3 : 2);
+
+                // Ưu tiên xếp theo cụm hình dáng trước
+                if (catA !== catB) return catA - catB; 
+                
+                // 2. Nếu cùng hình dáng (Vd cùng là ảnh ngang), xếp theo tỷ lệ giảm dần để lưới mượt hơn
+                if (catA === 1) return ratioB - ratioA; // Ngang nhiều -> Ngang ít
+                if (catA === 3) return ratioA - ratioB; // Dọc nhiều -> Dọc ít
+                
+                return 0;
+            });
+            
+            renderBulkLogoView();
+            if (showNotification) {
+                showToast('Đã tự động gom nhóm ảnh Ngang/Vuông/Dọc để lưới nhìn gọn gàng hơn!');
+            }
+        }
+
+        function clearBulkImages() {
+            closeBulkReview(); clearPreparedShareFiles(); bulkLogoImages = []; renderBulkLogoView();
+            const panel = document.getElementById('bulk-progress-panel'); if (panel) panel.classList.add('hidden');
+            showToast('Đã xóa danh sách ảnh hàng loạt.');
+        }
+
+        function getSelectedBulkItems() { return bulkLogoImages.filter(item => item.selected !== false); }
+        
+        function updateBulkSelectedCount() { 
+            const el = document.getElementById('bulk-selected-count'); if (el) el.innerText = getSelectedBulkItems().length; 
+            const badge = document.getElementById('bulk-count-badge'); if (badge) badge.innerText = bulkLogoImages.length;
+        }
+
+        function selectAllBulk(checked) {
+            bulkLogoImages.forEach(item => item.selected = !!checked); renderBulkLogoView();
+            if (bulkReviewIndex >= 0 && bulkLogoImages[bulkReviewIndex]) {
+                const chk = document.getElementById('bulk-review-check'); if (chk) chk.checked = bulkLogoImages[bulkReviewIndex].selected !== false;
+            }
+        }
+
+        function toggleBulkSelected(index, checked) {
+            if (!bulkLogoImages[index]) return; bulkLogoImages[index].selected = !!checked; updateBulkSelectedCount();
+            const chk = document.getElementById(`bulk-check-${index}`); if (chk) chk.checked = !!checked;
+            const card = document.getElementById(`bulk-card-${index}`); if (card) card.classList.toggle('unselected', !checked);
+            const reviewChk = document.getElementById('bulk-review-check'); if (reviewChk && bulkReviewIndex === index) reviewChk.checked = !!checked;
+        }
+
+        function setBulkPreviewMode(mode) { 
+            bulkPreviewMode = mode === 'compact' ? 'compact' : 'comfortable'; 
+            
+            const btnComfort = document.getElementById('btn-preview-comfort'); const btnCompact = document.getElementById('btn-preview-compact');
+            if (btnComfort && btnCompact) { 
+                btnComfort.classList.toggle('bg-zinc-100', mode === 'comfortable'); btnComfort.classList.toggle('text-zinc-900', mode === 'comfortable');
+                btnCompact.classList.toggle('bg-zinc-100', mode === 'compact'); btnCompact.classList.toggle('text-zinc-900', mode === 'compact');
+            }
+            
+            const container = document.getElementById('bulk-preview-container');
+            if(container) container.className = `flex-1 overflow-y-auto p-5 content-start ${mode === 'compact' ? 'gallery-grid-compact' : 'gallery-grid'}`;
+        }
+
+        function getFirstReviewIndex() {
+            if (bulkLogoImages.length === 0) return 0;
+            const selectedIndex = bulkLogoImages.findIndex(item => item.selected !== false); return selectedIndex >= 0 ? selectedIndex : 0;
+        }
+
+        // --- THUẬT TOÁN LOGO UNIFIED (DÙNG CHUNG CHO CẢ PREVIEW DOM LẪN CANVAS RENDER) ---
         function calculateUniversalLogoMetrics(bgW, bgH, logoW, logoH, confScale, position) {
             const minSide = Math.min(bgW, bgH);
             const logoRatio = logoW / logoH;
@@ -502,45 +780,25 @@
             if (position === 'center') {
                 baseWidthPct = logoRatio > 1.5 ? 0.45 : 0.35;
             } else {
-                // Định hình độ rộng cơ bản dựa trên hình dáng logo
-                if (logoRatio >= 2.2) { // Siêu dài (Nhiều chữ ngang)
-                    baseWidthPct = 0.4;
-                } else if (logoRatio >= 1.4) { // Ngang vừa
-                    baseWidthPct = 0.3;
-                } else if (logoRatio >= 0.8) { // Vuông / Gần vuông
-                    baseWidthPct = 0.25;
-                } else { // Dọc (Cao)
-                    baseWidthPct = 0.15;
-                }
+                if (logoRatio >= 2.2) { baseWidthPct = 0.4; } // Siêu dài
+                else if (logoRatio >= 1.4) { baseWidthPct = 0.3; } // Ngang vừa
+                else if (logoRatio >= 0.8) { baseWidthPct = 0.25; } // Vuông
+                else { baseWidthPct = 0.15; } // Dọc
             }
 
-            // Tính toán kích thước sơ bộ
             let targetW = minSide * baseWidthPct * currentScale;
             let targetH = targetW / logoRatio;
 
-            // --- KIỂM SOÁT GIỚI HẠN (BOUNDARIES) ---
-            
-            // 1. Giới hạn Nhỏ Nhất (Để logo dài không bị teo nhỏ mất chữ)
+            // Boundaries
             const minHeight = position === 'center' ? (minSide * 0.08) : (minSide * 0.045);
-            if (targetH < minHeight) {
-                targetH = minHeight;
-                targetW = targetH * logoRatio;
-            }
+            if (targetH < minHeight) { targetH = minHeight; targetW = targetH * logoRatio; }
 
-            // 2. Giới hạn Lớn Nhất (Để logo không lấn át chủ thể ảnh gốc)
             const maxW = bgW * (position === 'center' ? 0.90 : 0.70);
             const maxH = bgH * (position === 'center' ? 0.40 : 0.25);
-            
-            if (targetW > maxW) {
-                targetW = maxW;
-                targetH = targetW / logoRatio;
-            }
-            if (targetH > maxH) {
-                targetH = maxH;
-                targetW = targetH * logoRatio;
-            }
+            if (targetW > maxW) { targetW = maxW; targetH = targetW / logoRatio; }
+            if (targetH > maxH) { targetH = maxH; targetW = targetH * logoRatio; }
 
-            // 3. Margin/Padding responsive (Đã tăng thêm lề 20-25% theo yêu cầu)
+            // Margin/Padding responsive (Đã tăng thêm lề 20-25% theo yêu cầu)
             const padding = Math.max(20, minSide * 0.065);
 
             return { targetW, targetH, padding };
@@ -560,13 +818,11 @@
 
                 const logoWrap = document.createElement('div'); 
                 logoWrap.className = 'absolute flex items-center justify-center pointer-events-none';
-                
                 logoWrap.style.width = `${widthPct}%`; 
                 logoWrap.style.height = `${heightPct}%`;
                 
                 if (conf.x === 'center') {
-                    logoWrap.style.left = '50%'; logoWrap.style.top = '50%'; 
-                    logoWrap.style.transform = 'translate(-50%, -50%)';
+                    logoWrap.style.left = '50%'; logoWrap.style.top = '50%'; logoWrap.style.transform = 'translate(-50%, -50%)';
                 } else {
                     if (conf.x === 'left') logoWrap.style.left = `${padXPct}%`; else logoWrap.style.right = `${padXPct}%`;
                     if (conf.y === 'top') logoWrap.style.top = `${padYPct}%`; else logoWrap.style.bottom = `${padYPct}%`;
@@ -576,6 +832,100 @@
                 logo.style.filter = 'drop-shadow(0px 1px 3px rgba(0,0,0,0.26)) drop-shadow(0px 0px 2px rgba(255,255,255,0.34))';
                 logoWrap.appendChild(logo); container.appendChild(logoWrap);
             });
+        }
+
+        function renderBulkLogoView() {
+            const container = document.getElementById('bulk-preview-container'); if(!container) return;
+            updateBulkSelectedCount();
+
+            if (bulkLogoImages.length === 0) {
+                container.innerHTML = '<div class="col-span-full h-full min-h-[400px] flex flex-col items-center justify-center text-center"><div class="w-24 h-24 mb-4 text-zinc-300"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-9 12.36l-2.657-3.414a.498.498 0 00-.785-.01l-2.39 3.072a.5.5 0 00.395.805h10.873c.365 0 .567-.428.337-.714L12.553 12.3a.5.5 0 00-.796.012L10 15.36z"/></svg></div><h3 class="font-display font-bold text-xl text-zinc-800">Chưa có ảnh nào</h3><p class="text-sm text-zinc-500 mt-2 max-w-sm">Hãy kéo thả ảnh từ máy tính vào khu vực bên trái để bắt đầu đóng dấu hàng loạt nhé.</p></div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            const PREVIEW_LIMIT = bulkPreviewMode === 'compact' ? 120 : 80;
+            bulkLogoImages.slice(0, PREVIEW_LIMIT).forEach((item, index) => {
+                const selected = item.selected !== false;
+                const card = document.createElement('div'); card.id = `bulk-card-${index}`; card.className = `photo-card relative group ${selected ? '' : 'unselected'}`;
+                
+                const stage = document.createElement('div'); stage.className = 'photo-stage'; stage.style.aspectRatio = `${item.width || 4} / ${item.height || 3}`;
+                stage.onclick = () => openBulkReview(index);
+
+                const img = document.createElement('img'); img.src = item.thumb || (item.img && item.img.src) || ''; img.alt = item.name || 'Preview'; stage.appendChild(img);
+                const overlay = document.createElement('div'); overlay.className = 'absolute inset-0 pointer-events-none';
+                appendLogoOverlays(overlay, item.width || 1200, item.height || 1200); stage.appendChild(overlay);
+
+                // Select Checkbox
+                const checkWrap = document.createElement('label'); checkWrap.className = 'absolute left-2 top-2 bg-white/90 border border-white rounded-lg p-1 shadow-sm cursor-pointer flex items-center gap-1 z-10 transition-transform hover:scale-110'; checkWrap.onclick = (ev) => ev.stopPropagation();
+                checkWrap.innerHTML = `<input id="bulk-check-${index}" type="checkbox" ${selected ? 'checked' : ''} class="custom-checkbox h-4 w-4 rounded border-zinc-300">`;
+                checkWrap.querySelector('input').onchange = (ev) => toggleBulkSelected(index, ev.target.checked); stage.appendChild(checkWrap);
+
+                // Action Buttons
+                const actionGroup = document.createElement('div'); actionGroup.className = 'absolute right-2 bottom-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10';
+                
+                const viewBtn = document.createElement('button'); viewBtn.className = 'bg-zinc-900/80 hover:bg-black text-white rounded-lg p-1.5 backdrop-blur-sm transition'; viewBtn.innerHTML = '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>';
+                viewBtn.onclick = (ev) => { ev.stopPropagation(); openBulkReview(index); }; actionGroup.appendChild(viewBtn);
+
+                const delBtn = document.createElement('button'); delBtn.className = 'bg-red-500/90 hover:bg-red-600 text-white rounded-lg p-1.5 backdrop-blur-sm transition'; delBtn.innerHTML = '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>';
+                delBtn.onclick = (ev) => { ev.stopPropagation(); if (bulkReviewIndex === index) closeBulkReview(); bulkLogoImages.splice(index, 1); renderBulkLogoView(); }; actionGroup.appendChild(delBtn);
+                
+                stage.appendChild(actionGroup);
+                card.appendChild(stage); container.appendChild(card);
+            });
+
+            if (bulkLogoImages.length > PREVIEW_LIMIT) {
+                const more = document.createElement('div'); more.className = 'col-span-full text-center text-xs font-semibold text-zinc-500 bg-zinc-100 rounded-xl p-3';
+                more.innerText = `Đang hiển thị ${PREVIEW_LIMIT}/${bulkLogoImages.length} ảnh. Danh sách xuất vẫn bao gồm toàn bộ ảnh đã chọn.`;
+                container.appendChild(more);
+            }
+        }
+
+        function openBulkReview(index = 0) {
+            if (bulkLogoImages.length === 0) return showToast('Chưa có ảnh để xem.', 'error');
+            if (index < 0) index = 0; if (index >= bulkLogoImages.length) index = bulkLogoImages.length - 1;
+            const item = bulkLogoImages[index]; if (!item) return;
+            bulkReviewIndex = index;
+
+            const modal = document.getElementById('bulk-review-modal'); const stage = document.getElementById('bulk-review-stage'); const img = document.getElementById('bulk-review-img');
+            const logoLayer = document.getElementById('bulk-review-logo-layer'); const title = document.getElementById('bulk-review-title'); const meta = document.getElementById('bulk-review-meta'); const chk = document.getElementById('bulk-review-check');
+
+            if (bulkReviewObjectUrl) URL.revokeObjectURL(bulkReviewObjectUrl);
+            bulkReviewObjectUrl = item.file ? URL.createObjectURL(item.file) : (item.thumb || '');
+            
+            img.onload = () => { /* Success */ };
+            img.onerror = () => { 
+                if(img.src !== item.thumb) { img.src = item.thumb || ''; showToast('Đang hiển thị bản nháp vì ảnh gốc quá lớn.', 'error'); }
+            };
+            img.src = bulkReviewObjectUrl;
+            
+            stage.style.aspectRatio = `${item.width || 4} / ${item.height || 3}`;
+            title.innerText = `Ảnh ${index + 1} / ${bulkLogoImages.length}`;
+            meta.innerText = `${item.name || 'Ảnh'} • ${item.width || '?'}×${item.height || '?'}`;
+            if (chk) chk.checked = item.selected !== false;
+            appendLogoOverlays(logoLayer, item.width || 1200, item.height || 1200);
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        }
+
+        function closeBulkReview() {
+            const modal = document.getElementById('bulk-review-modal');
+            if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+            const img = document.getElementById('bulk-review-img'); if (img) { img.onload=null; img.onerror=null; img.removeAttribute('src'); }
+            if (bulkReviewObjectUrl) URL.revokeObjectURL(bulkReviewObjectUrl);
+            bulkReviewObjectUrl = null; bulkReviewIndex = -1;
+        }
+
+        function navigateBulkReview(delta) {
+            if (bulkLogoImages.length === 0) return;
+            let next = bulkReviewIndex + delta; if (next < 0) next = bulkLogoImages.length - 1; if (next >= bulkLogoImages.length) next = 0;
+            openBulkReview(next);
+        }
+
+        function drawRoundRectPath(ctx, x, y, w, h, r) {
+            const radius = Math.min(r, w / 2, h / 2);
+            ctx.beginPath(); ctx.moveTo(x + radius, y); ctx.lineTo(x + w - radius, y); ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+            ctx.lineTo(x + w, y + h - radius); ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h); ctx.lineTo(x + radius, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - radius); ctx.lineTo(x, y + radius); ctx.quadraticCurveTo(x, y, x + radius, y); ctx.closePath();
         }
 
         function getLogoBackgroundStats(ctx, x, y, w, h, fw, fh) {
@@ -596,13 +946,6 @@
                 const luma = count ? sum / count : 128; const variance = count ? (sumSq / count) - (luma * luma) : 0;
                 return { luma, contrast: Math.sqrt(Math.max(0, variance)) };
             } catch (e) { return { luma: 128, contrast: 35 }; }
-        }
-
-        function drawRoundRectPath(ctx, x, y, w, h, r) {
-            const radius = Math.min(r, w / 2, h / 2);
-            ctx.beginPath(); ctx.moveTo(x + radius, y); ctx.lineTo(x + w - radius, y); ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
-            ctx.lineTo(x + w, y + h - radius); ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h); ctx.lineTo(x + radius, y + h);
-            ctx.quadraticCurveTo(x, y + h, x, y + h - radius); ctx.lineTo(x, y + radius); ctx.quadraticCurveTo(x, y, x + radius, y); ctx.closePath();
         }
 
         function drawSmartLogoWithHalo(ctx, logoImg, x, y, dw, dh, fw, fh) {
@@ -630,10 +973,8 @@
                 
                 let x, y;
                 if (conf.x === 'center') { 
-                    x = (fw - metrics.targetW) / 2; 
-                    y = (fh - metrics.targetH) / 2; 
-                } 
-                else { 
+                    x = (fw - metrics.targetW) / 2; y = (fh - metrics.targetH) / 2; 
+                } else { 
                     x = conf.x === 'left' ? metrics.padding : fw - metrics.targetW - metrics.padding; 
                     y = conf.y === 'top' ? metrics.padding : fh - metrics.targetH - metrics.padding; 
                 }
@@ -642,28 +983,13 @@
             });
         }
 
-        // --- STREAMING_CHUNK: Bulk Engine & UI ---
-        function sleep(ms = 0) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
         function safeFileName(name, fallback = 'image') {
             const base = (name || fallback).replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9_\-À-ỹ ]/g, '').trim() || fallback;
             return base.substring(0, 70);
         }
 
-        function setBulkProgress(text, percent) {
-            const panel = document.getElementById('bulk-progress-panel');
-            const label = document.getElementById('bulk-progress-text');
-            const pct = document.getElementById('bulk-progress-percent');
-            const fill = document.getElementById('bulk-progress-fill');
-            if (panel) panel.classList.remove('hidden');
-            if (label) label.innerText = text || '';
-            const val = Math.max(0, Math.min(100, Math.round(percent || 0)));
-            if (pct) pct.innerText = val + '%';
-            if (fill) fill.style.width = val + '%';
-        }
-
-        function hideBulkProgressSoon() {
-            setTimeout(() => { const p = document.getElementById('bulk-progress-panel'); if (p) p.classList.add('hidden'); }, 1800);
+        function canvasToBlobSafe(canvas, type = 'image/jpeg', quality = 0.94) {
+            return new Promise(resolve => canvas.toBlob(resolve, type, quality));
         }
 
         function downloadBlob(blob, filename) {
@@ -672,294 +998,6 @@
             link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
         }
 
-        function canvasToBlobSafe(canvas, type = 'image/jpeg', quality = 0.94) {
-            return new Promise(resolve => canvas.toBlob(resolve, type, quality));
-        }
-
-        async function loadImageElementFromFile(file) {
-            const url = URL.createObjectURL(file);
-            try {
-                const img = await new Promise((resolve, reject) => {
-                    const el = new Image(); el.onload = () => resolve(el); el.onerror = reject; el.src = url;
-                });
-                return { img, url };
-            } catch (err) {
-                URL.revokeObjectURL(url); throw err;
-            }
-        }
-
-        async function createThumbFromFile(file, maxEdge = 420) {
-            const { img, url } = await loadImageElementFromFile(file);
-            try {
-                const ratio = Math.min(1, maxEdge / Math.max(img.naturalWidth || img.width, img.naturalHeight || img.height));
-                const tw = Math.max(1, Math.round((img.naturalWidth || img.width) * ratio));
-                const th = Math.max(1, Math.round((img.naturalHeight || img.height) * ratio));
-                const canvas = document.createElement('canvas'); canvas.width = tw; canvas.height = th;
-                const ctx = canvas.getContext('2d', { alpha: false }); ctx.drawImage(img, 0, 0, tw, th);
-                
-                // DỌN RÁC NGAY LẬP TỨC: Xóa trắng ảnh gốc khỏi RAM
-                img.onload = null; img.onerror = null; img.src = '';
-                URL.revokeObjectURL(url);
-
-                const thumb = canvas.toDataURL('image/jpeg', 0.65);
-                const meta = { width: Math.round(tw/ratio), height: Math.round(th/ratio) };
-                canvas.width = 0; canvas.height = 0;
-                
-                // Nếu Android RAM cạn kiệt, toDataURL trả về string rỗng hoặc cực ngắn
-                if (thumb === 'data:,' || thumb.length < 50) return { thumb: null, ...meta };
-                return { thumb, ...meta };
-            } catch (e) {
-                img.onload = null; img.onerror = null; img.src = ''; URL.revokeObjectURL(url);
-                return { thumb: null, width: 1000, height: 1000 };
-            }
-        }
-
-        function isImageFile(file) {
-            if (!file) return false;
-            return (file.type && file.type.startsWith('image/')) || /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name || '');
-        }
-
-        function bulkFileKey(file) {
-            return `${file.webkitRelativePath || file.relativePath || file.name}|${file.size}|${file.lastModified}`;
-        }
-
-        async function handleBulkLogoUpload(e) {
-            const files = Array.from(e.target.files || []).filter(isImageFile);
-            await ingestBulkFiles(files, 'Đang nạp ảnh, vui lòng đợi...');
-            e.target.value = '';
-        }
-
-        function handleBulkDragOver(e) {
-            e.preventDefault(); e.stopPropagation();
-            if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
-            document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.add('drag-over'));
-        }
-
-        function handleBulkDragLeave(e) {
-            e.preventDefault(); e.stopPropagation();
-            document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.remove('drag-over'));
-        }
-
-        async function handleBulkDrop(e) {
-            e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-            document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.remove('drag-over'));
-            setBulkProgress('Đang quét file được thả vào...', 1);
-            const files = await collectDroppedImageFiles(e.dataTransfer);
-            await ingestBulkFiles(files, `Đã nhận ${files.length} ảnh từ thao tác kéo thả.`);
-        }
-
-        function setupBulkDragAndDrop() {
-            ['bulk-drop-zone', 'bulk-preview-container'].forEach(id => {
-                const el = document.getElementById(id); if (!el) return;
-                el.addEventListener('dragover', handleBulkDragOver); 
-                el.addEventListener('dragleave', handleBulkDragLeave); 
-                el.addEventListener('drop', handleBulkDrop);
-            });
-        }
-
-        async function collectDroppedImageFiles(dataTransfer) {
-            const files = []; 
-            const items = Array.from(dataTransfer?.items || []);
-            
-            if (items.length && items[0].webkitGetAsEntry) {
-                // KHẮC PHỤC LỖI RỚT FILE: Phải lấy toàn bộ file/folder ra ĐỒNG BỘ trước tiên.
-                // Nếu dùng 'await' ngay trong lúc quét items, trình duyệt sẽ tự động hủy các item phía sau.
-                const entries = [];
-                for (const item of items) { 
-                    if (item.kind === 'file') {
-                        const entry = item.webkitGetAsEntry(); 
-                        if (entry) entries.push(entry); 
-                    }
-                }
-                
-                // Đọc file/folder bất đồng bộ từ danh sách đã được bảo vệ an toàn
-                for (const entry of entries) {
-                    await traverseFileEntry(entry, files);
-                }
-            } else { 
-                files.push(...Array.from(dataTransfer?.files || [])); 
-            }
-            return files.filter(isImageFile);
-        }
-
-        function readAllDirectoryEntries(reader) {
-            return new Promise((resolve, reject) => {
-                const entries = [];
-                const readBatch = () => { reader.readEntries(batch => { if (!batch.length) return resolve(entries); entries.push(...batch); readBatch(); }, reject); };
-                readBatch();
-            });
-        }
-
-        async function traverseFileEntry(entry, files) {
-            if (entry.isFile) {
-                const file = await new Promise((resolve, reject) => entry.file(resolve, reject));
-                if (isImageFile(file)) { try { file.relativePath = entry.fullPath ? entry.fullPath.replace(/^\//, '') : file.name; } catch (_) {} files.push(file); }
-                return;
-            }
-            if (entry.isDirectory) {
-                const reader = entry.createReader(); const entries = await readAllDirectoryEntries(reader);
-                for (const child of entries) await traverseFileEntry(child, files);
-            }
-        }
-
-        let isIngestingFiles = false;
-
-        async function ingestBulkFiles(files, readyMessage = 'Đã nạp ảnh.') {
-            if (isIngestingFiles) return; // Chống chạy chồng chéo khi thả chuột nhiều lần
-            isIngestingFiles = true;
-
-            try {
-                const imageFiles = Array.from(files || []).filter(isImageFile);
-                if (imageFiles.length === 0) {
-                    setBulkProgress('Không tìm thấy file ảnh hợp lệ.', 100); hideBulkProgressSoon(); showToast('Không có ảnh hợp lệ nào được chọn.', 'error'); return;
-                }
-                const existingKeys = new Set(bulkLogoImages.map(item => item.key).filter(Boolean));
-                const uniqueFiles = [];
-                for (const file of imageFiles) { const key = bulkFileKey(file); if (existingKeys.has(key)) continue; existingKeys.add(key); uniqueFiles.push(file); }
-                if (uniqueFiles.length === 0) {
-                    setBulkProgress('Ảnh đã có trong danh sách.', 100); hideBulkProgressSoon(); showToast('Ảnh này đã có trong danh sách rồi.'); return;
-                }
-
-                setBulkProgress(readyMessage || 'Đang nạp ảnh nhẹ để xem trước...', 1);
-                for (let i = 0; i < uniqueFiles.length; i++) {
-                    const file = uniqueFiles[i];
-                    try {
-                        let meta = await createThumbFromFile(file, 420);
-                        let safeThumb = meta.thumb;
-                        
-                        // FALLBACK OOM AN TOÀN: Nếu tạo thumbnail thất bại (do máy yếu), KHÔNG ĐƯỢC móc ảnh gốc ra
-                        if (!safeThumb) {
-                            safeThumb = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmNWY5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTRhM2I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iPkFuaCBxdWEgbmFuZzwvdGV4dD48L3N2Zz4=';
-                        }
-
-                        bulkLogoImages.push({
-                            id: Date.now() + Math.random(), key: bulkFileKey(file), file, name: file.name,
-                            displayPath: file.webkitRelativePath || file.relativePath || file.name,
-                            width: meta.width, height: meta.height, thumb: safeThumb, selected: true
-                        });
-                    } catch (err) { console.warn('Không đọc được ảnh:', file?.name); }
-                    setBulkProgress(`Đang nạp ảnh ${i + 1}/${uniqueFiles.length}...`, ((i + 1) / uniqueFiles.length) * 100);
-                    await sleep(50);
-                }
-                renderBulkLogoView();
-                setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới.`, 100); hideBulkProgressSoon(); showToast(`Đã tải lên ${uniqueFiles.length} ảnh.`);
-            } finally {
-                isIngestingFiles = false;
-            }
-        }
-
-        function clearBulkImages() {
-            closeBulkReview(); clearPreparedShareFiles(); bulkLogoImages = []; renderBulkLogoView();
-            const panel = document.getElementById('bulk-progress-panel'); if (panel) panel.classList.add('hidden');
-            showToast('Đã xóa danh sách ảnh hàng loạt.');
-        }
-
-        function getSelectedBulkItems() { return bulkLogoImages.filter(item => item.selected !== false); }
-        function updateBulkSelectedCount() { const el = document.getElementById('bulk-selected-count'); if (el) el.innerText = getSelectedBulkItems().length; }
-
-        function selectAllBulk(checked) {
-            bulkLogoImages.forEach(item => item.selected = !!checked); renderBulkLogoView();
-            if (bulkReviewIndex >= 0 && bulkLogoImages[bulkReviewIndex]) {
-                const chk = document.getElementById('bulk-review-check'); if (chk) chk.checked = bulkLogoImages[bulkReviewIndex].selected !== false;
-            }
-        }
-
-        function toggleBulkSelected(index, checked) {
-            if (!bulkLogoImages[index]) return; bulkLogoImages[index].selected = !!checked; updateBulkSelectedCount();
-            const chk = document.getElementById(`bulk-check-${index}`); if (chk) chk.checked = !!checked;
-            const card = document.getElementById(`bulk-card-${index}`); if (card) card.classList.toggle('unselected', !checked);
-            const reviewChk = document.getElementById('bulk-review-check'); if (reviewChk && bulkReviewIndex === index) reviewChk.checked = !!checked;
-        }
-
-        function getFirstReviewIndex() {
-            if (bulkLogoImages.length === 0) return 0;
-            const selectedIndex = bulkLogoImages.findIndex(item => item.selected !== false); return selectedIndex >= 0 ? selectedIndex : 0;
-        }
-
-        function renderBulkLogoView() {
-            const container = document.getElementById('bulk-preview-container'); if(!container) return;
-            document.getElementById('bulk-count').innerText = bulkLogoImages.length; updateBulkSelectedCount();
-
-            container.className = `grid ${bulkPreviewMode === 'compact' ? 'bulk-preview-grid-compact gap-3' : 'bulk-preview-grid-comfort gap-4'} overflow-y-auto max-h-[680px] content-start p-1`;
-
-            if (bulkLogoImages.length === 0) {
-                container.innerHTML = '<div class="col-span-full empty-workbench p-8"><div><div class="workbench-icon"><svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg></div><h3 class="text-slate-900 font-black text-lg">Thả folder ảnh vào khu vực này</h3><p class="text-slate-500 text-sm mt-2 max-w-md mx-auto">Tự nhận diện ảnh, chỉnh logo thông minh và chống crash máy.</p></div></div>';
-                return;
-            }
-            container.innerHTML = '';
-            const PREVIEW_LIMIT = bulkPreviewMode === 'compact' ? 120 : 80;
-            bulkLogoImages.slice(0, PREVIEW_LIMIT).forEach((item, index) => {
-                const selected = item.selected !== false; const ratioTxt = item.width > item.height ? 'Ngang' : (item.height > item.width ? 'Dọc' : 'Vuông');
-                const card = document.createElement('div'); card.id = `bulk-card-${index}`; card.className = `bulk-card group ${selected ? '' : 'unselected'}`;
-                const stage = document.createElement('div'); stage.className = 'bulk-stage'; stage.style.aspectRatio = `${item.width || 4} / ${item.height || 3}`; stage.style.maxHeight = bulkPreviewMode === 'compact' ? '150px' : '260px';
-                stage.onclick = () => openBulkReview(index);
-
-                const img = document.createElement('img'); img.src = item.thumb || (item.img && item.img.src) || ''; img.alt = item.name || 'Preview'; stage.appendChild(img);
-                const overlay = document.createElement('div'); overlay.className = 'absolute inset-0 pointer-events-none';
-                appendLogoOverlays(overlay, item.width || 1200, item.height || 1200); stage.appendChild(overlay);
-
-                const checkWrap = document.createElement('label'); checkWrap.className = 'absolute left-2 top-2 bg-white/90 border border-white rounded-full px-2 py-1 shadow-sm cursor-pointer flex items-center gap-1 text-[11px] font-black text-slate-700'; checkWrap.onclick = (ev) => ev.stopPropagation();
-                checkWrap.innerHTML = `<input id="bulk-check-${index}" type="checkbox" ${selected ? 'checked' : ''} class="accent-blue-600"> Xuất`;
-                checkWrap.querySelector('input').onchange = (ev) => toggleBulkSelected(index, ev.target.checked); stage.appendChild(checkWrap);
-
-                const zoomBtn = document.createElement('button'); zoomBtn.className = 'absolute right-2 bottom-2 bg-slate-950/70 hover:bg-slate-950 text-white rounded-full px-2.5 py-1 text-[11px] font-black backdrop-blur-sm transition'; zoomBtn.innerText = 'Xem RV'; zoomBtn.onclick = (ev) => { ev.stopPropagation(); openBulkReview(index); }; stage.appendChild(zoomBtn);
-
-                const body = document.createElement('div'); body.className = 'p-3';
-                body.innerHTML = `<div class="flex items-center justify-between gap-2"><span class="text-[11px] font-black text-slate-700 truncate" title="${item.name || ''}">${item.name || 'Ảnh'}</span><button class="text-red-500 hover:text-red-700 font-black text-sm flex-shrink-0 transition" title="Xóa ảnh">×</button></div><div class="mt-1 text-[11px] text-slate-500">${ratioTxt} · ${item.width || '?'}×${item.height || '?'}</div>`;
-                body.querySelector('button').onclick = (ev) => { ev.stopPropagation(); if (bulkReviewIndex === index) closeBulkReview(); bulkLogoImages.splice(index, 1); renderBulkLogoView(); };
-                card.appendChild(stage); card.appendChild(body); container.appendChild(card);
-            });
-            if (bulkLogoImages.length > PREVIEW_LIMIT) {
-                const more = document.createElement('div'); more.className = 'col-span-full text-center text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-xl p-3';
-                more.innerText = `Đang hiển thị ${PREVIEW_LIMIT}/${bulkLogoImages.length} ảnh để giữ web mượt. Khi xuất ZIP vẫn xử lý đầy đủ ảnh đã chọn.`;
-                container.appendChild(more);
-            }
-        }
-
-        function openBulkReview(index = 0) {
-            if (bulkLogoImages.length === 0) return showToast('Chưa có ảnh để xem RV.', 'error');
-            if (index < 0) index = 0; if (index >= bulkLogoImages.length) index = bulkLogoImages.length - 1;
-            const item = bulkLogoImages[index]; if (!item) return;
-            bulkReviewIndex = index;
-
-            const modal = document.getElementById('bulk-review-modal'); const stage = document.getElementById('bulk-review-stage'); const img = document.getElementById('bulk-review-img');
-            const logoLayer = document.getElementById('bulk-review-logo-layer'); const title = document.getElementById('bulk-review-title'); const meta = document.getElementById('bulk-review-meta'); const chk = document.getElementById('bulk-review-check');
-
-            if (bulkReviewObjectUrl) URL.revokeObjectURL(bulkReviewObjectUrl);
-            bulkReviewObjectUrl = item.file ? URL.createObjectURL(item.file) : (item.thumb || '');
-            
-            img.onload = () => { /* Success */ };
-            img.onerror = () => { 
-                if(img.src !== item.thumb) {
-                    img.src = item.thumb || ''; 
-                    showToast('Đang hiển thị bản nháp vì ảnh gốc quá lớn.', 'error');
-                }
-            };
-            img.src = bulkReviewObjectUrl;
-            
-            stage.style.aspectRatio = `${item.width || 4} / ${item.height || 3}`;
-            title.innerText = `RV ảnh ${index + 1}/${bulkLogoImages.length}`;
-            meta.innerText = `${item.name || 'Ảnh'} · ${item.width || '?'}×${item.height || '?'} · ${item.selected !== false ? 'Đang chọn xuất' : 'Đang bỏ chọn'}`;
-            if (chk) chk.checked = item.selected !== false;
-            appendLogoOverlays(logoLayer, item.width || 1200, item.height || 1200);
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-        }
-
-        function closeBulkReview() {
-            const modal = document.getElementById('bulk-review-modal');
-            if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
-            const img = document.getElementById('bulk-review-img'); if (img) { img.onload=null; img.onerror=null; img.removeAttribute('src'); }
-            if (bulkReviewObjectUrl) URL.revokeObjectURL(bulkReviewObjectUrl);
-            bulkReviewObjectUrl = null; bulkReviewIndex = -1;
-        }
-
-        function navigateBulkReview(delta) {
-            if (bulkLogoImages.length === 0) return;
-            let next = bulkReviewIndex + delta; if (next < 0) next = bulkLogoImages.length - 1; if (next >= bulkLogoImages.length) next = 0;
-            openBulkReview(next);
-        }
-
-        // --- STREAMING_CHUNK: Export & Export Setup ---
         function clearPreparedShareFiles(hidePanel = true) {
             bulkPreparedShareUrls.forEach(url => { try { URL.revokeObjectURL(url); } catch (_) {} });
             bulkPreparedShareFiles = []; bulkPreparedShareUrls = [];
@@ -982,8 +1020,7 @@
                 ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
                 ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, fw, fh); ctx.drawImage(img, 0, 0, fw, fh);
                 
-                img.onload = null; img.onerror = null; img.src = '';
-                URL.revokeObjectURL(url);
+                img.onload = null; img.onerror = null; img.src = ''; URL.revokeObjectURL(url);
 
                 applyLogoToCanvas(ctx, fw, fh);
 
@@ -993,33 +1030,39 @@
                 cvs.width = 0; cvs.height = 0;
                 return new File([blob], fileName, { type: 'image/jpeg', lastModified: Date.now() });
             } catch (err) {
-                img.onload = null; img.onerror = null; img.src = '';
-                URL.revokeObjectURL(url);
+                img.onload = null; img.onerror = null; img.src = ''; URL.revokeObjectURL(url);
                 throw err;
             }
         }
 
         function renderPreparedSharePanel() {
-            const panel = document.getElementById('mobile-share-panel'); const meta = document.getElementById('mobile-share-meta'); const list = document.getElementById('mobile-share-list');
+            const panel = document.getElementById('mobile-share-panel'); const list = document.getElementById('mobile-share-list');
             if (!panel || !list) return;
 
-            panel.classList.remove('hidden');
-            if (meta) meta.innerText = `Đã tạo xong. Nhấn "MỞ ẢNH GỐC" để bung ảnh ra Copy nhé.`;
-            list.innerHTML = '';
+            panel.classList.remove('hidden'); list.innerHTML = '';
+            
+            // Thêm thuộc tính cuộn mượt cho danh sách ngang
+            list.classList.add('snap-x');
 
             bulkPreparedShareFiles.forEach((file, index) => {
                 const url = URL.createObjectURL(file); bulkPreparedShareUrls.push(url);
-                const card = document.createElement('div'); card.className = 'mobile-share-card';
+                const card = document.createElement('div'); 
+                // Cập nhật giao diện Thẻ vuốt (Swipe Card) chuẩn Premium UI
+                card.className = 'flex flex-col gap-3 bg-white p-3 rounded-[20px] border border-zinc-200 shadow-sm min-w-[240px] max-w-[260px] snap-center shrink-0 transition-transform hover:scale-[1.02]';
                 card.innerHTML = `
-                    <img src="${url}" alt="Ảnh đã gắn logo ${index + 1}">
-                    <div class="min-w-0 flex-1 flex flex-col justify-center">
-                        <div class="text-[13px] font-black text-slate-800 truncate mb-2">${file.name}</div>
-                        <div class="flex flex-wrap gap-2">
-                            <a class="mobile-share-action highlight flex-1" href="${url}" target="_blank" rel="noopener">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
-                                MỞ ẢNH GỐC ĐỂ COPY
+                    <div class="photo-stage border border-zinc-100 rounded-xl overflow-hidden bg-zinc-50" style="aspect-ratio: 4/3; width: 100%;">
+                        <img src="${url}" alt="Ảnh ${index + 1}" class="w-full h-full object-contain">
+                    </div>
+                    <div class="flex flex-col flex-1">
+                        <div class="text-[12px] font-bold text-zinc-800 truncate mb-3 px-1" title="${file.name}">${file.name}</div>
+                        <div class="flex gap-2 mt-auto">
+                            <a href="${url}" target="_blank" rel="noopener" class="flex-1 btn-pro py-2.5 px-2 text-center text-[11px] flex items-center justify-center whitespace-nowrap">
+                                MỞ ĐỂ COPY
                             </a>
-                            <button class="mobile-share-action secondary" onclick="sharePreparedOne(${index})">Chia sẻ</button>
+                            <button onclick="sharePreparedOne(${index})" class="btn-secondary py-2.5 px-3 text-[11px] flex items-center justify-center gap-1.5 whitespace-nowrap">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path></svg>
+                                Chia sẻ
+                            </button>
                         </div>
                     </div>`;
                 list.appendChild(card);
@@ -1046,11 +1089,10 @@
                     bulkPreparedShareFiles.push(file);
                     await sleep(300); 
                 }
-                setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh. Bấm Chia sẻ hoặc Mở ảnh gốc để dán đi.`, 100);
+                setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh.`, 100);
                 renderPreparedSharePanel();
             } catch (e) {
-                console.error(e);
-                showToast('Lỗi quá tải RAM. Điện thoại đang cạn kiệt bộ nhớ, hãy thử chọn 2-3 tấm/lần nhé.', 'error');
+                console.error(e); showToast('Lỗi RAM thiết bị, hãy thử chọn ít ảnh hơn.', 'error');
             } finally {
                 if (btn) { btn.disabled = false; btn.innerHTML = oldBtn; } hideBulkProgressSoon();
             }
@@ -1060,7 +1102,7 @@
             const file = bulkPreparedShareFiles[index]; if (!file) return;
             try {
                 if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file] }); return; }
-                showToast('Máy chưa hỗ trợ chia sẻ trực tiếp. Hãy bấm "MỞ ẢNH GỐC" rồi lưu.', 'error');
+                showToast('Thiết bị chưa hỗ trợ chia sẻ trực tiếp. Hãy bấm "MỞ" rồi lưu.', 'error');
             } catch (e) {
                 if (e && e.name !== 'AbortError') showToast('Không chia sẻ được ảnh này.', 'error');
             }
@@ -1070,34 +1112,24 @@
             if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
             const files = bulkPreparedShareFiles;
             try {
-                if (navigator.canShare && navigator.canShare({ files })) {
-                    await navigator.share({ files });
-                    return;
-                }
+                if (navigator.canShare && navigator.canShare({ files })) { await navigator.share({ files }); return; }
                 if (navigator.canShare && navigator.canShare({ files: [files[0]] })) {
-                    await navigator.share({ files: [files[0]] });
-                    showToast('Trình duyệt chỉ hỗ trợ gửi 1 ảnh mỗi lần. Vui lòng gửi từng ảnh.', 'error');
-                    return;
+                    await navigator.share({ files: [files[0]] }); showToast('Trình duyệt chỉ hỗ trợ gửi 1 ảnh/lần.', 'error'); return;
                 }
-                showToast('Thiết bị không hỗ trợ gửi đa ảnh trực tiếp. Vui lòng tải về máy.', 'error');
-            } catch (e) {
-                if (e && e.name === 'AbortError') return;
-                console.warn(e);
-                showToast('Hủy gửi hoặc ứng dụng không nhận diện được file.', 'error');
-            }
+                showToast('Thiết bị không hỗ trợ. Vui lòng tải về máy.', 'error');
+            } catch (e) { if (e && e.name !== 'AbortError') showToast('Hủy gửi hoặc không nhận diện được file.', 'error'); }
         }
 
         async function downloadPreparedBulkFilesIndividually() {
             if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
             showToast('Đang tải toàn bộ ảnh xuống...');
             for (let i = 0; i < bulkPreparedShareFiles.length; i++) {
-                downloadBlob(bulkPreparedShareFiles[i], bulkPreparedShareFiles[i].name);
-                await sleep(300);
+                downloadBlob(bulkPreparedShareFiles[i], bulkPreparedShareFiles[i].name); await sleep(300);
             }
         }
 
         async function processBulkLogoExportToFolder() {
-            if (!('showDirectoryPicker' in window)) { showToast('Máy này chưa hỗ trợ lưu thẳng vào thư mục. Dùng nút xuất ZIP nhé.', 'error'); return; }
+            if (!('showDirectoryPicker' in window)) { showToast('Trình duyệt chưa hỗ trợ xuất thư mục. Hãy Dùng xuất ZIP.', 'error'); return; }
             if (bulkLogoImages.length === 0) return showToast('Vui lòng tải ảnh lên trước!', 'error');
             const selectedBulkImages = getSelectedBulkItems();
             if (selectedBulkImages.length === 0) return showToast("Bạn chưa chọn ảnh nào để xuất.", 'error');
@@ -1111,19 +1143,17 @@
 
             try {
                 for (const item of selectedBulkImages) {
-                    setBulkProgress(`Đang lưu ảnh ${done + 1}/${selectedBulkImages.length} vào thư mục...`, (done / selectedBulkImages.length) * 100);
+                    setBulkProgress(`Đang lưu ảnh ${done + 1}/${selectedBulkImages.length}...`, (done / selectedBulkImages.length) * 100);
                     btn.innerText = `ĐANG LƯU ${done + 1}/${selectedBulkImages.length}...`;
                     const file = await renderBulkLogoFile(item, done, false);
                     const fileHandle = await dirHandle.getFileHandle(file.name, { create: true });
                     const writable = await fileHandle.createWritable();
                     await writable.write(file); await writable.close();
-                    done++;
-                    await sleep(50);
+                    done++; await sleep(50);
                 }
-                setBulkProgress(`Hoàn tất ${selectedBulkImages.length} ảnh.`, 100);
-                showToast(`Đã xuất ${selectedBulkImages.length} ảnh vào thư mục thành công!`);
+                setBulkProgress(`Hoàn tất ${selectedBulkImages.length} ảnh.`, 100); showToast(`Đã xuất vào thư mục thành công!`);
             } catch (e) {
-                console.error(e); showToast('Có lỗi khi lưu vào thư mục. Vui lòng thử xuất bằng ZIP.', 'error');
+                console.error(e); showToast('Có lỗi lưu thư mục. Thử xuất ZIP.', 'error');
             } finally {
                 btn.disabled = false; btn.innerHTML = oldBtn; hideBulkProgressSoon();
             }
@@ -1134,7 +1164,7 @@
             const selectedBulkImages = getSelectedBulkItems();
             if (selectedBulkImages.length === 0) return showToast("Bạn chưa chọn ảnh nào để xuất.", "error");
             const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
-            if (!hasLogo) return showToast("⚠️ Bạn chưa tick chọn Logo nào!", "error");
+            if (!hasLogo) return showToast("⚠️ Bạn chưa chọn Logo nào!", "error");
             
             const btn = document.getElementById('btn-export-bulk'); btn.disabled = true; const oldBtn = btn.innerHTML;
             const ZIP_BATCH = 25;       
@@ -1147,25 +1177,24 @@
                     const batch = selectedBulkImages.slice(batchIndex * ZIP_BATCH, (batchIndex + 1) * ZIP_BATCH);
                     for (let i = 0; i < batch.length; i++) {
                         const item = batch[i];
-                        setBulkProgress(`Đang đóng logo ảnh ${done + 1}/${total} · ZIP ${batchIndex + 1}/${totalBatches}`, (done / total) * 100);
+                        setBulkProgress(`Đóng logo ${done + 1}/${total} · ZIP ${batchIndex + 1}/${totalBatches}`, (done / total) * 100);
                         btn.innerText = `ĐANG XỬ LÝ ${done + 1}/${total}...`;
                         const file = await renderBulkLogoFile(item, done, false);
                         zip.file(file.name, file);
-                        done++;
-                        await sleep(80);
+                        done++; await sleep(80);
                     }
                     setBulkProgress(`Đang nén ZIP ${batchIndex + 1}/${totalBatches}...`, (done / total) * 100);
                     const zipBlob = await zip.generateAsync({type: "blob"}, meta => {
                         const base = ((done - batch.length) / total) * 100; const span = (batch.length / total) * 100;
-                        setBulkProgress(`Đang nén ZIP ${batchIndex + 1}/${totalBatches}: ${Math.round(meta.percent)}%`, base + span * (meta.percent / 100));
+                        setBulkProgress(`Đang nén ZIP: ${Math.round(meta.percent)}%`, base + span * (meta.percent / 100));
                     });
                     const suffix = totalBatches > 1 ? `_Part_${batchIndex + 1}_of_${totalBatches}` : '';
                     downloadBlob(zipBlob, `UNITE_Logo_Batch${suffix}_${Date.now()}.zip`);
                     await sleep(500); 
                 }
-                setBulkProgress(`Hoàn tất ${total} ảnh. File ZIP đã được tải xuống.`, 100); showToast('Đã tải bộ ảnh ZIP thành công!');
+                setBulkProgress(`Hoàn tất ${total} ảnh.`, 100); showToast('Đã tải ZIP thành công!');
             } catch (e) {
-                showToast("Lỗi xử lý! Máy bị thiếu RAM, hãy thử chọn ít ảnh hơn (5-10 tấm/lần).", "error"); console.error(e);
+                showToast("Lỗi xử lý! Thiếu RAM, hãy thử chọn ít ảnh hơn.", "error"); console.error(e);
             } finally {
                 btn.innerHTML = oldBtn; btn.disabled = false; hideBulkProgressSoon();
             }
