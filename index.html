@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Image Studio V8 - UNITE GROUP</title>
+    <title>Brand Image Studio V10 - UNITE GROUP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
@@ -101,6 +101,119 @@
         .toast-item.show { transform: translateX(0); opacity: 1; }
 
         header { border-bottom: 1px solid rgba(228, 228, 231, 0.6); }
+
+        /* Platform aware UI */
+        .device-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 10px; border-radius: 999px;
+            background: #f8fafc; color: #334155; border: 1px solid #e2e8f0;
+            font-size: 11px; font-weight: 800; white-space: nowrap;
+        }
+        .device-chip::before { content: ''; width: 7px; height: 7px; border-radius: 99px; background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.12); }
+        .platform-ios .download-only { display: none !important; }
+        .platform-ios .ios-safe-note { display: block !important; }
+        .ios-safe-note { display: none; }
+        .soft-disabled { opacity: .42 !important; filter: grayscale(1); cursor: not-allowed !important; pointer-events: none !important; }
+        .mobile-action-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .mobile-action-row > * { flex: 1 1 140px; }
+        .custom-scrollbar { scrollbar-width: thin; }
+
+        @media (max-width: 1023px) {
+            body { overflow-x: hidden; background-size: 18px 18px; }
+            header .max-w-\[1600px\] { height: 60px; padding-left: 14px; padding-right: 14px; }
+            main { display: block !important; padding: 12px !important; }
+            main > div:first-child { margin-bottom: 14px; }
+            main > div:nth-child(2) { height: auto !important; min-height: 60vh; }
+            .glass-panel { border-radius: 20px; }
+            #bulk-preview-container { max-height: 62vh; padding: 12px !important; }
+            .gallery-grid { gap: 12px; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); }
+            .gallery-grid-compact { gap: 10px; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
+            .photo-card:hover { transform: none; }
+            #toast-container { left: 12px; right: 12px; bottom: 12px; }
+            .toast-item { width: 100%; transform: translateY(120%); }
+            .toast-item.show { transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .device-chip { font-size: 10px; padding: 5px 8px; }
+            .drop-zone-premium { padding: 18px !important; }
+            .btn-pro, .btn-secondary { border-radius: 14px; }
+            #mobile-share-panel { padding: 14px !important; margin-bottom: 12px !important; }
+            #mobile-share-list { gap: 10px !important; }
+            #mobile-share-list > div { min-width: 78vw !important; max-width: 82vw !important; }
+            .h-14.border-b { height: auto !important; min-height: 54px; padding: 10px 12px !important; align-items: flex-start !important; gap: 10px; }
+            .h-14.border-b > div:last-child { overflow-x: auto; padding-bottom: 2px; max-width: 100%; }
+            .h-10.border-t { height: auto !important; min-height: 38px; flex-wrap: wrap; gap: 4px; padding: 8px 12px !important; }
+            #bulk-review-modal { padding: 12px !important; }
+            #bulk-review-title { font-size: 16px; }
+            #bulk-review-stage { width: 100%; }
+            #bulk-review-modal .mt-6 { gap: 8px; flex-wrap: wrap; }
+        }
+
+
+        /* Clean gallery toolbar */
+        .bulk-toolbar {
+            min-height: 58px;
+            border-bottom: 1px solid rgba(228, 228, 231, 0.85);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.62);
+        }
+        .bulk-toolbar-head { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+        .bulk-title { font-weight: 800; font-size: 14px; color: #18181b; letter-spacing: -0.01em; }
+        .bulk-count-badge {
+            background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
+            font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px; white-space: nowrap;
+        }
+        .bulk-toolbar-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
+        .toolbar-group {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 3px;
+        }
+        .toolbar-btn, .toolbar-icon-btn {
+            min-height: 34px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            font-size: 12px; line-height: 1.1; font-weight: 800; padding: 8px 11px; transition: all .18s ease;
+            color: #475569; white-space: nowrap;
+        }
+        .toolbar-btn:hover, .toolbar-icon-btn:hover { background: #f1f5f9; color: #0f172a; }
+        .toolbar-icon-btn { width: 34px; padding: 0; color: #64748b; }
+        .toolbar-primary { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; box-shadow: 0 1px 2px rgba(37,99,235,.08); }
+        .toolbar-primary:hover { background: #dbeafe; color: #1d4ed8; }
+        .toolbar-danger { color: #ef4444; }
+        .toolbar-danger:hover { background: #fef2f2; color: #dc2626; }
+
+        @media (max-width: 640px) {
+            .bulk-toolbar {
+                display: grid;
+                grid-template-columns: 1fr;
+                padding: 12px;
+                gap: 10px;
+                min-height: auto;
+            }
+            .bulk-toolbar-head { justify-content: space-between; width: 100%; }
+            .bulk-title { font-size: 15px; }
+            .bulk-count-badge { font-size: 11px; padding: 5px 9px; }
+            .bulk-toolbar-actions {
+                margin-left: 0;
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 8px;
+                width: 100%;
+            }
+            .toolbar-group { display: contents; }
+            .toolbar-btn { min-height: 42px; padding: 8px 6px; border-radius: 14px; background: #f8fafc; border: 1px solid #e2e8f0; font-size: 11px; white-space: normal; text-align: center; }
+            .toolbar-primary { background: #eff6ff; border-color: #bfdbfe; }
+            .toolbar-danger { background: #fff1f2; border-color: #fecdd3; color: #e11d48; }
+            .toolbar-view-group { display: none !important; }
+        }
+
+        @media (max-width: 380px) {
+            .bulk-toolbar-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -114,10 +227,11 @@
                 <img src="https://techbytruong.wordpress.com/wp-content/uploads/2026/01/unite-group-2.png" alt="UNITE GROUP" class="h-7 md:h-9 object-contain drop-shadow-sm">
                 <div class="hidden sm:block border-l border-zinc-300 pl-3">
                     <h1 class="font-display font-bold text-zinc-900 leading-tight text-sm">Brand Studio</h1>
-                    <p class="text-[9px] font-semibold text-zinc-500 uppercase tracking-widest leading-none mt-0.5">Internal Tool V8</p>
+                    <p class="text-[9px] font-semibold text-zinc-500 uppercase tracking-widest leading-none mt-0.5">Internal Tool V10</p>
                 </div>
             </div>
             <div class="flex items-center gap-3">
+                <span id="device-chip" class="device-chip">Đang nhận diện thiết bị</span>
                 <span class="hidden sm:inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full border border-blue-100">Smart Halo Active</span>
             </div>
         </div>
@@ -185,17 +299,18 @@
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" /></svg>
                     TẠO ẢNH ĐỂ CHIA SẺ / COPY
                 </button>
-                <p class="text-[10px] text-zinc-500 text-center leading-tight -mt-1 mb-1">Mở ảnh to để Copy -> Dán qua Zalo cực nét.</p>
+                <p id="download-policy-note" class="text-[10px] text-zinc-500 text-center leading-tight -mt-1 mb-1">Mở ảnh to để Copy -> Dán qua Zalo cực nét.</p>
+                <p class="ios-safe-note text-[10px] text-blue-700 bg-blue-50 border border-blue-100 rounded-xl p-2 text-center leading-snug">iPhone/iPad: ưu tiên nút Chia sẻ / Mở để copy. Các nút tải nhiều ảnh sẽ được ẩn để tránh tải về Files mà không vào Album.</p>
                 
                 <hr class="border-zinc-200/60 my-1">
 
-                <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full btn-secondary py-3 px-4 flex justify-center items-center gap-2 text-[13px]">
+                <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full btn-secondary download-only py-3 px-4 flex justify-center items-center gap-2 text-[13px]">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                    XUẤT ẢNH ZIP
+                    TẢI NHIỀU ẢNH .ZIP
                 </button>
-                <button onclick="processBulkLogoExportToFolder()" id="btn-export-folder" class="w-full btn-secondary py-3 px-4 flex justify-center items-center gap-2 text-[13px]">
+                <button onclick="processBulkLogoExportToFolder()" id="btn-export-folder" class="w-full btn-secondary download-only py-3 px-4 flex justify-center items-center gap-2 text-[13px]">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>
-                    LƯU THẲNG RA THƯ MỤC
+                    LƯU RA THƯ MỤC PC
                 </button>
             </div>
         </div>
@@ -214,34 +329,35 @@
                             <p id="mobile-share-meta" class="text-xs text-zinc-500">Mở ảnh để copy hoặc chia sẻ.</p>
                         </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="sharePreparedBulkFiles()" class="btn-pro py-2 px-4 text-xs">Chia sẻ tất cả</button>
-                        <button onclick="downloadPreparedBulkFilesIndividually()" class="btn-secondary py-2 px-4 text-xs">Tải toàn bộ</button>
+                    <div id="mobile-share-actions" class="mobile-action-row">
+                        <button id="btn-share-prepared-all" onclick="sharePreparedBulkFiles()" class="btn-pro py-2 px-4 text-xs">Chia sẻ tất cả</button>
+                        <button id="btn-download-prepared-all" onclick="downloadPreparedBulkFilesIndividually()" class="btn-secondary download-only py-2 px-4 text-xs">Tải ZIP</button>
                     </div>
                 </div>
                 <div id="mobile-share-list" class="mt-4 flex gap-3 overflow-x-auto pb-2 custom-scrollbar"></div>
             </div>
 
             <div class="glass-panel flex-1 flex flex-col overflow-hidden premium-shadow relative">
-                <!-- Toolbar Header -->
-                <div class="h-14 border-b border-zinc-200/80 px-5 flex items-center justify-between bg-white/50">
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-sm text-zinc-900">Thư viện ảnh</span>
-                        <span id="bulk-count-badge" class="bg-zinc-200 text-zinc-700 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                <!-- Toolbar Header - cleaned V10 -->
+                <div class="bulk-toolbar">
+                    <div class="bulk-toolbar-head">
+                        <span class="bulk-title">Thư viện ảnh</span>
+                        <span id="bulk-count-badge" class="bulk-count-badge">0 ảnh</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="selectAllBulk(true)" class="text-xs font-semibold text-zinc-600 hover:text-zinc-900 px-2 py-1">Chọn hết</button>
-                        <span class="text-zinc-300">|</span>
-                        <button onclick="selectAllBulk(false)" class="text-xs font-semibold text-zinc-600 hover:text-zinc-900 px-2 py-1">Bỏ chọn</button>
-                        <div class="w-px h-4 bg-zinc-300 mx-1"></div>
-                        <button onclick="smartSortBulkImages()" class="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-100 rounded-md px-2.5 py-1 hover:bg-blue-100 transition flex items-center gap-1.5 shadow-sm" title="Gom ảnh ngang/dọc lại với nhau để lưới đẹp hơn">
+                    <div class="bulk-toolbar-actions" aria-label="Công cụ thư viện ảnh">
+                        <div class="toolbar-group" aria-label="Chọn ảnh">
+                            <button onclick="selectAllBulk(true)" class="toolbar-btn" type="button">Chọn hết</button>
+                            <button onclick="selectAllBulk(false)" class="toolbar-btn" type="button">Bỏ chọn</button>
+                        </div>
+                        <button onclick="smartSortBulkImages()" class="toolbar-btn toolbar-primary" type="button" title="Gom ảnh ngang/dọc lại với nhau để lưới đẹp hơn">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" /></svg>
                             Xếp gọn
                         </button>
-                        <div class="w-px h-4 bg-zinc-300 mx-1"></div>
-                        <button id="btn-preview-comfort" onclick="setBulkPreviewMode('comfortable')" class="p-1.5 rounded-md text-zinc-400 hover:bg-zinc-100 hover:text-zinc-900 transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg></button>
-                        <button id="btn-preview-compact" onclick="setBulkPreviewMode('compact')" class="p-1.5 rounded-md text-zinc-400 hover:bg-zinc-100 hover:text-zinc-900 transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg></button>
-                        <button onclick="clearBulkImages()" class="ml-2 text-xs font-bold text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition">Xóa sạch</button>
+                        <div class="toolbar-group toolbar-view-group" aria-label="Chế độ xem">
+                            <button id="btn-preview-comfort" onclick="setBulkPreviewMode('comfortable')" class="toolbar-icon-btn" type="button" title="Xem dạng lưới lớn"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg></button>
+                            <button id="btn-preview-compact" onclick="setBulkPreviewMode('compact')" class="toolbar-icon-btn" type="button" title="Xem dạng lưới nhỏ"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg></button>
+                        </div>
+                        <button onclick="clearBulkImages()" class="toolbar-btn toolbar-danger" type="button">Xóa sạch</button>
                     </div>
                 </div>
 
@@ -333,6 +449,82 @@
         let bulkReviewObjectUrl = null;
         let isIngestingFiles = false;
         
+        let currentDeviceProfile = { kind: 'desktop', isIOS: false, isAndroid: false, isMobile: false, canShare: false, canFileShare: false, canDirectory: false };
+
+        function detectDeviceProfile() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera || '';
+            const platform = navigator.platform || '';
+            const maxTouchPoints = navigator.maxTouchPoints || 0;
+            const isIPadOS = platform === 'MacIntel' && maxTouchPoints > 1;
+            const isIOS = /iPad|iPhone|iPod/i.test(ua) || isIPadOS;
+            const isAndroid = /Android/i.test(ua);
+            const isMobile = isIOS || isAndroid || /Mobi|Mobile/i.test(ua);
+            const canShare = typeof navigator.share === 'function';
+            const canFileShare = typeof navigator.canShare === 'function' && typeof File !== 'undefined';
+            const canDirectory = 'showDirectoryPicker' in window && !isIOS && !isAndroid;
+            return {
+                kind: isIOS ? 'ios' : (isAndroid ? 'android' : 'desktop'),
+                isIOS, isAndroid, isMobile, canShare, canFileShare, canDirectory
+            };
+        }
+
+        function getDeviceProfile() {
+            currentDeviceProfile = detectDeviceProfile();
+            return currentDeviceProfile;
+        }
+
+        function applyPlatformUI() {
+            const device = getDeviceProfile();
+            document.body.classList.remove('platform-ios', 'platform-android', 'platform-desktop', 'device-mobile', 'device-desktop');
+            document.body.classList.add(`platform-${device.kind}`, device.isMobile ? 'device-mobile' : 'device-desktop');
+
+            const chip = document.getElementById('device-chip');
+            if (chip) {
+                chip.innerText = device.isIOS ? 'iPhone/iPad · dùng Chia sẻ' : (device.isAndroid ? 'Android · tải ZIP / chia sẻ' : 'PC · tải ZIP / lưu thư mục');
+            }
+
+            const note = document.getElementById('download-policy-note');
+            if (note) {
+                note.innerText = device.isIOS
+                    ? 'iPhone/iPad: dùng “Tạo ảnh để chia sẻ/copy”, rồi bấm Chia sẻ hoặc Mở để copy. Nút tải nhiều ảnh đã được ẩn.'
+                    : (device.isAndroid
+                        ? 'Android: có thể bấm “Tải nhiều ảnh .ZIP” hoặc tạo ảnh rồi bấm “Tải ZIP”.'
+                        : 'PC: có thể tải ZIP hoặc lưu thẳng ra thư mục nếu trình duyệt hỗ trợ.');
+            }
+
+            const folderBtn = document.getElementById('btn-export-folder');
+            if (folderBtn) {
+                folderBtn.classList.toggle('hidden', !device.canDirectory);
+                folderBtn.title = device.canDirectory ? 'Lưu trực tiếp ra thư mục trên PC' : 'Thiết bị/trình duyệt này chưa hỗ trợ lưu thẳng ra thư mục';
+            }
+
+            const downloadPreparedBtn = document.getElementById('btn-download-prepared-all');
+            if (downloadPreparedBtn) {
+                downloadPreparedBtn.classList.toggle('hidden', device.isIOS);
+                downloadPreparedBtn.innerText = device.isAndroid ? 'Tải ZIP về máy' : 'Tải ZIP';
+            }
+
+            const shareBtn = document.getElementById('btn-share-prepared-all');
+            if (shareBtn) {
+                shareBtn.innerText = device.isIOS ? 'Chia sẻ bằng iPhone' : 'Chia sẻ tất cả';
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch]));
+        }
+
+        function shouldBlockBulkDownloadOnIOS() {
+            const device = getDeviceProfile();
+            if (device.isIOS) {
+                showToast('iPhone/iPad không nên tải nhiều ảnh 1 lượt. Hãy dùng nút Chia sẻ hoặc Mở để copy/lưu ảnh.', 'error');
+                applyPlatformUI();
+                return true;
+            }
+            return false;
+        }
+
+
         let logosConfig = [
             { id: 'tl', title: 'Góc Trái Trên', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2025/11/logo-ucr.png', img: null, enabled: false, x: 'left', y: 'top', scale: 0.6 },
             { id: 'bl', title: 'Góc Trái Dưới', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2026/06/logo_cnmn.png', img: null, enabled: false, x: 'left', y: 'bottom', scale: 1.3 },
@@ -355,6 +547,8 @@
             });
             // Update initial UI state
             setBulkPreviewMode('comfortable');
+            applyPlatformUI();
+            window.addEventListener('resize', () => { clearTimeout(window.__platformUiTimer); window.__platformUiTimer = setTimeout(applyPlatformUI, 150); });
         });
 
         // --- HỆ THỐNG LOGOS UI ---
@@ -735,7 +929,7 @@
         
         function updateBulkSelectedCount() { 
             const el = document.getElementById('bulk-selected-count'); if (el) el.innerText = getSelectedBulkItems().length; 
-            const badge = document.getElementById('bulk-count-badge'); if (badge) badge.innerText = bulkLogoImages.length;
+            const badge = document.getElementById('bulk-count-badge'); if (badge) badge.innerText = bulkLogoImages.length + ' ảnh';
         }
 
         function selectAllBulk(checked) {
@@ -993,9 +1187,16 @@
         }
 
         function downloadBlob(blob, filename) {
-            const url = URL.createObjectURL(blob); const link = document.createElement('a');
-            link.href = url; link.download = filename; document.body.appendChild(link);
-            link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+            if (shouldBlockBulkDownloadOnIOS()) return;
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            link.rel = 'noopener';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 2500);
         }
 
         function clearPreparedShareFiles(hidePanel = true) {
@@ -1036,26 +1237,44 @@
         }
 
         function renderPreparedSharePanel() {
-            const panel = document.getElementById('mobile-share-panel'); const list = document.getElementById('mobile-share-list');
+            const panel = document.getElementById('mobile-share-panel');
+            const list = document.getElementById('mobile-share-list');
+            const meta = document.getElementById('mobile-share-meta');
             if (!panel || !list) return;
 
-            panel.classList.remove('hidden'); list.innerHTML = '';
-            
-            // Thêm thuộc tính cuộn mượt cho danh sách ngang
+            const device = getDeviceProfile();
+            applyPlatformUI();
+            panel.classList.remove('hidden');
+            list.innerHTML = '';
             list.classList.add('snap-x');
 
+            if (meta) {
+                meta.innerText = device.isIOS
+                    ? `${bulkPreparedShareFiles.length} ảnh đã sẵn sàng. iPhone/iPad: bấm Chia sẻ hoặc Mở để copy/lưu ảnh.`
+                    : `${bulkPreparedShareFiles.length} ảnh đã sẵn sàng. Có thể chia sẻ hoặc tải 1 file ZIP.`;
+            }
+
+            const downloadPreparedBtn = document.getElementById('btn-download-prepared-all');
+            if (downloadPreparedBtn) downloadPreparedBtn.classList.toggle('hidden', device.isIOS);
+
             bulkPreparedShareFiles.forEach((file, index) => {
-                const url = URL.createObjectURL(file); bulkPreparedShareUrls.push(url);
-                const card = document.createElement('div'); 
-                // Cập nhật giao diện Thẻ vuốt (Swipe Card) chuẩn Premium UI
+                const url = URL.createObjectURL(file);
+                bulkPreparedShareUrls.push(url);
+                const safeName = escapeHtml(file.name || `Ảnh ${index + 1}.jpg`);
+                const downloadControl = device.isIOS ? '' : `
+                            <a href="${url}" download="${safeName}" class="btn-secondary py-2.5 px-3 text-[11px] flex items-center justify-center whitespace-nowrap">
+                                Tải
+                            </a>`;
+
+                const card = document.createElement('div');
                 card.className = 'flex flex-col gap-3 bg-white p-3 rounded-[20px] border border-zinc-200 shadow-sm min-w-[240px] max-w-[260px] snap-center shrink-0 transition-transform hover:scale-[1.02]';
                 card.innerHTML = `
                     <div class="photo-stage border border-zinc-100 rounded-xl overflow-hidden bg-zinc-50" style="aspect-ratio: 4/3; width: 100%;">
                         <img src="${url}" alt="Ảnh ${index + 1}" class="w-full h-full object-contain">
                     </div>
                     <div class="flex flex-col flex-1">
-                        <div class="text-[12px] font-bold text-zinc-800 truncate mb-3 px-1" title="${file.name}">${file.name}</div>
-                        <div class="flex gap-2 mt-auto">
+                        <div class="text-[12px] font-bold text-zinc-800 truncate mb-3 px-1" title="${safeName}">${safeName}</div>
+                        <div class="flex gap-2 mt-auto flex-wrap">
                             <a href="${url}" target="_blank" rel="noopener" class="flex-1 btn-pro py-2.5 px-2 text-center text-[11px] flex items-center justify-center whitespace-nowrap">
                                 MỞ ĐỂ COPY
                             </a>
@@ -1063,12 +1282,14 @@
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path></svg>
                                 Chia sẻ
                             </button>
+                            ${downloadControl}
                         </div>
                     </div>`;
                 list.appendChild(card);
             });
+
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            showToast('Tạo ảnh hoàn tất!');
+            showToast(device.isIOS ? 'Tạo ảnh xong. iPhone/iPad hãy dùng Chia sẻ hoặc Mở để copy.' : 'Tạo ảnh xong. Có thể tải ZIP hoặc chia sẻ.');
         }
 
         async function prepareBulkLogoShareFiles() {
@@ -1110,25 +1331,49 @@
 
         async function sharePreparedBulkFiles() {
             if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
+            const device = getDeviceProfile();
             const files = bulkPreparedShareFiles;
             try {
-                if (navigator.canShare && navigator.canShare({ files })) { await navigator.share({ files }); return; }
-                if (navigator.canShare && navigator.canShare({ files: [files[0]] })) {
-                    await navigator.share({ files: [files[0]] }); showToast('Trình duyệt chỉ hỗ trợ gửi 1 ảnh/lần.', 'error'); return;
+                if (navigator.canShare && navigator.canShare({ files })) {
+                    await navigator.share({ files, title: 'UNITE Brand Studio', text: `${files.length} ảnh đã đóng logo` });
+                    return;
                 }
-                showToast('Thiết bị không hỗ trợ. Vui lòng tải về máy.', 'error');
-            } catch (e) { if (e && e.name !== 'AbortError') showToast('Hủy gửi hoặc không nhận diện được file.', 'error'); }
+                if (navigator.canShare && navigator.canShare({ files: [files[0]] })) {
+                    await navigator.share({ files: [files[0]], title: 'UNITE Brand Studio' });
+                    showToast(device.isIOS ? 'iPhone chỉ nhận 1 ảnh/lần trên trình duyệt này. Hãy chia sẻ từng ảnh trong danh sách.' : 'Trình duyệt chỉ hỗ trợ gửi 1 ảnh/lần.', 'error');
+                    return;
+                }
+                showToast(device.isIOS ? 'Safari này chưa hỗ trợ chia sẻ file. Hãy bấm “MỞ ĐỂ COPY” rồi lưu/copy ảnh.' : 'Thiết bị không hỗ trợ chia sẻ trực tiếp. Hãy tải ZIP.', 'error');
+            } catch (e) {
+                if (e && e.name !== 'AbortError') showToast('Không chia sẻ được file. Hãy thử chia sẻ từng ảnh.', 'error');
+            }
         }
 
         async function downloadPreparedBulkFilesIndividually() {
             if (!bulkPreparedShareFiles.length) return showToast('Bấm “Tạo ảnh” trước nha.', 'error');
-            showToast('Đang tải toàn bộ ảnh xuống...');
+            if (shouldBlockBulkDownloadOnIOS()) return;
+
+            if (typeof JSZip !== 'undefined') {
+                const zip = new JSZip();
+                bulkPreparedShareFiles.forEach(file => zip.file(file.name, file));
+                setBulkProgress('Đang nén ZIP để tải về...', 5);
+                const zipBlob = await zip.generateAsync({ type: 'blob' }, meta => setBulkProgress(`Đang nén ZIP: ${Math.round(meta.percent)}%`, meta.percent));
+                downloadBlob(zipBlob, `UNITE_Anh_Da_Logo_${Date.now()}.zip`);
+                setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh.`, 100);
+                hideBulkProgressSoon();
+                showToast('Đã tải 1 file ZIP chứa toàn bộ ảnh.');
+                return;
+            }
+
+            showToast('Trình duyệt thiếu thư viện ZIP, đang tải từng ảnh...');
             for (let i = 0; i < bulkPreparedShareFiles.length; i++) {
-                downloadBlob(bulkPreparedShareFiles[i], bulkPreparedShareFiles[i].name); await sleep(300);
+                downloadBlob(bulkPreparedShareFiles[i], bulkPreparedShareFiles[i].name);
+                await sleep(300);
             }
         }
 
         async function processBulkLogoExportToFolder() {
+            if (shouldBlockBulkDownloadOnIOS()) return;
             if (!('showDirectoryPicker' in window)) { showToast('Trình duyệt chưa hỗ trợ xuất thư mục. Hãy Dùng xuất ZIP.', 'error'); return; }
             if (bulkLogoImages.length === 0) return showToast('Vui lòng tải ảnh lên trước!', 'error');
             const selectedBulkImages = getSelectedBulkItems();
@@ -1160,6 +1405,7 @@
         }
 
         async function processBulkLogoExport() {
+            if (shouldBlockBulkDownloadOnIOS()) return;
             if (bulkLogoImages.length === 0) return showToast("Vui lòng tải ảnh lên trước!", "error");
             const selectedBulkImages = getSelectedBulkItems();
             if (selectedBulkImages.length === 0) return showToast("Bạn chưa chọn ảnh nào để xuất.", "error");
