@@ -3,61 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNITE GROUP - Brand Image Studio V7.1.1</title>
+    <title>UNITE GROUP - Brand Image Studio V8</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
         
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .font-serif-luxury { font-family: 'Playfair Display', serif; }
         
-        #canvas-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            background-color: #e2e8f0;
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .no-select { user-select: none; -webkit-user-select: none; }
 
-        .zone-container { container-type: inline-size; }
-
-        .mini-grid { display: grid; gap: 2px; width: 42px; height: 42px; background: #cbd5e1; padding: 2px; border-radius: 6px; flex-shrink: 0; overflow: hidden;}
-        .mg-box { background: #94a3b8; width: 100%; height: 100%; }
-        
-        .grid-m-1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
-        .grid-m-2v { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
-        .grid-m-3l { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-        .grid-m-3l .b1 { grid-row: span 2; }
-        .grid-m-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-        .grid-m-4h { grid-template-columns: repeat(6, 1fr); grid-template-rows: 1fr 1fr; }
-        .grid-m-4h .b1 { grid-column: span 6; }
-        .grid-m-4h .b2 { grid-column: span 2; } .grid-m-4h .b3 { grid-column: span 2; } .grid-m-4h .b4 { grid-column: span 2; }
-        .grid-m-4v { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); }
-        .grid-m-4v .b1 { grid-row: span 3; }
-        .grid-m-5 { grid-template-columns: repeat(6, 1fr); grid-template-rows: 1fr 1fr; }
-        .grid-m-5 .b1 { grid-column: span 3; } .grid-m-5 .b2 { grid-column: span 3; }
-        .grid-m-5 .b3 { grid-column: span 2; } .grid-m-5 .b4 { grid-column: span 2; } .grid-m-5 .b5 { grid-column: span 2; }
-
-        .zone-active::after { content: ''; position: absolute; inset: 0; border: 3px solid #3b82f6; pointer-events: none; z-index: 50; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5); }
-
-        .text-gold {
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0px 2px 4px rgba(0,0,0,0.3);
-        }
-    
         body { background: linear-gradient(135deg, #f8fafc 0%, #eef4ff 45%, #fff7ed 100%); }
         .pro-card { border: 1px solid rgba(226,232,240,.9); box-shadow: 0 18px 45px -35px rgba(15, 23, 42, .55); }
         .progress-track { width: 100%; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
@@ -73,6 +33,7 @@
         .bulk-card.unselected { opacity: .48; filter: grayscale(.15); }
         .bulk-stage { position: relative; background: linear-gradient(135deg, #f8fafc, #e2e8f0); overflow: hidden; cursor: zoom-in; }
         .bulk-stage img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        
         .bulk-review-backdrop { background: rgba(2, 6, 23, .82); backdrop-filter: blur(10px); }
         .bulk-review-stage { max-width: min(92vw, 1080px); max-height: 72vh; box-shadow: 0 30px 80px -20px rgba(0,0,0,.65); }
 
@@ -128,6 +89,25 @@
         @media (max-width: 1023px) {
             .preview-shell { min-height: auto; }
         }
+        
+        /* New Logo Selection Styles */
+        .logo-slot-card {
+            min-height: 52px; background: linear-gradient(135deg, #ffffff, #f8fafc); border: 1px solid rgba(203,213,225,.8); border-radius: 16px; transition: all .18s ease;
+        }
+        .logo-slot-card.active {
+            border-color: rgba(37,99,235,.36); background: linear-gradient(135deg, #eff6ff, #ffffff); box-shadow: inset 0 0 0 1px rgba(37,99,235,.10);
+        }
+        .logo-preview-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 4px; }
+        
+        .empty-workbench {
+            min-height: 330px; border: 1.8px dashed #cbd5e1; border-radius: 26px;
+            background: linear-gradient(135deg, rgba(248,250,252,.92), rgba(239,246,255,.88)), repeating-linear-gradient(45deg, rgba(148,163,184,.08) 0 10px, transparent 10px 20px);
+            display: flex; align-items: center; justify-content: center; text-align: center;
+        }
+        .workbench-icon {
+            width: 58px; height: 58px; border-radius: 22px; display: inline-flex; align-items: center; justify-content: center;
+            margin: 0 auto 14px; background: linear-gradient(135deg, #dbeafe, #ffffff); color: #2563eb; border: 1px solid #bfdbfe;
+        }
     </style>
 </head>
 <body class="min-h-screen p-3 md:p-5 lg:p-6">
@@ -138,8 +118,8 @@
         <div class="relative p-5 md:p-7 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5">
             <div class="max-w-3xl">
                 <div class="hero-badge">UNITE GROUP · INTERNAL BRAND TOOL</div>
-                <h1 class="mt-4 text-2xl md:text-4xl font-black tracking-tight leading-tight">Brand Image Studio</h1>
-                <p class="mt-2 text-sm md:text-base text-slate-300 leading-relaxed">Cắt ghép khung FB, gắn logo hàng loạt, kéo thả folder và lưu thẳng ra thư mục — tối ưu để nhân sự dùng hằng ngày mà không cần biết thiết kế.</p>
+                <h1 class="mt-4 text-2xl md:text-4xl font-black tracking-tight leading-tight">Brand Image Studio V8</h1>
+                <p class="mt-2 text-sm md:text-base text-slate-300 leading-relaxed">Gắn logo hàng loạt, kéo thả folder và lưu thẳng ra thư mục — tự động tối ưu tỷ lệ và độ nét để nhân sự dùng hằng ngày mà không cần biết thiết kế.</p>
             </div>
             <div class="grid grid-cols-3 gap-2 text-center text-xs md:text-sm xl:min-w-[330px]">
                 <div class="hero-chip"><b class="block text-lg text-white">Auto</b><span class="text-slate-300">Tự fit logo</span></div>
@@ -153,9 +133,10 @@
         
         <div class="lg:col-span-4 flex flex-col gap-5 side-column">
             
-            <div class="flex gap-2 p-1.5 rounded-2xl sticky top-0 z-50 bg-white/80 backdrop-blur-md border border-slate-200 shadow-sm">
-                <button id="btn-tab-grid" onclick="switchMainTab('grid')" class="flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm">CẮT GHÉP KHUNG FB</button>
-                <button id="btn-tab-logo" onclick="switchMainTab('logo')" class="flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm">GẮN LOGO HÀNG LOẠT</button>
+            <div class="flex gap-2 p-1.5 rounded-2xl sticky top-0 z-50 bg-blue-600 border border-blue-700 shadow-md">
+                <div class="flex-1 py-3 px-2 font-black rounded-xl text-white text-center text-sm tracking-wider">
+                    GẮN LOGO HÀNG LOẠT
+                </div>
             </div>
 
             <!-- CẤU HÌNH LOGO -->
@@ -170,133 +151,8 @@
                 </div>
             </div>
 
-            <!-- TAB 1: GRID SETTINGS -->
-            <div id="tab-grid-settings" class="flex flex-col gap-4">
-                <div class="panel-card p-5">
-                    <label class="block text-sm font-bold text-gray-700 mb-3">1. Chọn kiểu thiết kế lưới FB</label>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-2v" onclick="selectMode('mode-2v')">
-                            <input type="radio" name="mode" value="mode-2v" class="hidden">
-                            <div class="mini-grid grid-m-2v"><div class="mg-box"></div><div class="mg-box"></div></div>
-                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">2 Ảnh<br>(Dọc)</span></div>
-                        </label>
-                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-3l" onclick="selectMode('mode-3l')">
-                            <input type="radio" name="mode" value="mode-3l" class="hidden">
-                            <div class="mini-grid grid-m-3l"><div class="mg-box b1"></div><div class="mg-box"></div><div class="mg-box"></div></div>
-                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">3 Ảnh<br>(Trái To)</span></div>
-                        </label>
-                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-4" onclick="selectMode('mode-4')">
-                            <input type="radio" name="mode" value="mode-4" class="hidden">
-                            <div class="mini-grid grid-m-4"><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div></div>
-                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">4 Ảnh<br>(Vuông)</span></div>
-                        </label>
-                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-4h" onclick="selectMode('mode-4h')">
-                            <input type="radio" name="mode" value="mode-4h" class="hidden">
-                            <div class="mini-grid grid-m-4h"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div></div>
-                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">4 Ảnh<br>(Ngang)</span></div>
-                        </label>
-                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-4v" onclick="selectMode('mode-4v')">
-                            <input type="radio" name="mode" value="mode-4v" class="hidden">
-                            <div class="mini-grid grid-m-4v"><div class="mg-box b1"></div><div class="mg-box"></div><div class="mg-box"></div><div class="mg-box"></div></div>
-                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">4 Ảnh<br>(Dọc)</span></div>
-                        </label>
-                        <label class="flex items-center p-2 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition relative" id="lbl-mode-5" onclick="selectMode('mode-5')">
-                            <input type="radio" name="mode" value="mode-5" class="hidden">
-                            <div class="mini-grid grid-m-5"><div class="mg-box b1"></div><div class="mg-box b2"></div><div class="mg-box b3"></div><div class="mg-box b4"></div><div class="mg-box b5"></div></div>
-                            <div class="ml-2"><span class="block font-semibold text-gray-800 text-[11px] leading-tight">5 Ảnh<br>(2 Trên)</span></div>
-                        </label>
-                    </div>
-
-                    <hr class="my-5 border-gray-100">
-
-                    <label class="block text-sm font-bold text-gray-700 mb-2">2. Tải Hình Ảnh Dự Án</label>
-                    <label class="w-full flex justify-center items-center cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-700 border-2 border-blue-200 border-dashed py-4 px-4 rounded-xl transition font-semibold shadow-sm">
-                        <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                        Chọn Nhiều Ảnh Cùng Lúc
-                        <input type="file" accept="image/*" multiple class="hidden" onchange="handleGlobalUpload(event)">
-                    </label>
-                </div>
-
-                <div id="design-panel" class="bg-blue-50/50 p-5 rounded-2xl shadow-sm border border-blue-100 hidden">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-base font-bold text-blue-900 flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                            Trang Trí Ô Số <span id="lbl-active-zone" class="ml-1 bg-blue-600 text-white px-2 py-0.5 rounded text-sm"></span>
-                        </h2>
-                        <button onclick="triggerUpload(activeZoneId)" class="text-xs bg-white border border-blue-200 text-blue-600 font-semibold py-1.5 px-3 rounded hover:bg-blue-50 shadow-sm">Đổi Ảnh Riêng</button>
-                    </div>
-
-                    <div class="mb-4 bg-white p-3 rounded-xl border border-blue-100 shadow-sm">
-                        <label class="flex justify-between text-xs font-semibold text-gray-600 mb-2">
-                            <span>Thu/Phóng ảnh (Zoom)</span>
-                            <span id="zoom-val" class="text-blue-600">100%</span>
-                        </label>
-                        <input type="range" id="zoom-slider" min="0.5" max="3" step="0.05" value="1" class="w-full accent-blue-600 cursor-pointer" oninput="handleZoomSlider(this.value)">
-                    </div>
-
-                    <div class="bg-white p-4 rounded-xl border border-blue-100 shadow-sm flex flex-col gap-3">
-                        <div>
-                            <label class="flex items-center cursor-pointer">
-                                <input type="checkbox" id="check-gradient" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="updateDesignState('gradient', this.checked)">
-                                <span class="ml-2 text-sm font-semibold text-gray-800">Hiển thị dải màu bóng mờ ở đáy</span>
-                            </label>
-                            <div id="gradient-options" class="hidden mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                                <div class="flex items-center justify-between mb-3">
-                                    <span class="text-xs font-semibold text-gray-700">Màu sắc (Theo Branding):</span>
-                                    <input type="color" id="input-grad-color" value="#000000" class="w-8 h-8 rounded cursor-pointer border-0 p-0" onchange="updateDesignState('gradColor', this.value)">
-                                </div>
-                                <div>
-                                    <span class="flex justify-between text-xs font-semibold text-gray-700 mb-2">
-                                        <span>Độ trải dài (Chiều cao):</span>
-                                        <span id="grad-height-val" class="text-blue-600">50%</span>
-                                    </span>
-                                    <input type="range" id="input-grad-height" min="10" max="100" step="5" value="50" class="w-full accent-blue-600 cursor-pointer" oninput="updateDesignState('gradHeight', this.value); document.getElementById('grad-height-val').innerText = this.value + '%'">
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="border-gray-100 my-1">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tiêu đề chính (Chữ lớn)</label>
-                            <input type="text" id="input-title" placeholder="VD: SỰ KIỆN ĐẲNG CẤP" class="w-full text-sm p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" oninput="updateDesignState('title', this.value)">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tiêu đề phụ (Chữ nhỏ)</label>
-                            <input type="text" id="input-sub" placeholder="VD: Kết nối thành công" class="w-full text-sm p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" oninput="updateDesignState('sub', this.value)">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Thông tin Hotline / Địa chỉ</label>
-                            <input type="text" id="input-info" placeholder="VD: 0909 216 216" class="w-full text-sm p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" oninput="updateDesignState('info', this.value)">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-2">Phong cách (Font & Màu sắc)</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <label class="cursor-pointer">
-                                    <input type="radio" name="theme" value="modern" id="theme-modern" class="peer hidden" onchange="updateDesignState('theme', this.value)">
-                                    <div class="border border-gray-200 rounded-lg p-2 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                        <span class="block font-bold text-sm">Hiện đại</span>
-                                        <span class="block text-[10px] text-gray-500">Chữ Trắng cơ bản</span>
-                                    </div>
-                                </label>
-                                <label class="cursor-pointer">
-                                    <input type="radio" name="theme" value="luxury" id="theme-luxury" class="peer hidden" onchange="updateDesignState('theme', this.value)">
-                                    <div class="border border-gray-200 rounded-lg p-2 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                        <span class="block font-serif-luxury font-bold text-sm text-gold">Sang trọng</span>
-                                        <span class="block text-[10px] text-gray-500">Chữ Vàng Đồng</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button onclick="processExport()" id="btn-export-grid" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
-                    <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                    XUẤT BỘ ẢNH LƯỚI (ZIP)
-                </button>
-            </div>
-
-            <!-- TAB 2: BULK LOGO SETTINGS -->
-            <div id="tab-logo-settings" class="hidden flex-col gap-4">
+            <!-- TAB LOGO SETTINGS -->
+            <div id="tab-logo-settings" class="flex flex-col gap-4">
                 <div class="panel-card p-5 text-center">
                     <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-600 rounded-full mb-3">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
@@ -304,10 +160,11 @@
                     <h2 class="text-lg font-bold text-gray-800 mb-2">Đóng Dấu Hàng Loạt Ảnh</h2>
                     <p class="text-sm text-gray-500 mb-5">Giữ nguyên tỷ lệ gốc, tự động thu nhỏ logo chuẩn và tối ưu bộ nhớ để không crash máy.</p>
                     
-                    <div id="bulk-drop-zone" class="bulk-drop-zone text-left" ondragover="handleBulkDragOver(event)" ondragleave="handleBulkDragLeave(event)" ondrop="handleBulkDrop(event)">
+                    <div id="bulk-drop-zone" class="bulk-drop-zone text-left">
                         <div class="relative z-[2] flex flex-col items-center text-center gap-3">
                             <div class="w-14 h-14 rounded-2xl bg-white shadow-sm border border-blue-100 flex items-center justify-center text-blue-700">
-                                <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 12v9m0-9l-3 3m3-3l3 3" /></svg>
+                                <!-- Đã thay icon hình ảnh xịn xò -->
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             </div>
                             <div>
                                 <h3 class="text-base font-black text-slate-900">Kéo thả ảnh hoặc cả folder vào đây</h3>
@@ -315,7 +172,7 @@
                             </div>
                             <div class="flex flex-col sm:flex-row gap-2 w-full">
                                 <label class="drop-action-btn primary flex-1">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                     Chọn file ảnh
                                     <input type="file" accept="image/*" multiple class="hidden" onchange="handleBulkLogoUpload(event)">
                                 </label>
@@ -344,23 +201,23 @@
                 <p class="text-[11px] text-slate-500 text-center -mt-1">Nhanh gọn cho iPhone/Android để bung ảnh nét ra copy qua Zalo.</p>
 
                 <div id="mobile-share-panel" class="mobile-share-panel hidden mt-2">
-                <div class="flex items-start gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l-3 3m3-3l3 3M12 3v9" /></svg>
+                    <div class="flex items-start gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l-3 3m3-3l3 3M12 3v9" /></svg>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="text-sm font-black text-slate-900">Ảnh đã sẵn sàng!</h3>
+                            <p id="mobile-share-meta" class="text-xs text-slate-500 mt-1">Nhấn "MỞ ẢNH GỐC" để hiện ảnh to, rồi Copy mới nét nhé.</p>
+                        </div>
                     </div>
-                    <div class="min-w-0">
-                        <h3 class="text-sm font-black text-slate-900">Ảnh đã sẵn sàng!</h3>
-                        <p id="mobile-share-meta" class="text-xs text-slate-500 mt-1">Nhấn "MỞ ẢNH GỐC" để hiện ảnh to, rồi Copy mới nét nhé.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
+                        <button onclick="sharePreparedBulkFiles()" class="mobile-share-action primary">Chia sẻ tất cả ảnh</button>
+                        <button onclick="downloadPreparedBulkFilesIndividually()" class="mobile-share-action secondary">Tải toàn bộ về máy</button>
                     </div>
+                    <div id="mobile-share-list" class="mt-4 flex flex-col gap-3 max-h-80 overflow-y-auto pr-1"></div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-                    <button onclick="sharePreparedBulkFiles()" class="mobile-share-action primary">Chia sẻ tất cả ảnh</button>
-                    <button onclick="downloadPreparedBulkFilesIndividually()" class="mobile-share-action secondary">Tải toàn bộ về máy</button>
-                </div>
-                <div id="mobile-share-list" class="mt-4 flex flex-col gap-3 max-h-80 overflow-y-auto pr-1"></div>
-            </div>
-            
-            <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
+                
+                <button onclick="processBulkLogoExport()" id="btn-export-bulk" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition flex justify-center items-center text-lg mt-2">
                     <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     XUẤT ẢNH ĐÃ GẮN LOGO (ZIP)
                 </button>
@@ -373,46 +230,13 @@
         </div>
 
         <div class="lg:col-span-8 p-4 lg:p-6 flex flex-col preview-shell">
-            
-            <div id="tab-grid-preview" class="flex flex-col flex-1">
-                <div class="bg-amber-50 text-amber-800 text-xs px-4 py-3 rounded-xl mb-4 font-medium flex items-start gap-3 border border-amber-100">
-                    <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" /></svg>
-                    <div class="leading-relaxed">
-                        <strong>HƯỚNG DẪN:</strong> <br>
-                        1. <strong>Tải nhiều ảnh</strong> hoặc click trực tiếp vào từng ô.<br>
-                        2. <strong>Bấm giữ & Kéo chuột</strong> trên ảnh để di chuyển căn góc chụp.<br>
-                        3. <strong>Click chọn lại</strong> một ảnh để mở Bảng Thiết Kế Chữ.
-                    </div>
-                </div>
-
-                <div class="w-full max-w-[700px] mx-auto">
-                    <div id="canvas-container" class="rounded-lg">
-                        <div id="zones-layer" class="absolute inset-0"></div>
-                        <div id="grid-layer" class="absolute inset-0 pointer-events-none"></div>
-                        <div id="logos-layer" class="absolute inset-0 pointer-events-none z-40"></div>
-                    </div>
-                </div>
-                
-                <p class="text-center text-gray-400 text-xs mt-4">Sản phẩm xuất ra sẽ được cắt theo đúng các vạch kẻ màu trắng.</p>
-
-                <div class="mt-6 border-t border-gray-100 pt-5">
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-sm font-bold text-gray-700">Ảnh Lẻ Đính Kèm (<span id="extra-count">0</span>)</h3>
-                        <span class="text-[11px] text-gray-500 bg-gray-100 px-2 py-1 rounded font-medium border border-gray-200">Sẽ được tự động đóng dấu Logo khi xuất</span>
-                    </div>
-                    <div id="extra-images-container" class="flex gap-2 overflow-x-auto pb-2 no-scrollbar min-h-[5rem]">
-                        <div class="text-[11px] text-gray-400 italic py-4 w-full text-center">Chưa có ảnh lẻ nào.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab-logo-preview" class="hidden flex-col flex-1 h-full">
+            <div id="tab-logo-preview" class="flex flex-col flex-1 h-full">
                 <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-3 mb-4">
                     <div>
                         <h3 class="text-sm font-bold text-gray-700">Hình ảnh đã tải lên (<span id="bulk-count">0</span>)</h3>
                         <p class="text-xs text-slate-500 mt-1">Đã chọn xuất: <b id="bulk-selected-count" class="text-blue-700">0</b> ảnh · Click ảnh để xem RV.</p>
                     </div>
-                    <button onclick="clearBulkImages()" class="text-xs text-red-500 font-semibold hover:bg-red-50 px-2 py-1 rounded self-start">Xóa Tất Cả</button>
+                    <button onclick="clearBulkImages()" class="text-xs text-red-500 font-semibold hover:bg-red-50 px-2 py-1 rounded self-start transition">Xóa Tất Cả</button>
                 </div>
 
                 <div class="mb-4 rounded-2xl bg-slate-50 border border-slate-200 p-3">
@@ -447,17 +271,16 @@
                     <h3 id="bulk-review-title" class="font-black text-lg md:text-xl">Xem RV ảnh</h3>
                     <p id="bulk-review-meta" class="text-xs text-slate-300 mt-1"></p>
                 </div>
-                <button onclick="closeBulkReview()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-2xl leading-none">×</button>
+                <button onclick="closeBulkReview()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-2xl leading-none transition">×</button>
             </div>
 
             <div class="flex items-center justify-center gap-3">
-                <button onclick="navigateBulkReview(-1)" class="hidden md:flex w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 items-center justify-center text-2xl">‹</button>
+                <button onclick="navigateBulkReview(-1)" class="hidden md:flex w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 items-center justify-center text-2xl transition">‹</button>
                 <div id="bulk-review-stage" class="bulk-review-stage relative rounded-2xl bg-white overflow-hidden mx-auto flex items-center justify-center">
-                    <!-- Ảnh review lỗi sẽ hiển thị được thumbnail nhờ hàm img.onerror bên dưới -->
                     <img id="bulk-review-img" class="w-full h-full object-contain block" alt="Preview">
                     <div id="bulk-review-logo-layer" class="absolute inset-0 pointer-events-none"></div>
                 </div>
-                <button onclick="navigateBulkReview(1)" class="hidden md:flex w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 items-center justify-center text-2xl">›</button>
+                <button onclick="navigateBulkReview(1)" class="hidden md:flex w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 items-center justify-center text-2xl transition">›</button>
             </div>
 
             <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
@@ -471,10 +294,7 @@
         </div>
     </div>
 
-    <input type="file" id="zone-file-input" accept="image/*" multiple class="hidden" onchange="handleZoneImageUpload(event)">
-
     <script>
-        // --- TOAST NOTIFICATION SYSTEM ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -489,127 +309,16 @@
         }
 
         // --- GLOBAL STATES ---
-        const MODES = {
-            'mode-2v': {
-                id: 'mode-2v',
-                zones: [
-                    { id: 0, x: 0, y: 0, w: 0.5, h: 1, label: "Ảnh Trái" },
-                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 1, label: "Ảnh Phải" }
-                ],
-                gridLines: [ { x: 0, y: 0, w: 0.5, h: 1 }, { x: 0.5, y: 0, w: 0.5, h: 1 } ],
-                exports: [
-                    { name: '1_Trai.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 },
-                    { name: '2_Phai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 }
-                ]
-            },
-            'mode-3l': {
-                id: 'mode-3l',
-                zones: [
-                    { id: 0, x: 0, y: 0, w: 0.5, h: 1, label: "Ảnh Trái (To)" },
-                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.5, label: "Ảnh Phải (Trên)" },
-                    { id: 2, x: 0.5, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh Phải (Dưới)" }
-                ],
-                gridLines: [ { x: 0, y: 0, w: 0.5, h: 1 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0.5, w: 0.5, h: 0.5 } ],
-                exports: [
-                    { name: '1_Trai_To.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 },
-                    { name: '2_Phai_Tren.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '3_Phai_Duoi.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
-                ]
-            },
-            'mode-4': {
-                id: 'mode-4',
-                zones: [
-                    { id: 0, x: 0, y: 0, w: 0.5, h: 0.5, label: "Ảnh 1" },
-                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.5, label: "Ảnh 2" },
-                    { id: 2, x: 0, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh 3" },
-                    { id: 3, x: 0.5, y: 0.5, w: 0.5, h: 0.5, label: "Ảnh 4" }
-                ],
-                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.5, h: 0.5 }, { x: 0.5, y: 0.5, w: 0.5, h: 0.5 } ],
-                exports: [
-                    { name: '1_TrenTrai.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '2_TrenPhai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '3_DuoiTrai.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '4_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
-                ]
-            },
-            'mode-4h': {
-                id: 'mode-4h',
-                zones: [
-                    { id: 0, x: 0, y: 0, w: 1, h: 0.5, label: "Ảnh Ngang Trọn Vẹn" },
-                    { id: 1, x: 0, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 1" },
-                    { id: 2, x: 0.3333, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 2" },
-                    { id: 3, x: 0.6666, y: 0.5, w: 0.3334, h: 0.5, label: "Ảnh Lẻ 3" }
-                ],
-                gridLines: [ { x: 0, y: 0, w: 1, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
-                exports: [
-                    { name: '1_To_Ngang.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 2 },
-                    { name: '2_DuoiTrai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '3_DuoiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '4_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
-                ]
-            },
-            'mode-4v': {
-                id: 'mode-4v',
-                zones: [
-                    { id: 0, x: 0, y: 0, w: 0.5, h: 1, label: "Ảnh Dọc Trọn Vẹn" },
-                    { id: 1, x: 0.5, y: 0, w: 0.5, h: 0.3333, label: "Ảnh Lẻ 1" },
-                    { id: 2, x: 0.5, y: 0.3333, w: 0.5, h: 0.3333, label: "Ảnh Lẻ 2" },
-                    { id: 3, x: 0.5, y: 0.6666, w: 0.5, h: 0.3334, label: "Ảnh Lẻ 3" }
-                ],
-                gridLines: [ { x: 0, y: 0, w: 0.5, h: 1 }, { x: 0.5, y: 0, w: 0.5, h: 0.3333 }, { x: 0.5, y: 0.3333, w: 0.5, h: 0.3333 }, { x: 0.5, y: 0.6666, w: 0.5, h: 0.3334 } ],
-                exports: [
-                    { name: '1_To_Doc.jpg', src: 0, cut: {x:0, y:0, w:1, h:1}, ratio: 0.5 },
-                    { name: '2_PhaiTren.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '3_PhaiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '4_PhaiDuoi.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
-                ]
-            },
-            'mode-5': {
-                id: 'mode-5',
-                zones: [
-                    { id: 0, x: 0, y: 0, w: 1, h: 0.5, label: "Ảnh Banner (Cắt đôi)" },
-                    { id: 1, x: 0, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 1" },
-                    { id: 2, x: 0.3333, y: 0.5, w: 0.3333, h: 0.5, label: "Ảnh Lẻ 2" },
-                    { id: 3, x: 0.6666, y: 0.5, w: 0.3334, h: 0.5, label: "Ảnh Lẻ 3" }
-                ],
-                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
-                exports: [
-                    { name: '1_BannerTrai.jpg', src: 0, cut: {x:0, y:0, w:0.5, h:1}, ratio: 1 },
-                    { name: '2_BannerPhai.jpg', src: 0, cut: {x:0.5, y:0, w:0.5, h:1}, ratio: 1 },
-                    { name: '3_DuoiTrai.jpg', src: 1, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '4_DuoiGiua.jpg', src: 2, cut: {x:0, y:0, w:1, h:1}, ratio: 1 },
-                    { name: '5_DuoiPhai.jpg', src: 3, cut: {x:0, y:0, w:1, h:1}, ratio: 1 }
-                ]
-            },
-            'mode-1': {
-                id: 'mode-1',
-                zones: [ { id: 0, x: 0, y: 0, w: 1, h: 1, label: "Tải 1 Ảnh Toàn Cảnh (Phủ kín)" } ],
-                gridLines: [ { x: 0, y: 0, w: 0.5, h: 0.5 }, { x: 0.5, y: 0, w: 0.5, h: 0.5 }, { x: 0, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.3333, y: 0.5, w: 0.3333, h: 0.5 }, { x: 0.6666, y: 0.5, w: 0.3334, h: 0.5 } ],
-                exports: [
-                    { name: '1_TrenTrai.jpg', src: 0, cut: {x:0, y:0, w:0.5, h:0.5}, ratio: 1 },
-                    { name: '2_TrenPhai.jpg', src: 0, cut: {x:0.5, y:0, w:0.5, h:0.5}, ratio: 1 },
-                    { name: '3_DuoiTrai.jpg', src: 0, cut: {x:0, y:0.5, w:0.3333, h:0.5}, ratio: 1 },
-                    { name: '4_DuoiGiua.jpg', src: 0, cut: {x:0.3333, y:0.5, w:0.3333, h:0.5}, ratio: 1 },
-                    { name: '5_DuoiPhai.jpg', src: 0, cut: {x:0.6666, y:0.5, w:0.3334, h:0.5}, ratio: 1 }
-                ]
-            }
-        };
-
-        let currentMode = 'mode-2v';
-        let state = {}; 
-        let extraImages = []; 
         let bulkLogoImages = []; 
         let bulkPreparedShareFiles = [];
         let bulkPreparedShareUrls = [];
         let bulkPreviewMode = 'comfortable';
         let bulkReviewIndex = -1;
         let bulkReviewObjectUrl = null;
-        let activeZoneId = null; 
-        const EXPORT_SIZE = 1800;
         
         let logosConfig = [
             { id: 'tl', title: 'Góc Trái Trên', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2025/11/logo-ucr.png', img: null, enabled: false, x: 'left', y: 'top', scale: 0.6 },
-            { id: 'bl', title: 'Góc Trái Dưới', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2026/03/chmn.png', img: null, enabled: false, x: 'left', y: 'bottom', scale: 1.3 },
+            { id: 'bl', title: 'Góc Trái Dưới', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2026/06/logo_cnmn.png', img: null, enabled: false, x: 'left', y: 'bottom', scale: 1.3 },
             { id: 'tr', title: 'Góc Phải Trên', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2025/10/logo-gan-anh-du-an-e1765271808619.png', img: null, enabled: true, x: 'right', y: 'top', scale: 0.8 },
             { id: 'br', title: 'Góc Phải Dưới', defaultUrl: '', img: null, enabled: false, x: 'right', y: 'bottom', scale: 1.0 },
             { id: 'c', title: 'Giữa (Watermark ngang)', defaultUrl: 'https://techbytruong.wordpress.com/wp-content/uploads/2026/04/unite-central-real.png', img: null, enabled: false, x: 'center', y: 'center', scale: 1.3 }
@@ -617,8 +326,6 @@
         let logoScale = 1; 
 
         document.addEventListener('DOMContentLoaded', () => {
-            selectMode('mode-2v');
-            setupDragEvents();
             setupBulkDragAndDrop();
             renderLogoConfigUI();
             logosConfig.forEach((conf, index) => {
@@ -631,9 +338,11 @@
                 if (e.key === 'ArrowLeft') navigateBulkReview(-1);
                 if (e.key === 'ArrowRight') navigateBulkReview(1);
             });
+            
+            renderBulkLogoView();
         });
 
-        // --- HỆ THỐNG LOGOS ---
+        // --- STREAMING_CHUNK: Logo Functions ---
         function renderLogoConfigUI() {
             const container = document.getElementById('logo-slots-container');
             if(!container) return;
@@ -651,7 +360,7 @@
                             <span class="block text-[10px] ${conf.enabled ? 'text-blue-700' : 'text-slate-400'} font-bold">${statusText}</span>
                         </span>
                     </label>
-                    <label class="cursor-pointer text-slate-400 hover:text-blue-600 p-1.5 rounded-lg hover:bg-blue-50 flex-shrink-0" title="Đổi Logo Khác">
+                    <label class="cursor-pointer text-slate-400 hover:text-blue-600 p-1.5 rounded-lg hover:bg-blue-50 flex-shrink-0 transition" title="Đổi Logo Khác">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                         <input type="file" accept="image/png, image/jpeg, image/webp" class="hidden" onchange="uploadLogoForSlot(event, ${index})">
                     </label>
@@ -702,6 +411,7 @@
 
         async function normalizeLogoImageForAllPlatforms(img) {
             try {
+                // Tối ưu hóa: Chỉ cắt bỏ phần thừa trong suốt (Trim), giữ nguyên tỷ lệ gốc của Logo
                 const bounds = getLogoContentBounds(img);
                 if (bounds.w <= 0 || bounds.h <= 0) return img;
 
@@ -712,8 +422,6 @@
                 
                 outCtx.drawImage(img, bounds.x, bounds.y, bounds.w, bounds.h, 0, 0, bounds.w, bounds.h);
                 
-                // NGHIÊM NGẶT: Nếu logo bị lỗi CORS, lệnh toDataURL này sẽ quăng lỗi (Throw Error) ngay lập tức.
-                // Giúp hệ thống biết logo bị hỏng để chuyển sang link Proxy dự phòng, thay vì ôm logo hỏng đi dán làm sập web.
                 const dataUrl = outCanvas.toDataURL('image/png'); 
                 const normalized = await loadImageFromDataUrl(dataUrl);
                 
@@ -726,7 +434,7 @@
                 }
             } catch (err) { 
                 console.warn('Logo vi phạm bảo mật CORS hoặc lỗi xử lý:', err); 
-                throw new Error("Tainted"); // Ép quăng lỗi để loadLogoForSlot bắt được
+                throw new Error("Tainted");
             }
             throw new Error("Failed");
         }
@@ -746,10 +454,8 @@
                     logosConfig[index].img = normalizedLogo;
                     const previewEl = document.getElementById(`preview-logo-${index}`);
                     if(previewEl) { previewEl.src = normalizedLogo.src; previewEl.classList.remove('hidden'); }
-                    renderView();
-                    if (document.getElementById('tab-logo-settings')?.style.display !== 'none') renderBulkLogoView();
+                    renderBulkLogoView();
                 } catch (e) {
-                    // Nếu normalize thất bại (thường do Tainted Canvas), gọi handleError để đổi link
                     handleError();
                 }
             };
@@ -759,7 +465,7 @@
 
         function toggleLogo(index) {
             logosConfig[index].enabled = document.getElementById(`logo-enable-${index}`).checked;
-            renderLogoConfigUI(); renderView(); renderBulkLogoView();
+            renderLogoConfigUI(); renderBulkLogoView();
             if (bulkReviewIndex >= 0 && bulkLogoImages[bulkReviewIndex]) openBulkReview(bulkReviewIndex);
         }
 
@@ -771,7 +477,7 @@
                 i.onload = async () => {
                     logosConfig[index].img = await normalizeLogoImageForAllPlatforms(i);
                     logosConfig[index].enabled = true;
-                    renderLogoConfigUI(); renderView(); renderBulkLogoView();
+                    renderLogoConfigUI(); renderBulkLogoView();
                     showToast('Đã áp dụng Logo!');
                 };
                 i.src = evt.target.result;
@@ -782,181 +488,11 @@
         function updateLogoScale(val) {
             logoScale = parseFloat(val);
             document.getElementById('logo-scale-val').innerText = Math.round(logoScale * 100) + '%';
-            renderView(); renderBulkLogoView();
+            renderBulkLogoView();
             if (bulkReviewIndex >= 0 && bulkLogoImages[bulkReviewIndex]) openBulkReview(bulkReviewIndex);
         }
 
-        function switchMainTab(tabId) {
-            document.getElementById('btn-tab-grid').className = tabId === 'grid' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
-            document.getElementById('btn-tab-logo').className = tabId === 'logo' ? "flex-1 py-3 px-2 font-bold rounded-xl bg-blue-600 text-white shadow-md transition text-sm" : "flex-1 py-3 px-2 font-bold rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-200 transition text-sm";
-            document.getElementById('tab-grid-settings').style.display = tabId === 'grid' ? 'flex' : 'none';
-            document.getElementById('tab-grid-preview').style.display = tabId === 'grid' ? 'flex' : 'none';
-            document.getElementById('tab-logo-settings').style.display = tabId === 'logo' ? 'flex' : 'none';
-            document.getElementById('tab-logo-preview').style.display = tabId === 'logo' ? 'flex' : 'none';
-            if(tabId === 'logo') renderBulkLogoView();
-        }
-
-        function hexToRgba(hex, alpha) {
-            hex = hex.replace(/^#/, '');
-            let r = parseInt(hex.substring(0, 2), 16); let g = parseInt(hex.substring(2, 4), 16); let b = parseInt(hex.substring(4, 6), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
-
-        function selectMode(m) {
-            currentMode = m;
-            document.querySelectorAll('input[name="mode"]').forEach(r => {
-                const lbl = r.closest('label'); lbl.classList.remove('border-blue-500', 'bg-blue-50'); lbl.classList.add('border-gray-200');
-                const mini = lbl.querySelector('.mini-grid'); if(mini) mini.style.background = '#cbd5e1';
-                lbl.querySelectorAll('.mg-box').forEach(b => b.style.background = '#94a3b8');
-            });
-            const act = document.getElementById(`lbl-${m}`);
-            if(act) {
-                act.classList.add('border-blue-500', 'bg-blue-50'); act.classList.remove('border-gray-200');
-                const radio = act.querySelector('input'); if(radio) radio.checked = true;
-                const mini = act.querySelector('.mini-grid'); if(mini) mini.style.background = '#93c5fd';
-                act.querySelectorAll('.mg-box').forEach(b => b.style.background = '#3b82f6');
-            }
-            const validZones = MODES[currentMode].zones.map(z => z.id);
-            if (!validZones.includes(activeZoneId)) closeDesignPanel();
-            renderView(); setTimeout(() => { Object.keys(state).forEach(id => calcCoverTransform(id)); }, 50);
-        }
-
-        function activateZone(id) {
-            if (!state[id]) return; 
-            activeZoneId = id;
-            const panel = document.getElementById('design-panel'); if(panel) panel.classList.remove('hidden');
-            const lbl = document.getElementById('lbl-active-zone'); if(lbl) lbl.innerText = (parseInt(id) + 1);
-            
-            const gradChecked = state[id].gradient || false;
-            const chkGrad = document.getElementById('check-gradient'); if(chkGrad) chkGrad.checked = gradChecked;
-            const gradOpts = document.getElementById('gradient-options'); if(gradOpts) gradOpts.style.display = gradChecked ? 'block' : 'none';
-            
-            const inGradCol = document.getElementById('input-grad-color'); if(inGradCol) inGradCol.value = state[id].gradColor || '#000000';
-            const inGradH = document.getElementById('input-grad-height'); if(inGradH) inGradH.value = state[id].gradHeight || 50;
-            const lblGradH = document.getElementById('grad-height-val'); if(lblGradH) lblGradH.innerText = (state[id].gradHeight || 50) + '%';
-            
-            const inTitle = document.getElementById('input-title'); if(inTitle) inTitle.value = state[id].title || '';
-            const inSub = document.getElementById('input-sub'); if(inSub) inSub.value = state[id].sub || '';
-            const inInfo = document.getElementById('input-info'); if(inInfo) inInfo.value = state[id].info || '';
-            
-            const themeRadio = document.getElementById(`theme-${state[id].theme || 'modern'}`); if(themeRadio) themeRadio.checked = true;
-            const zoomSlider = document.getElementById('zoom-slider'); if(zoomSlider) zoomSlider.value = state[id].zoomScale || 1;
-            const zoomVal = document.getElementById('zoom-val'); if(zoomVal) zoomVal.innerText = Math.round((state[id].zoomScale || 1)*100) + '%';
-            renderView();
-        }
-
-        function closeDesignPanel() { activeZoneId = null; const p = document.getElementById('design-panel'); if(p) p.classList.add('hidden'); renderView(); }
-        function updateDesignState(key, val) {
-            if (activeZoneId === null || !state[activeZoneId]) return;
-            state[activeZoneId][key] = val;
-            if(key === 'gradient') { const o = document.getElementById('gradient-options'); if(o) o.style.display = val ? 'block' : 'none'; }
-            renderView();
-        }
-
-        let uploadTargetZone = null;
-        function triggerUpload(zoneId) { uploadTargetZone = zoneId; document.getElementById('zone-file-input').click(); }
-        function handleZoneImageUpload(e) { handleMultipleUpload(e.target.files, uploadTargetZone); e.target.value = ''; }
-        function handleGlobalUpload(e) { handleMultipleUpload(e.target.files, null); e.target.value = ''; }
-
-        function readFileAsImage(file) {
-            return new Promise((resolve) => {
-                const r = new FileReader();
-                r.onload = (e) => { const i = new Image(); i.onload = () => resolve({img: i, name: file.name}); i.src = e.target.result; }
-                r.readAsDataURL(file);
-            });
-        }
-
-        function handleMultipleUpload(files, targetZoneId = null) {
-            if (!files || files.length === 0) return;
-            const m = MODES[currentMode];
-            const loadPromises = Array.from(files).map(f => readFileAsImage(f));
-            
-            Promise.all(loadPromises).then(results => {
-                let imgIdx = 0;
-                if (targetZoneId !== null && imgIdx < results.length) { initStateForZone(targetZoneId, results[imgIdx].img); imgIdx++; }
-                for (const z of m.zones) {
-                    if (imgIdx >= results.length) break;
-                    if (!state[z.id]) { initStateForZone(z.id, results[imgIdx].img); imgIdx++; }
-                }
-                let extraCount = 0;
-                while (imgIdx < results.length) {
-                    extraImages.push({ id: Date.now() + Math.random(), img: results[imgIdx].img });
-                    imgIdx++; extraCount++;
-                }
-                renderView(); renderExtraImages();
-                if (extraCount > 0) showToast(`Đã thêm ${extraCount} ảnh vào mục Ảnh Lẻ Đính Kèm.`);
-            });
-        }
-
-        function initStateForZone(zoneId, img) {
-            state[zoneId] = { img: img, x: 0, y: 0, scale: 1, zoomScale: 1, gradient: false, gradColor: '#000000', gradHeight: 50, title: '', sub: '', info: '', theme: 'modern' };
-            if (activeZoneId === zoneId) activateZone(zoneId); 
-            setTimeout(() => calcCoverTransform(zoneId), 50);
-        }
-
-        function renderExtraImages() {
-            const container = document.getElementById('extra-images-container'); if(!container) return;
-            document.getElementById('extra-count').innerText = extraImages.length;
-            if (extraImages.length === 0) { container.innerHTML = '<div class="text-[11px] text-gray-400 italic py-4 w-full text-center">Chưa có ảnh lẻ nào.</div>'; return; }
-            container.innerHTML = '';
-            extraImages.forEach((ex, index) => {
-                const div = document.createElement('div'); div.className = 'relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-300 group shadow-sm';
-                const img = document.createElement('img'); img.src = ex.img.src; img.className = 'w-full h-full object-cover';
-                const btn = document.createElement('button'); btn.innerHTML = '&times;'; btn.className = 'absolute top-0 right-0 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-bl-lg opacity-0 group-hover:opacity-100 transition text-xs font-bold';
-                btn.onclick = () => { extraImages.splice(index, 1); renderExtraImages(); };
-                div.appendChild(img); div.appendChild(btn); container.appendChild(div);
-            });
-        }
-
-        function handleZoomSlider(val) {
-            if (activeZoneId === null || !state[activeZoneId]) return;
-            const zId = activeZoneId; const num = parseFloat(val);
-            document.getElementById('zoom-val').innerText = Math.round(num*100) + '%';
-            state[zId].zoomScale = num;
-            const zoneEl = document.getElementById(`zone-${zId}`); if(!zoneEl) return;
-            const zw = zoneEl.offsetWidth; const zh = zoneEl.offsetHeight;
-            const iw = state[zId].img.width; const ih = state[zId].img.height;
-            const baseCoverScale = Math.max(zw / iw, zh / ih);
-            const newFinalScale = baseCoverScale * num; const oldFinalScale = state[zId].scale;
-            state[zId].x = (zw/2) - ((zw/2) - state[zId].x) * (newFinalScale / oldFinalScale);
-            state[zId].y = (zh/2) - ((zh/2) - state[zId].y) * (newFinalScale / oldFinalScale);
-            state[zId].scale = newFinalScale;
-            applyTransformCSS(zId);
-        }
-
-        function calcCoverTransform(id) {
-            if (!state[id]) return; const zEl = document.getElementById(`zone-${id}`); if (!zEl) return;
-            const zw = zEl.offsetWidth, zh = zEl.offsetHeight; const iw = state[id].img.width, ih = state[id].img.height;
-            const baseScale = Math.max(zw / iw, zh / ih); const finalScale = baseScale * (state[id].zoomScale || 1);
-            state[id].scale = finalScale; state[id].x = (zw - iw * finalScale) / 2; state[id].y = (zh - ih * finalScale) / 2;
-            applyTransformCSS(id);
-        }
-
-        function applyTransformCSS(id) {
-            const el = document.getElementById(`img-${id}`);
-            if (el && state[id]) { el.style.transformOrigin = '0 0'; el.style.transform = `translate(${state[id].x}px, ${state[id].y}px) scale(${state[id].scale})`; }
-        }
-
-        let isDrag = false, startX, startY, dragId = null;
-        function setupDragEvents() {
-            window.addEventListener('mousemove', e => {
-                if (!isDrag || dragId === null) return;
-                const cx = e.clientX || (e.touches && e.touches[0].clientX); const cy = e.clientY || (e.touches && e.touches[0].clientY);
-                state[dragId].x += (cx - startX); state[dragId].y += (cy - startY);
-                startX = cx; startY = cy; applyTransformCSS(dragId);
-            });
-            const stop = () => { isDrag = false; document.body.style.cursor = 'default'; };
-            window.addEventListener('mouseup', stop); window.addEventListener('touchend', stop);
-        }
-
-        function onMouseDown(e, id) {
-            if (!state[id]) { triggerUpload(id); return; }
-            activateZone(id); isDrag = true; dragId = id;
-            startX = e.clientX || (e.touches && e.touches[0].clientX); startY = e.clientY || (e.touches && e.touches[0].clientY);
-            document.body.style.cursor = 'grabbing';
-        }
-
-        // --- THUẬT TOÁN LOGO UNIFIED (DÙNG CHUNG CHO CẢ PREVIEW DOM LẪN CANVAS RENDER) ---
+        // --- STREAMING_CHUNK: Universal Math & Drawing ---
         function calculateUniversalLogoMetrics(bgW, bgH, logoW, logoH, confScale, position) {
             const minSide = Math.min(bgW, bgH);
             const logoRatio = logoW / logoH;
@@ -968,13 +504,13 @@
             } else {
                 // Định hình độ rộng cơ bản dựa trên hình dáng logo
                 if (logoRatio >= 2.2) { // Siêu dài (Nhiều chữ ngang)
-                    baseWidthPct = 0.32;
+                    baseWidthPct = 0.4;
                 } else if (logoRatio >= 1.4) { // Ngang vừa
-                    baseWidthPct = 0.24;
+                    baseWidthPct = 0.3;
                 } else if (logoRatio >= 0.8) { // Vuông / Gần vuông
-                    baseWidthPct = 0.16;
+                    baseWidthPct = 0.25;
                 } else { // Dọc (Cao)
-                    baseWidthPct = 0.12;
+                    baseWidthPct = 0.15;
                 }
             }
 
@@ -1005,7 +541,7 @@
             }
 
             // 3. Margin/Padding responsive (Đã tăng thêm lề 20-25% theo yêu cầu)
-            const padding = Math.max(16, minSide * 0.045);
+            const padding = Math.max(20, minSide * 0.065);
 
             return { targetW, targetH, padding };
         }
@@ -1015,17 +551,14 @@
             logosConfig.forEach(conf => {
                 if (!conf.enabled || !conf.img) return;
                 
-                // Lấy thông số toán học chuẩn
                 const metrics = calculateUniversalLogoMetrics(fw, fh, conf.img.width, conf.img.height, conf.scale, conf.x);
                 
-                // Chuyển đổi thông số Pixel sang % để gán vào CSS của thẻ <div> DOM
                 const widthPct = (metrics.targetW / fw) * 100;
                 const heightPct = (metrics.targetH / fh) * 100;
                 const padXPct = (metrics.padding / fw) * 100;
                 const padYPct = (metrics.padding / fh) * 100;
 
                 const logoWrap = document.createElement('div'); 
-                // Bỏ p-2 vì padding đã được tính bằng toán học tuyệt đối
                 logoWrap.className = 'absolute flex items-center justify-center pointer-events-none';
                 
                 logoWrap.style.width = `${widthPct}%`; 
@@ -1045,197 +578,71 @@
             });
         }
 
-        function renderView() {
-            const m = MODES[currentMode];
-            const layer = document.getElementById('zones-layer'); const grid = document.getElementById('grid-layer'); const logosLayer = document.getElementById('logos-layer');
-            if(!layer || !grid || !logosLayer) return;
-
-            layer.innerHTML = ''; grid.innerHTML = ''; logosLayer.innerHTML = '';
-
-            m.zones.forEach(z => {
-                const div = document.createElement('div'); div.id = `zone-${z.id}`;
-                div.className = `absolute zone-container overflow-hidden bg-white transition-colors ${state[z.id] ? 'cursor-grab' : 'cursor-pointer hover:bg-gray-50 border border-gray-200'}`;
-                if (activeZoneId == z.id) div.classList.add('zone-active');
-                div.style.left = `${z.x * 100}%`; div.style.top = `${z.y * 100}%`; div.style.width = `${z.w * 100}%`; div.style.height = `${z.h * 100}%`;
-                div.onmousedown = (e) => onMouseDown(e, z.id);
-
-                if (state[z.id]) {
-                    const st = state[z.id]; const img = document.createElement('img'); img.id = `img-${z.id}`; img.src = st.img.src; img.className = 'absolute max-w-none'; div.appendChild(img);
-                    setTimeout(() => applyTransformCSS(z.id), 0);
-                    if (st.gradient) {
-                        const rgba85 = hexToRgba(st.gradColor || '#000000', 0.85); const rgba0 = hexToRgba(st.gradColor || '#000000', 0);
-                        const grad = document.createElement('div'); grad.className = 'absolute inset-x-0 bottom-0 pointer-events-none z-10';
-                        grad.style.height = `${st.gradHeight || 50}%`; grad.style.background = `linear-gradient(to top, ${rgba85} 0%, ${rgba0} 100%)`; div.appendChild(grad);
+        function getLogoBackgroundStats(ctx, x, y, w, h, fw, fh) {
+            const sx = Math.max(0, Math.floor(x)); const sy = Math.max(0, Math.floor(y));
+            const sw = Math.max(1, Math.min(fw - sx, Math.ceil(w))); const sh = Math.max(1, Math.min(fh - sy, Math.ceil(h)));
+            if (sw <= 1 || sh <= 1) return { luma: 128, contrast: 0 };
+            try {
+                const data = ctx.getImageData(sx, sy, sw, sh).data; const totalPixels = sw * sh;
+                const step = Math.max(4, Math.floor(Math.sqrt(totalPixels / 600))); 
+                let sum = 0, sumSq = 0, count = 0;
+                for (let yy = 0; yy < sh; yy += step) {
+                    for (let xx = 0; xx < sw; xx += step) {
+                        const idx = (yy * sw + xx) * 4;
+                        const l = 0.2126 * data[idx] + 0.7152 * data[idx + 1] + 0.0722 * data[idx + 2];
+                        sum += l; sumSq += l * l; count++;
                     }
-                    if (st.title || st.sub || st.info) {
-                        const txtBox = document.createElement('div'); txtBox.className = 'absolute inset-x-0 bottom-[8cqw] px-[6cqw] flex flex-col items-center text-center pointer-events-none z-20 drop-shadow-md';
-                        const isLuxury = st.theme === 'luxury'; const fontClass = isLuxury ? 'font-serif-luxury text-gold' : 'font-sans text-white';
-                        if (st.title) { const t = document.createElement('div'); t.className = `font-bold uppercase tracking-wider ${fontClass} leading-tight mb-[2cqw]`; t.style.fontSize = isLuxury ? '8cqw' : '7cqw'; t.innerText = st.title; txtBox.appendChild(t); }
-                        if (st.sub) { const s = document.createElement('div'); s.className = `font-medium ${fontClass} leading-snug mb-[3cqw]`; s.style.fontSize = isLuxury ? '4cqw' : '3.5cqw'; s.innerText = st.sub; txtBox.appendChild(s); }
-                        if (st.info) {
-                            const i = document.createElement('div');
-                            if (isLuxury) { i.className = `font-semibold text-gold font-serif-luxury tracking-widest`; i.style.fontSize = '3cqw'; i.innerText = st.info; } 
-                            else { i.className = `inline-block border border-white/50 rounded-full text-white font-medium bg-black/30 backdrop-blur-sm`; i.style.padding = '1.5cqw 3.5cqw'; i.style.fontSize = '2.8cqw'; i.innerText = st.info; }
-                            txtBox.appendChild(i);
-                        }
-                        div.appendChild(txtBox);
-                    }
-                } else {
-                    div.innerHTML = `<div class="text-gray-400 text-center px-4 w-full pointer-events-none flex flex-col items-center"><svg class="w-8 h-8 opacity-40 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg><span class="text-[11px] font-semibold">${z.label}</span></div>`;
                 }
-                layer.appendChild(div);
-            });
-
-            m.gridLines.forEach(l => {
-                const d = document.createElement('div'); d.className = 'absolute border-[3px] border-white pointer-events-none z-30 shadow-sm';
-                d.style.left = `${l.x * 100}%`; d.style.top = `${l.y * 100}%`; d.style.width = `${l.w * 100}%`; d.style.height = `${l.h * 100}%`; grid.appendChild(d);
-            });
-            
-            m.exports.forEach(exp => {
-                const z = m.zones.find(zone => zone.id === exp.src);
-                if (state[z.id]) { 
-                    const pieceDiv = document.createElement('div'); pieceDiv.className = 'absolute pointer-events-none flex';
-                    pieceDiv.style.left = `${(z.x + exp.cut.x * z.w) * 100}%`; pieceDiv.style.top = `${(z.y + exp.cut.y * z.h) * 100}%`;
-                    pieceDiv.style.width = `${exp.cut.w * z.w * 100}%`; pieceDiv.style.height = `${exp.cut.h * z.h * 100}%`;
-                    
-                    logosConfig.forEach(conf => {
-                        if (!conf.enabled || !conf.img) return;
-                        
-                        // Sử dụng chung thuật toán tính Metrics, giả lập Render Width là 1000px để tính tỷ lệ % DOM
-                        const metrics = calculateUniversalLogoMetrics(1000, 1000 * (exp.cut.h * z.h) / (exp.cut.w * z.w), conf.img.width, conf.img.height, conf.scale, conf.x);
-                        
-                        const logoWrap = document.createElement('div'); logoWrap.className = 'absolute flex items-center justify-center pointer-events-none';
-                        const widthPct = (metrics.targetW / 1000) * 100;
-                        const heightPct = (metrics.targetH / (1000 * (exp.cut.h * z.h) / (exp.cut.w * z.w))) * 100;
-                        const padXPct = (metrics.padding / 1000) * 100;
-                        const padYPct = (metrics.padding / (1000 * (exp.cut.h * z.h) / (exp.cut.w * z.w))) * 100;
-
-                        logoWrap.style.width = `${widthPct}%`;
-                        logoWrap.style.height = `${heightPct}%`;
-                        
-                        if (conf.x === 'center') {
-                            logoWrap.style.left = '50%'; logoWrap.style.top = '50%'; logoWrap.style.transform = 'translate(-50%, -50%)';
-                        } else {
-                            if (conf.x === 'left') logoWrap.style.left = `${padXPct}%`; else logoWrap.style.right = `${padXPct}%`;
-                            if (conf.y === 'top') logoWrap.style.top = `${padYPct}%`; else logoWrap.style.bottom = `${padYPct}%`;
-                        }
-                        const logo = document.createElement('img'); logo.src = conf.img.src; logo.className = 'w-full h-full object-contain';
-                        logo.style.filter = 'drop-shadow(0px 1px 3px rgba(0,0,0,0.26)) drop-shadow(0px 0px 2px rgba(255,255,255,0.34))';
-                        logoWrap.appendChild(logo); pieceDiv.appendChild(logoWrap);
-                    });
-                    logosLayer.appendChild(pieceDiv);
-                }
-            });
+                const luma = count ? sum / count : 128; const variance = count ? (sumSq / count) - (luma * luma) : 0;
+                return { luma, contrast: Math.sqrt(Math.max(0, variance)) };
+            } catch (e) { return { luma: 128, contrast: 35 }; }
         }
 
-        async function processExport() {
-            const hasLogo = logosConfig.some(conf => conf.enabled && conf.img);
-            if (!hasLogo) { showToast("⚠️ Bạn chưa tick chọn Logo nào! Vui lòng chọn ít nhất 1 Logo trước khi tải.", "error"); return; }
-            const m = MODES[currentMode];
-            for (const z of m.zones) { if (!state[z.id]) return showToast(`Vui lòng tải đủ ảnh cho vị trí: "${z.label}"`, "error"); }
-            
-            const btn = document.getElementById('btn-export-grid'); btn.innerHTML = 'ĐANG ĐÓNG GÓI & RENDER...'; btn.disabled = true;
-            const zip = new JSZip();
-            try {
-                const zoneCanvases = {};
-                for (const z of m.zones) {
-                    const zw = z.w * EXPORT_SIZE; const zh = z.h * EXPORT_SIZE;
-                    const cvs = document.createElement('canvas'); cvs.width = zw; cvs.height = zh;
-                    const ctx = cvs.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-                    const st = state[z.id]; const domZ = document.getElementById(`zone-${z.id}`);
-                    const renderRatio = zw / domZ.offsetWidth;
-                    ctx.drawImage(st.img, st.x * renderRatio, st.y * renderRatio, st.img.width * st.scale * renderRatio, st.img.height * st.scale * renderRatio);
-                    
-                    if (st.gradient) {
-                        const rgba85 = hexToRgba(st.gradColor || '#000000', 0.85); const rgba0 = hexToRgba(st.gradColor || '#000000', 0);
-                        const startY = zh * (1 - (st.gradHeight || 50)/100);
-                        const grd = ctx.createLinearGradient(0, startY, 0, zh); grd.addColorStop(0, rgba0); grd.addColorStop(1, rgba85);
-                        ctx.fillStyle = grd; ctx.fillRect(0, startY, zw, zh - startY);
-                    }
-                    if (st.title || st.sub || st.info) {
-                        ctx.textAlign = "center"; const isLux = st.theme === 'luxury'; const fontFam = isLux ? "'Playfair Display', serif" : "'Inter', sans-serif";
-                        ctx.shadowColor = "rgba(0,0,0,0.5)"; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
-                        let currentY = zh - (0.08 * zw); 
-                        if (st.info) {
-                            if (isLux) {
-                                ctx.font = `600 ${0.03 * zw}px ${fontFam}`;
-                                const g = ctx.createLinearGradient(zw/2-150, currentY-20, zw/2+150, currentY+20);
-                                g.addColorStop(0, "#bf953f"); g.addColorStop(0.3, "#fcf6ba"); g.addColorStop(0.7, "#b38728"); g.addColorStop(1, "#fbf5b7");
-                                ctx.fillStyle = g; ctx.fillText(st.info, zw/2, currentY);
-                            } else {
-                                ctx.font = `500 ${0.028 * zw}px ${fontFam}`; ctx.fillStyle = "#ffffff";
-                                const tw = ctx.measureText(st.info).width; const px = 0.035 * zw, py = 0.015 * zw;
-                                ctx.shadowColor = "transparent"; ctx.fillStyle = "rgba(0,0,0,0.4)";
-                                ctx.beginPath(); ctx.roundRect(zw/2 - tw/2 - px, currentY - 0.028*zw - py, tw + px*2, 0.028*zw + py*2, 20); ctx.fill();
-                                ctx.strokeStyle = "rgba(255,255,255,0.6)"; ctx.lineWidth = 2; ctx.stroke();
-                                ctx.fillStyle = "#ffffff"; ctx.fillText(st.info, zw/2, currentY - py*0.5);
-                            }
-                            currentY -= (0.05 * zw); 
-                        }
-                        if (st.sub) {
-                            currentY -= (0.03 * zw); ctx.font = `500 ${isLux ? 0.04*zw : 0.035*zw}px ${fontFam}`; ctx.shadowColor = "rgba(0,0,0,0.5)";
-                            if (isLux) {
-                                const g = ctx.createLinearGradient(zw/2-150, currentY-20, zw/2+150, currentY+20);
-                                g.addColorStop(0, "#bf953f"); g.addColorStop(0.3, "#fcf6ba"); g.addColorStop(0.7, "#b38728"); g.addColorStop(1, "#fbf5b7");
-                                ctx.fillStyle = g; ctx.fillText(st.sub, zw/2, currentY);
-                            } else { ctx.fillStyle = "#ffffff"; ctx.fillText(st.sub, zw/2, currentY); }
-                            currentY -= (0.05 * zw);
-                        }
-                        if (st.title) {
-                            currentY -= (0.02 * zw); ctx.font = `bold ${isLux ? 0.08*zw : 0.07*zw}px ${fontFam}`; ctx.shadowColor = "rgba(0,0,0,0.6)"; ctx.shadowBlur = 10;
-                            if (isLux) {
-                                const g = ctx.createLinearGradient(zw/2-150, currentY-20, zw/2+150, currentY+20);
-                                g.addColorStop(0, "#bf953f"); g.addColorStop(0.3, "#fcf6ba"); g.addColorStop(0.7, "#b38728"); g.addColorStop(1, "#fbf5b7");
-                                ctx.fillStyle = g; ctx.fillText(st.title.toUpperCase(), zw/2, currentY);
-                            } else { ctx.fillStyle = "#ffffff"; ctx.fillText(st.title.toUpperCase(), zw/2, currentY); }
-                        }
-                    }
-                    zoneCanvases[z.id] = cvs;
-                }
-                for (const exp of m.exports) {
-                    const zCvs = zoneCanvases[exp.src];
-                    const sx = exp.cut.x * zCvs.width, sy = exp.cut.y * zCvs.height;
-                    const sw = exp.cut.w * zCvs.width, sh = exp.cut.h * zCvs.height;
-                    let fw, fh;
-                    if (sw > sh) { fw = EXPORT_SIZE; fh = Math.round(EXPORT_SIZE * (sh / sw)); } else { fh = EXPORT_SIZE; fw = Math.round(EXPORT_SIZE * (sw / sh)); }
-                    
-                    const fCvs = document.createElement('canvas'); fCvs.width = fw; fCvs.height = fh;
-                    const fCtx = fCvs.getContext('2d'); fCtx.imageSmoothingEnabled = true; fCtx.imageSmoothingQuality = 'high';
-                    fCtx.drawImage(zCvs, sx, sy, sw, sh, 0, 0, fw, fh);
-                    
-                    applyLogoToCanvas(fCtx, fw, fh);
-                    const blob = await new Promise(r => fCvs.toBlob(r, 'image/jpeg', 0.95));
-                    zip.file(exp.name, blob);
-                    fCvs.width = 0; fCvs.height = 0;
-                }
-                for (let i = 0; i < extraImages.length; i++) {
-                    const exImg = extraImages[i].img; let fw = exImg.width; let fh = exImg.height;
-                    if (fw > EXPORT_SIZE || fh > EXPORT_SIZE) { const r = Math.min(EXPORT_SIZE / fw, EXPORT_SIZE / fh); fw = Math.round(fw * r); fh = Math.round(fh * r); }
-                    
-                    const eCvs = document.createElement('canvas'); eCvs.width = fw; eCvs.height = fh;
-                    const eCtx = eCvs.getContext('2d'); eCtx.imageSmoothingEnabled = true; eCtx.imageSmoothingQuality = 'high';
-                    eCtx.drawImage(exImg, 0, 0, fw, fh);
-                    
-                    applyLogoToCanvas(eCtx, fw, fh);
-                    const blob = await new Promise(r => eCvs.toBlob(r, 'image/jpeg', 0.95));
-                    zip.file(`Anh_Le_Kem_Theo_${i + 1}.jpg`, blob);
-                    eCvs.width = 0; eCvs.height = 0;
+        function drawRoundRectPath(ctx, x, y, w, h, r) {
+            const radius = Math.min(r, w / 2, h / 2);
+            ctx.beginPath(); ctx.moveTo(x + radius, y); ctx.lineTo(x + w - radius, y); ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+            ctx.lineTo(x + w, y + h - radius); ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h); ctx.lineTo(x + radius, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - radius); ctx.lineTo(x, y + radius); ctx.quadraticCurveTo(x, y, x + radius, y); ctx.closePath();
+        }
+
+        function drawSmartLogoWithHalo(ctx, logoImg, x, y, dw, dh, fw, fh) {
+            const stats = getLogoBackgroundStats(ctx, x, y, dw, dh, fw, fh);
+            const minSide = Math.min(fw, fh); const busy = stats.contrast > 48; const veryBright = stats.luma > 205; const bright = stats.luma > 165; const dark = stats.luma < 92; const veryDark = stats.luma < 58;
+            const blur = Math.max(3, Math.round(minSide * (busy ? 0.006 : 0.004)));
+
+            if (veryBright && !busy) {
+                const pad = Math.max(5, Math.round(minSide * 0.008));
+                ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.045)'; ctx.shadowColor = 'rgba(0,0,0,0.10)'; ctx.shadowBlur = Math.max(6, Math.round(minSide * 0.006)); ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+                drawRoundRectPath(ctx, x - pad, y - pad, dw + pad * 2, dh + pad * 2, Math.max(10, pad * 1.8)); ctx.fill(); ctx.restore();
+            }
+            ctx.save(); ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+            if (dark) { ctx.shadowColor = veryDark ? 'rgba(255,255,255,0.30)' : 'rgba(255,255,255,0.22)'; ctx.shadowBlur = blur; } 
+            else if (bright) { ctx.shadowColor = busy ? 'rgba(0,0,0,0.24)' : 'rgba(0,0,0,0.18)'; ctx.shadowBlur = blur; } 
+            else { ctx.shadowColor = busy ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.12)'; ctx.shadowBlur = Math.max(2, Math.round(minSide * 0.003)); }
+            ctx.drawImage(logoImg, x, y, dw, dh); ctx.restore();
+        }
+
+        function applyLogoToCanvas(ctx, fw, fh) {
+            logosConfig.forEach(conf => {
+                if (!conf.enabled || !conf.img) return;
+                
+                const metrics = calculateUniversalLogoMetrics(fw, fh, conf.img.width, conf.img.height, conf.scale, conf.x);
+                
+                let x, y;
+                if (conf.x === 'center') { 
+                    x = (fw - metrics.targetW) / 2; 
+                    y = (fh - metrics.targetH) / 2; 
+                } 
+                else { 
+                    x = conf.x === 'left' ? metrics.padding : fw - metrics.targetW - metrics.padding; 
+                    y = conf.y === 'top' ? metrics.padding : fh - metrics.targetH - metrics.padding; 
                 }
                 
-                for (const z of m.zones) { zoneCanvases[z.id].width = 0; zoneCanvases[z.id].height = 0; }
-
-                const zipBlob = await zip.generateAsync({type: "blob"});
-                const link = document.createElement('a'); link.href = URL.createObjectURL(zipBlob);
-                link.download = `UNITE_GROUP_Poster_${Date.now()}.zip`; link.click();
-                showToast('Xuất ảnh thành công!');
-            } catch (e) { showToast("Lỗi xử lý ảnh!", "error"); console.error(e); } 
-            finally {
-                btn.innerHTML = '<svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>XUẤT BỘ ẢNH LƯỚI (ZIP)'; 
-                btn.disabled = false;
-            }
+                drawSmartLogoWithHalo(ctx, conf.img, x, y, metrics.targetW, metrics.targetH, fw, fh);
+            });
         }
 
-        // --- BULK MODE PRO: Memory Management & Crash Prevention ---
+        // --- STREAMING_CHUNK: Bulk Engine & UI ---
         function sleep(ms = 0) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
         function safeFileName(name, fallback = 'image') {
@@ -1334,7 +741,7 @@
         }
 
         async function handleBulkDrop(e) {
-            e.preventDefault(); e.stopPropagation();
+            e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
             document.querySelectorAll('#bulk-drop-zone, #bulk-preview-container').forEach(el => el.classList.remove('drag-over'));
             setBulkProgress('Đang quét file được thả vào...', 1);
             const files = await collectDroppedImageFiles(e.dataTransfer);
@@ -1342,17 +749,36 @@
         }
 
         function setupBulkDragAndDrop() {
-            ['bulk-drop-zone', 'bulk-preview-container', 'tab-logo-preview'].forEach(id => {
+            ['bulk-drop-zone', 'bulk-preview-container'].forEach(id => {
                 const el = document.getElementById(id); if (!el) return;
-                el.addEventListener('dragover', handleBulkDragOver); el.addEventListener('dragleave', handleBulkDragLeave); el.addEventListener('drop', handleBulkDrop);
+                el.addEventListener('dragover', handleBulkDragOver); 
+                el.addEventListener('dragleave', handleBulkDragLeave); 
+                el.addEventListener('drop', handleBulkDrop);
             });
         }
 
         async function collectDroppedImageFiles(dataTransfer) {
-            const files = []; const items = Array.from(dataTransfer?.items || []);
+            const files = []; 
+            const items = Array.from(dataTransfer?.items || []);
+            
             if (items.length && items[0].webkitGetAsEntry) {
-                for (const item of items) { const entry = item.webkitGetAsEntry(); if (entry) await traverseFileEntry(entry, files); }
-            } else { files.push(...Array.from(dataTransfer?.files || [])); }
+                // KHẮC PHỤC LỖI RỚT FILE: Phải lấy toàn bộ file/folder ra ĐỒNG BỘ trước tiên.
+                // Nếu dùng 'await' ngay trong lúc quét items, trình duyệt sẽ tự động hủy các item phía sau.
+                const entries = [];
+                for (const item of items) { 
+                    if (item.kind === 'file') {
+                        const entry = item.webkitGetAsEntry(); 
+                        if (entry) entries.push(entry); 
+                    }
+                }
+                
+                // Đọc file/folder bất đồng bộ từ danh sách đã được bảo vệ an toàn
+                for (const entry of entries) {
+                    await traverseFileEntry(entry, files);
+                }
+            } else { 
+                files.push(...Array.from(dataTransfer?.files || [])); 
+            }
             return files.filter(isImageFile);
         }
 
@@ -1376,42 +802,50 @@
             }
         }
 
+        let isIngestingFiles = false;
+
         async function ingestBulkFiles(files, readyMessage = 'Đã nạp ảnh.') {
-            const imageFiles = Array.from(files || []).filter(isImageFile);
-            if (imageFiles.length === 0) {
-                setBulkProgress('Không tìm thấy file ảnh hợp lệ.', 100); hideBulkProgressSoon(); showToast('Không có ảnh hợp lệ nào được chọn.', 'error'); return;
-            }
-            const existingKeys = new Set(bulkLogoImages.map(item => item.key).filter(Boolean));
-            const uniqueFiles = [];
-            for (const file of imageFiles) { const key = bulkFileKey(file); if (existingKeys.has(key)) continue; existingKeys.add(key); uniqueFiles.push(file); }
-            if (uniqueFiles.length === 0) {
-                setBulkProgress('Ảnh đã có trong danh sách.', 100); hideBulkProgressSoon(); showToast('Ảnh này đã có trong danh sách rồi.'); return;
-            }
+            if (isIngestingFiles) return; // Chống chạy chồng chéo khi thả chuột nhiều lần
+            isIngestingFiles = true;
 
-            setBulkProgress(readyMessage || 'Đang nạp ảnh nhẹ để xem trước...', 1);
-            for (let i = 0; i < uniqueFiles.length; i++) {
-                const file = uniqueFiles[i];
-                try {
-                    let meta = await createThumbFromFile(file, 420);
-                    let safeThumb = meta.thumb;
-                    
-                    // FALLBACK OOM AN TOÀN: Nếu tạo thumbnail thất bại (do máy yếu), KHÔNG ĐƯỢC móc ảnh gốc ra
-                    // Dùng một ảnh placeholder base64 cực nhẹ (chữ "Ảnh quá nặng") để không làm sập máy
-                    if (!safeThumb) {
-                        safeThumb = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmNWY5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTRhM2I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iPkFuaCBxdWEgbmFuZzwvdGV4dD48L3N2Zz4=';
-                    }
+            try {
+                const imageFiles = Array.from(files || []).filter(isImageFile);
+                if (imageFiles.length === 0) {
+                    setBulkProgress('Không tìm thấy file ảnh hợp lệ.', 100); hideBulkProgressSoon(); showToast('Không có ảnh hợp lệ nào được chọn.', 'error'); return;
+                }
+                const existingKeys = new Set(bulkLogoImages.map(item => item.key).filter(Boolean));
+                const uniqueFiles = [];
+                for (const file of imageFiles) { const key = bulkFileKey(file); if (existingKeys.has(key)) continue; existingKeys.add(key); uniqueFiles.push(file); }
+                if (uniqueFiles.length === 0) {
+                    setBulkProgress('Ảnh đã có trong danh sách.', 100); hideBulkProgressSoon(); showToast('Ảnh này đã có trong danh sách rồi.'); return;
+                }
 
-                    bulkLogoImages.push({
-                        id: Date.now() + Math.random(), key: bulkFileKey(file), file, name: file.name,
-                        displayPath: file.webkitRelativePath || file.relativePath || file.name,
-                        width: meta.width, height: meta.height, thumb: safeThumb, selected: true
-                    });
-                } catch (err) { console.warn('Không đọc được ảnh:', file?.name); }
-                setBulkProgress(`Đang nạp ảnh ${i + 1}/${uniqueFiles.length}...`, ((i + 1) / uniqueFiles.length) * 100);
-                await sleep(50);
+                setBulkProgress(readyMessage || 'Đang nạp ảnh nhẹ để xem trước...', 1);
+                for (let i = 0; i < uniqueFiles.length; i++) {
+                    const file = uniqueFiles[i];
+                    try {
+                        let meta = await createThumbFromFile(file, 420);
+                        let safeThumb = meta.thumb;
+                        
+                        // FALLBACK OOM AN TOÀN: Nếu tạo thumbnail thất bại (do máy yếu), KHÔNG ĐƯỢC móc ảnh gốc ra
+                        if (!safeThumb) {
+                            safeThumb = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmNWY5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTRhM2I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM1ZW0iPkFuaCBxdWEgbmFuZzwvdGV4dD48L3N2Zz4=';
+                        }
+
+                        bulkLogoImages.push({
+                            id: Date.now() + Math.random(), key: bulkFileKey(file), file, name: file.name,
+                            displayPath: file.webkitRelativePath || file.relativePath || file.name,
+                            width: meta.width, height: meta.height, thumb: safeThumb, selected: true
+                        });
+                    } catch (err) { console.warn('Không đọc được ảnh:', file?.name); }
+                    setBulkProgress(`Đang nạp ảnh ${i + 1}/${uniqueFiles.length}...`, ((i + 1) / uniqueFiles.length) * 100);
+                    await sleep(50);
+                }
+                renderBulkLogoView();
+                setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới.`, 100); hideBulkProgressSoon(); showToast(`Đã tải lên ${uniqueFiles.length} ảnh.`);
+            } finally {
+                isIngestingFiles = false;
             }
-            renderBulkLogoView();
-            setBulkProgress(`Đã nạp ${uniqueFiles.length} ảnh mới.`, 100); hideBulkProgressSoon(); showToast(`Đã tải lên ${uniqueFiles.length} ảnh.`);
         }
 
         function clearBulkImages() {
@@ -1437,8 +871,6 @@
             const reviewChk = document.getElementById('bulk-review-check'); if (reviewChk && bulkReviewIndex === index) reviewChk.checked = !!checked;
         }
 
-        function setBulkPreviewMode(mode) { bulkPreviewMode = mode === 'compact' ? 'compact' : 'comfortable'; renderBulkLogoView(); }
-
         function getFirstReviewIndex() {
             if (bulkLogoImages.length === 0) return 0;
             const selectedIndex = bulkLogoImages.findIndex(item => item.selected !== false); return selectedIndex >= 0 ? selectedIndex : 0;
@@ -1448,8 +880,6 @@
             const container = document.getElementById('bulk-preview-container'); if(!container) return;
             document.getElementById('bulk-count').innerText = bulkLogoImages.length; updateBulkSelectedCount();
 
-            const btnComfort = document.getElementById('btn-preview-comfort'); const btnCompact = document.getElementById('btn-preview-compact');
-            if (btnComfort && btnCompact) { btnComfort.classList.toggle('active', bulkPreviewMode === 'comfortable'); btnCompact.classList.toggle('active', bulkPreviewMode === 'compact'); }
             container.className = `grid ${bulkPreviewMode === 'compact' ? 'bulk-preview-grid-compact gap-3' : 'bulk-preview-grid-comfort gap-4'} overflow-y-auto max-h-[680px] content-start p-1`;
 
             if (bulkLogoImages.length === 0) {
@@ -1472,10 +902,10 @@
                 checkWrap.innerHTML = `<input id="bulk-check-${index}" type="checkbox" ${selected ? 'checked' : ''} class="accent-blue-600"> Xuất`;
                 checkWrap.querySelector('input').onchange = (ev) => toggleBulkSelected(index, ev.target.checked); stage.appendChild(checkWrap);
 
-                const zoomBtn = document.createElement('button'); zoomBtn.className = 'absolute right-2 bottom-2 bg-slate-950/70 hover:bg-slate-950 text-white rounded-full px-2.5 py-1 text-[11px] font-black backdrop-blur-sm'; zoomBtn.innerText = 'Xem RV'; zoomBtn.onclick = (ev) => { ev.stopPropagation(); openBulkReview(index); }; stage.appendChild(zoomBtn);
+                const zoomBtn = document.createElement('button'); zoomBtn.className = 'absolute right-2 bottom-2 bg-slate-950/70 hover:bg-slate-950 text-white rounded-full px-2.5 py-1 text-[11px] font-black backdrop-blur-sm transition'; zoomBtn.innerText = 'Xem RV'; zoomBtn.onclick = (ev) => { ev.stopPropagation(); openBulkReview(index); }; stage.appendChild(zoomBtn);
 
                 const body = document.createElement('div'); body.className = 'p-3';
-                body.innerHTML = `<div class="flex items-center justify-between gap-2"><span class="text-[11px] font-black text-slate-700 truncate" title="${item.name || ''}">${item.name || 'Ảnh'}</span><button class="text-red-500 hover:text-red-700 font-black text-sm flex-shrink-0" title="Xóa ảnh">×</button></div><div class="mt-1 text-[11px] text-slate-500">${ratioTxt} · ${item.width || '?'}×${item.height || '?'}</div>`;
+                body.innerHTML = `<div class="flex items-center justify-between gap-2"><span class="text-[11px] font-black text-slate-700 truncate" title="${item.name || ''}">${item.name || 'Ảnh'}</span><button class="text-red-500 hover:text-red-700 font-black text-sm flex-shrink-0 transition" title="Xóa ảnh">×</button></div><div class="mt-1 text-[11px] text-slate-500">${ratioTxt} · ${item.width || '?'}×${item.height || '?'}</div>`;
                 body.querySelector('button').onclick = (ev) => { ev.stopPropagation(); if (bulkReviewIndex === index) closeBulkReview(); bulkLogoImages.splice(index, 1); renderBulkLogoView(); };
                 card.appendChild(stage); card.appendChild(body); container.appendChild(card);
             });
@@ -1529,70 +959,7 @@
             openBulkReview(next);
         }
 
-        function drawRoundRectPath(ctx, x, y, w, h, r) {
-            const radius = Math.min(r, w / 2, h / 2);
-            ctx.beginPath(); ctx.moveTo(x + radius, y); ctx.lineTo(x + w - radius, y); ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
-            ctx.lineTo(x + w, y + h - radius); ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h); ctx.lineTo(x + radius, y + h);
-            ctx.quadraticCurveTo(x, y + h, x, y + h - radius); ctx.lineTo(x, y + radius); ctx.quadraticCurveTo(x, y, x + radius, y); ctx.closePath();
-        }
-
-        function drawSmartLogoWithHalo(ctx, logoImg, x, y, dw, dh, fw, fh) {
-            const stats = getLogoBackgroundStats(ctx, x, y, dw, dh, fw, fh);
-            const minSide = Math.min(fw, fh); const busy = stats.contrast > 48; const veryBright = stats.luma > 205; const bright = stats.luma > 165; const dark = stats.luma < 92; const veryDark = stats.luma < 58;
-            const blur = Math.max(3, Math.round(minSide * (busy ? 0.006 : 0.004)));
-
-            if (veryBright && !busy) {
-                const pad = Math.max(5, Math.round(minSide * 0.008));
-                ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.045)'; ctx.shadowColor = 'rgba(0,0,0,0.10)'; ctx.shadowBlur = Math.max(6, Math.round(minSide * 0.006)); ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
-                drawRoundRectPath(ctx, x - pad, y - pad, dw + pad * 2, dh + pad * 2, Math.max(10, pad * 1.8)); ctx.fill(); ctx.restore();
-            }
-            ctx.save(); ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
-            if (dark) { ctx.shadowColor = veryDark ? 'rgba(255,255,255,0.30)' : 'rgba(255,255,255,0.22)'; ctx.shadowBlur = blur; } 
-            else if (bright) { ctx.shadowColor = busy ? 'rgba(0,0,0,0.24)' : 'rgba(0,0,0,0.18)'; ctx.shadowBlur = blur; } 
-            else { ctx.shadowColor = busy ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.12)'; ctx.shadowBlur = Math.max(2, Math.round(minSide * 0.003)); }
-            ctx.drawImage(logoImg, x, y, dw, dh); ctx.restore();
-        }
-
-        function getLogoBackgroundStats(ctx, x, y, w, h, fw, fh) {
-            const sx = Math.max(0, Math.floor(x)); const sy = Math.max(0, Math.floor(y));
-            const sw = Math.max(1, Math.min(fw - sx, Math.ceil(w))); const sh = Math.max(1, Math.min(fh - sy, Math.ceil(h)));
-            if (sw <= 1 || sh <= 1) return { luma: 128, contrast: 0 };
-            try {
-                const data = ctx.getImageData(sx, sy, sw, sh).data; const totalPixels = sw * sh;
-                const step = Math.max(4, Math.floor(Math.sqrt(totalPixels / 600))); 
-                let sum = 0, sumSq = 0, count = 0;
-                for (let yy = 0; yy < sh; yy += step) {
-                    for (let xx = 0; xx < sw; xx += step) {
-                        const idx = (yy * sw + xx) * 4;
-                        const l = 0.2126 * data[idx] + 0.7152 * data[idx + 1] + 0.0722 * data[idx + 2];
-                        sum += l; sumSq += l * l; count++;
-                    }
-                }
-                const luma = count ? sum / count : 128; const variance = count ? (sumSq / count) - (luma * luma) : 0;
-                return { luma, contrast: Math.sqrt(Math.max(0, variance)) };
-            } catch (e) { return { luma: 128, contrast: 35 }; }
-        }
-
-        function applyLogoToCanvas(ctx, fw, fh) {
-            logosConfig.forEach(conf => {
-                if (!conf.enabled || !conf.img) return;
-                
-                const metrics = calculateUniversalLogoMetrics(fw, fh, conf.img.width, conf.img.height, conf.scale, conf.x);
-                
-                let x, y;
-                if (conf.x === 'center') { 
-                    x = (fw - metrics.targetW) / 2; 
-                    y = (fh - metrics.targetH) / 2; 
-                } 
-                else { 
-                    x = conf.x === 'left' ? metrics.padding : fw - metrics.targetW - metrics.padding; 
-                    y = conf.y === 'top' ? metrics.padding : fh - metrics.targetH - metrics.padding; 
-                }
-                
-                drawSmartLogoWithHalo(ctx, conf.img, x, y, metrics.targetW, metrics.targetH, fw, fh);
-            });
-        }
-
+        // --- STREAMING_CHUNK: Export & Export Setup ---
         function clearPreparedShareFiles(hidePanel = true) {
             bulkPreparedShareUrls.forEach(url => { try { URL.revokeObjectURL(url); } catch (_) {} });
             bulkPreparedShareFiles = []; bulkPreparedShareUrls = [];
@@ -1602,7 +969,6 @@
         }
 
         async function renderBulkLogoFile(item, exportIndex = 0, isMobileShare = false) {
-            // Hạ giới hạn xuống 1200px cho Mobile Share. Đảm bảo an toàn 100% không tràn RAM.
             const MAX_EDGE = isMobileShare ? 1200 : 2000; 
             const JPG_QUALITY = isMobileShare ? 0.92 : 0.96;
             const { img, url } = await loadImageElementFromFile(item.file || item.imgFile || item.fileRef || item);
@@ -1616,7 +982,6 @@
                 ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
                 ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, fw, fh); ctx.drawImage(img, 0, 0, fw, fh);
                 
-                // DỌN RÁC NGAY LẬP TỨC TRƯỚC KHI VẼ LOGO VÀ XUẤT ẢNH
                 img.onload = null; img.onerror = null; img.src = '';
                 URL.revokeObjectURL(url);
 
@@ -1677,10 +1042,9 @@
             try {
                 for (let i = 0; i < selectedBulkImages.length; i++) {
                     setBulkProgress(`Đang tạo ảnh chia sẻ ${i + 1}/${selectedBulkImages.length}...`, (i / selectedBulkImages.length) * 100);
-                    // Truyền cờ isMobileShare = true để kích hoạt bảo vệ RAM (1200px)
                     const file = await renderBulkLogoFile(selectedBulkImages[i], i, true);
                     bulkPreparedShareFiles.push(file);
-                    await sleep(300); // Tạm dừng 300 mili-giây để điện thoại (Android) dọn sạch rác RAM
+                    await sleep(300); 
                 }
                 setBulkProgress(`Hoàn tất ${bulkPreparedShareFiles.length} ảnh. Bấm Chia sẻ hoặc Mở ảnh gốc để dán đi.`, 100);
                 renderPreparedSharePanel();
