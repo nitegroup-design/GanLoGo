@@ -18,7 +18,10 @@
         .frame-seg { display: inline-flex; background: #f4f4f5; border: 1px solid #e4e4e7; border-radius: 12px; padding: 3px; gap: 3px; }
         .frame-seg button { font-size: 12px; font-weight: 700; color: #52525b; padding: 6px 12px; border-radius: 9px; min-height: 32px; }
         .frame-seg button.active { background: #fff; color: #18181b; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
-        #frame-body.frame-off { opacity: .45; }
+        .app-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; background: rgba(255,255,255,.85); border: 1px solid #e4e4e7; border-radius: 18px; box-shadow: 0 4px 14px -8px rgba(0,0,0,.12); }
+        .app-tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; border-radius: 14px; font-size: 13px; font-weight: 800; color: #52525b; transition: all .18s ease; }
+        .app-tabs button:hover { color: #18181b; background: #f4f4f5; }
+        .app-tabs button[aria-selected="true"] { background: #18181b; color: #fff; box-shadow: 0 4px 12px -4px rgba(24,24,27,.45); }
         
         :root {
             --bg-color: #f4f4f5;
@@ -253,6 +256,18 @@
         <!-- CỘT TRÁI: ĐIỀU KHIỂN -->
         <div class="lg:col-span-4 xl:col-span-3 flex flex-col gap-6">
             
+            <!-- 0. CHỌN CHẾ ĐỘ -->
+            <div class="app-tabs" role="tablist" aria-label="Chế độ làm việc">
+                <button type="button" role="tab" id="tab-logo" aria-selected="true" onclick="setAppMode('logo')">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+                    Gắn logo
+                </button>
+                <button type="button" role="tab" id="tab-frame" aria-selected="false" onclick="setAppMode('frame')">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm0 10h16" /></svg>
+                    Khung Collection
+                </button>
+            </div>
+
             <!-- 1. DROPZONE -->
             <div class="glass-panel p-5 premium-shadow">
                 <h2 class="font-display font-bold text-base mb-3 text-zinc-900 flex items-center gap-2">
@@ -286,21 +301,12 @@
                 </div>
             </div>
 
-            <!-- 2. KHUNG COLLECTION -->
-            <div class="glass-panel p-5 premium-shadow">
-                <div class="flex items-start justify-between gap-3 mb-1">
-                    <div>
-                        <h2 class="font-display font-bold text-base text-zinc-900">Khung Collection</h2>
-                        <p class="text-xs text-zinc-500">Logo trên giữa, chữ nghiêng + chữ thẳng góc dưới trái.</p>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer mt-1" title="Bật / tắt khung">
-                        <input type="checkbox" id="frame-enable" class="sr-only peer" onchange="setFrameEnabled(this.checked)">
-                        <span class="sr-only">Bật khung</span>
-                        <div class="w-9 h-5 bg-zinc-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600 shadow-inner transition-colors duration-200"></div>
-                    </label>
-                </div>
+            <!-- 2. KHUNG COLLECTION (chỉ hiện ở tab Khung) -->
+            <div id="frame-panel" class="glass-panel p-5 premium-shadow hidden">
+                <h2 class="font-display font-bold text-base text-zinc-900">Khung Collection</h2>
+                <p class="text-xs text-zinc-500 mb-1">Logo trên giữa, chữ nghiêng + chữ thẳng góc dưới trái.</p>
 
-                <div id="frame-body" class="flex flex-col gap-3 mt-4 frame-off">
+                <div id="frame-body" class="flex flex-col gap-3 mt-4">
                     <div class="rounded-xl overflow-hidden border border-zinc-200 bg-zinc-900">
                         <canvas id="frame-mini-preview" width="640" height="640" class="block w-full h-auto" aria-label="Xem trước khung"></canvas>
                     </div>
@@ -348,8 +354,8 @@
                 </div>
             </div>
 
-            <!-- 3. CẤU HÌNH LOGO -->
-            <div class="glass-panel p-5 premium-shadow">
+            <!-- 3. CẤU HÌNH LOGO (chỉ hiện ở tab Gắn logo) -->
+            <div id="logo-panel" class="glass-panel p-5 premium-shadow">
                 <h2 class="font-display font-bold text-base mb-1 text-zinc-900">Cấu hình Watermark</h2>
                 <p class="text-xs text-zinc-500 mb-4">Tự động resize giữ nguyên hình dáng logo.</p>
                 
@@ -1080,6 +1086,7 @@
                 frameImg.className = 'absolute inset-0 w-full h-full pointer-events-none';
                 frameImg.style.objectFit = 'fill';
                 container.appendChild(frameImg);
+                return; // Tab Khung: chỉ có khung, không gắn logo góc
             }
             logosConfig.forEach(conf => {
                 if (!conf.enabled || !conf.img) return;
@@ -1241,7 +1248,7 @@
         }
 
         function applyLogoToCanvas(ctx, fw, fh) {
-            if (typeof drawFrameOnCanvas === 'function') drawFrameOnCanvas(ctx, fw, fh);
+            if (typeof isFrameActive === 'function' && isFrameActive()) { drawFrameOnCanvas(ctx, fw, fh); return; }
             logosConfig.forEach(conf => {
                 if (!conf.enabled || !conf.img) return;
                 
@@ -1518,7 +1525,7 @@
                         setBulkProgress(`Đang nén ZIP: ${Math.round(meta.percent)}%`, base + span * (meta.percent / 100));
                     });
                     const suffix = totalBatches > 1 ? `_Part_${batchIndex + 1}_of_${totalBatches}` : '';
-                    downloadBlob(zipBlob, `UNITE_Logo_Batch${suffix}_${Date.now()}.zip`);
+                    downloadBlob(zipBlob, `UNITE_${isFrameActive() ? 'Khung' : 'Logo'}_Batch${suffix}_${Date.now()}.zip`);
                     await sleep(500); 
                 }
                 setBulkProgress(`Hoàn tất ${total} ảnh.`, 100); showToast('Đã tải ZIP thành công!');
@@ -1541,8 +1548,10 @@
         const FRAME_STORE_KEY = 'unite-frame-settings-v1';
         const FRAME_LOGO_STORE_KEY = 'unite-frame-logo-v1';
 
+        const APP_MODE_KEY = 'unite-app-mode-v1';
+        let appMode = 'logo';
+
         let frameConfig = {
-            enabled: false,
             scriptText: 'The Next Generation',
             titleText: 'UNITE LEADERSHIP',
             tint: '#3B2412',
@@ -1557,13 +1566,23 @@
         let frameFontsPromise = null;
         let frameRefreshTimer = null;
 
-        function isFrameActive() { return !!frameConfig.enabled; }
+        function isFrameActive() { return appMode === 'frame'; }
         function hasAnyBranding() { return isFrameActive() || logosConfig.some(conf => conf.enabled && conf.img); }
+
+        function setAppMode(mode, silent) {
+            appMode = mode === 'frame' ? 'frame' : 'logo';
+            try { localStorage.setItem(APP_MODE_KEY, appMode); } catch (_) {}
+            try { history.replaceState(null, '', appMode === 'frame' ? '#khung' : '#logo'); } catch (_) {}
+            clearPreparedShareFiles();
+            syncFrameUI();
+            refreshFrameEverywhere(false);
+            if (!silent) showToast(appMode === 'frame' ? 'Đang ở tab Khung Collection.' : 'Đang ở tab Gắn logo.');
+        }
 
         function saveFrameSettings() {
             try {
                 localStorage.setItem(FRAME_STORE_KEY, JSON.stringify({
-                    enabled: frameConfig.enabled, scriptText: frameConfig.scriptText, titleText: frameConfig.titleText,
+                    scriptText: frameConfig.scriptText, titleText: frameConfig.titleText,
                     tint: frameConfig.tint, wash: frameConfig.wash, logoMode: frameConfig.logoMode
                 }));
             } catch (_) {}
@@ -1574,7 +1593,6 @@
                 const raw = localStorage.getItem(FRAME_STORE_KEY);
                 if (!raw) return;
                 const s = JSON.parse(raw);
-                if (typeof s.enabled === 'boolean') frameConfig.enabled = s.enabled;
                 if (typeof s.scriptText === 'string') frameConfig.scriptText = s.scriptText;
                 if (typeof s.titleText === 'string') frameConfig.titleText = s.titleText;
                 if (typeof s.tint === 'string' && /^#[0-9a-f]{6}$/i.test(s.tint)) frameConfig.tint = s.tint;
@@ -1646,21 +1664,6 @@
             showToast('Đã dùng lại logo Unite mặc định.');
         }
 
-        function setFrameEnabled(on) {
-            frameConfig.enabled = !!on;
-            if (frameConfig.enabled) {
-                const turnedOff = logosConfig.filter(conf => conf.enabled && conf.img);
-                if (turnedOff.length) {
-                    turnedOff.forEach(conf => conf.enabled = false);
-                    renderLogoConfigUI();
-                    showToast('Đã bật khung và tắt logo góc để không bị trùng logo. Có thể bật lại ở mục Watermark.');
-                }
-            }
-            saveFrameSettings();
-            syncFrameUI();
-            refreshFrameEverywhere(false);
-        }
-
         function updateFrameText() {
             frameConfig.scriptText = document.getElementById('frame-script-text').value;
             frameConfig.titleText = document.getElementById('frame-title-text').value;
@@ -1691,8 +1694,12 @@
         }
 
         function syncFrameUI() {
-            const chk = document.getElementById('frame-enable'); if (chk) chk.checked = frameConfig.enabled;
-            const body = document.getElementById('frame-body'); if (body) body.classList.toggle('frame-off', !frameConfig.enabled);
+            const isFrame = isFrameActive();
+            const tl = document.getElementById('tab-logo'); if (tl) tl.setAttribute('aria-selected', String(!isFrame));
+            const tf = document.getElementById('tab-frame'); if (tf) tf.setAttribute('aria-selected', String(isFrame));
+            const fp = document.getElementById('frame-panel'); if (fp) fp.classList.toggle('hidden', !isFrame);
+            const lp = document.getElementById('logo-panel'); if (lp) lp.classList.toggle('hidden', isFrame);
+            document.title = isFrame ? 'Khung Collection - UNITE GROUP' : 'Brand Image Studio V10 - UNITE GROUP';
             const s = document.getElementById('frame-script-text'); if (s && s.value !== frameConfig.scriptText) s.value = frameConfig.scriptText;
             const t = document.getElementById('frame-title-text'); if (t && t.value !== frameConfig.titleText) t.value = frameConfig.titleText;
             const w = document.getElementById('frame-wash-slider'); if (w) w.value = frameConfig.wash;
@@ -1727,8 +1734,8 @@
         }
 
         // Vẽ khung lên canvas — dùng chung cho xem trước và xuất ảnh
-        function drawFrameOnCanvas(ctx, fw, fh) {
-            if (!isFrameActive()) return;
+        function drawFrameOnCanvas(ctx, fw, fh, force) {
+            if (!force && !isFrameActive()) return;
             const m = Math.min(fw, fh);
             const [r, g, b] = hexToRgbParts(frameConfig.tint);
             const wash = frameConfig.wash;
@@ -1841,9 +1848,7 @@
             ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
             ctx.fillStyle = 'rgba(255,255,255,0.10)';
             for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.arc(w * (0.15 + i * 0.18), h * 0.45, w * 0.07, 0, Math.PI * 2); ctx.fill(); ctx.fillRect(w * (0.08 + i * 0.18), h * 0.53, w * 0.14, h * 0.3); }
-            const wasOn = frameConfig.enabled; frameConfig.enabled = true;
-            drawFrameOnCanvas(ctx, w, h);
-            frameConfig.enabled = wasOn;
+            drawFrameOnCanvas(ctx, w, h, true);
         }
 
         function refreshFrameEverywhere(debounced) {
@@ -1859,6 +1864,12 @@
 
         async function initFrameUI() {
             loadFrameSettings();
+            let mode = null;
+            const hash = (location.hash || '').toLowerCase();
+            if (hash === '#khung' || hash === '#frame') mode = 'frame';
+            else if (hash === '#logo') mode = 'logo';
+            else { try { mode = localStorage.getItem(APP_MODE_KEY); } catch (_) {} }
+            appMode = mode === 'frame' ? 'frame' : 'logo';
             syncFrameUI();
             drawFrameMiniPreview();
             let stored = null;
@@ -1869,6 +1880,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => { initFrameUI(); });
+        window.addEventListener('hashchange', () => {
+            const h = (location.hash || '').toLowerCase();
+            if ((h === '#khung' || h === '#frame') && appMode !== 'frame') setAppMode('frame', true);
+            else if (h === '#logo' && appMode !== 'logo') setAppMode('logo', true);
+        });
     </script>
 </body>
 </html>
